@@ -1,0 +1,1611 @@
+@import 'tailwindcss';
+/* Style-only package export. A package name here does not resolve under Turbopack. */
+@import '../node_modules/tw-animate-css/dist/tw-animate.css';
+
+/* ---------------------------------------------------------------------------
+   Design tokens exposed to Tailwind as utilities (bg-*, text-*, font-*, …).
+   The two font stacks resolve through next/font variables set on <html>.
+--------------------------------------------------------------------------- */
+@theme {
+  --font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+
+  --color-background: #000000;
+  --color-surface: #0a0a0a;
+  --color-surface-2: #101014;
+  --color-foreground: #f4f4f4;
+  --color-muted: #8d8d97;
+  --color-muted-2: #757580;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
+  /* Faint ink on the page. These follow the theme; literal white does not. */
+  --color-wash: rgba(255, 255, 255, 0.04);
+  --color-wash-strong: rgba(255, 255, 255, 0.08);
+  --color-hairline: rgba(255, 255, 255, 0.06);
+  --color-track: rgba(255, 255, 255, 0.12);
+  /* Floating chrome: menu bar, search sheet, and its controls. */
+  --color-chrome: #161618;
+  --color-chrome-active: #2a2a2a;
+
+  --color-accent-blue: #2f7bff;
+  --color-accent-purple: #8b6cf6;
+  --color-accent-rose: #f0678f;
+
+  /* Semantic colors for Magic UI components. They follow this palette
+     and leave background, foreground, muted, and border alone. */
+  --color-card: #0a0a0a;
+  --color-card-foreground: #f4f4f4;
+  --color-popover: #161618;
+  --color-popover-foreground: #f4f4f4;
+  --color-primary: #f4f4f4;
+  --color-primary-foreground: #000000;
+  --color-secondary: #101014;
+  --color-secondary-foreground: #f4f4f4;
+  --color-accent: #101014;
+  --color-accent-foreground: #f4f4f4;
+  --color-muted-foreground: #8d8d97;
+  --color-destructive: #f0678f;
+  --color-destructive-foreground: #f4f4f4;
+  --color-input: rgba(255, 255, 255, 0.16);
+  --color-ring: #f4f4f4;
+
+  --color-warm-1: #f8c39a;
+  --color-warm-2: #e07a3c;
+
+  --radius-card: 1.25rem;
+  --radius-pill: 999px;
+
+  --container-shell: 82rem;
+  --container-wide: 96rem;
+  --container-narrow: 42rem;
+
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-breathe: breathe 8s ease-in-out infinite;
+  --animate-drift: drift 7s ease-in-out infinite;
+  --animate-wave: wave 0.45s ease-in-out infinite;
+
+  @keyframes breathe {
+    0%,
+    100% {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.85;
+      transform: scale(1.03);
+    }
+  }
+
+  @keyframes drift {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+
+  @keyframes wave {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(18deg);
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Tokens consumed by hand-written CSS below rather than by utilities.
+--------------------------------------------------------------------------- */
+:root {
+  --section-pad-y: clamp(4.5rem, 9vw, 9rem);
+
+  --t-fast: 160ms;
+  --t-base: 320ms;
+
+  /*
+    The column follows the shell until a wide desktop would otherwise spend
+    the extra width as empty margin outside the rails. Past that point the
+    outer gutter stays 3rem and the column takes the rest.
+  */
+  --frame: min(100% - 2.5rem, max(var(--container-shell), 100% - 6rem));
+  --frame-wide: min(100% - 2.5rem, max(var(--container-wide), 100% - 6rem));
+}
+
+@layer base {
+  /*
+    One gradient for every italic accent: lilac, blush, and honey.
+    Soft on black so the word stays colored instead of blowing out.
+    The paper theme below keeps the same order, darkened so it holds on cream.
+  */
+  :root {
+    --grad-1: #c4b6ef;
+    --grad-2: #e7b0c0;
+    --grad-3: #e4c9a4;
+  }
+
+  /*
+    Paper theme. Borders are stronger than the dark theme's 8% white because
+    the same alpha of black disappears on cream. The italic accent is darkened
+    for the same reason: the peach used on black sits inside the paper.
+  */
+  html[data-theme='light'] {
+    color-scheme: light;
+    --bg: #f3efe8;
+    --color-background: #f3efe8;
+    --color-surface: #fffdf9;
+    --color-surface-2: #e7e1d8;
+    --color-foreground: #1c1917;
+    --color-muted: #5a554f;
+    --color-muted-2: #6e6862;
+    --color-border: rgba(28, 25, 23, 0.12);
+    --color-border-strong: rgba(28, 25, 23, 0.22);
+    --color-wash: rgba(28, 25, 23, 0.045);
+    --color-wash-strong: rgba(28, 25, 23, 0.08);
+    --color-hairline: rgba(28, 25, 23, 0.1);
+    --color-track: rgba(28, 25, 23, 0.16);
+    --color-warm-1: #a34e22;
+    --color-warm-2: #6e3010;
+    --grad-1: #5a28e0;
+    --grad-2: #e2186a;
+    --grad-3: #e06400;
+    --glass-bg: rgba(255, 253, 249, 0.92);
+    --glass-bg-scrolled: rgba(255, 253, 249, 0.96);
+    --glass-shadow: 0 14px 40px rgba(40, 28, 16, 0.1);
+    --scrollbar: rgba(28, 25, 23, 0.28);
+    --atmos-grid: rgba(47, 123, 255, 0.1);
+    --atmos-line: rgba(28, 25, 23, 0.05);
+    --page-rail: #d3cfc8;
+    --page-mark: #a09c95;
+    --band-hatch-line: rgba(28, 25, 23, 0.07);
+    --color-chrome: #fffdf9;
+    --color-chrome-active: #e6dfd6;
+    --color-card: #fffdf9;
+    --color-card-foreground: #1c1917;
+    --color-popover: #fffdf9;
+    --color-popover-foreground: #1c1917;
+    --color-primary: #1c1917;
+    --color-primary-foreground: #f3efe8;
+    --color-secondary: #e7e1d8;
+    --color-secondary-foreground: #1c1917;
+    --color-accent: #e7e1d8;
+    --color-accent-foreground: #1c1917;
+    --color-muted-foreground: #5a554f;
+    --color-destructive: #c4385a;
+    --color-destructive-foreground: #fffdf9;
+    --color-input: rgba(28, 25, 23, 0.22);
+    --color-ring: #1c1917;
+    --explore-photo-from: #d4e2f3;
+    --explore-photo-via: #e6eef8;
+    --explore-photo-to: #f7f4ef;
+    --explore-about-from: #e7dced;
+    --explore-about-via: #f1e8f4;
+    --explore-about-to: #f7f4ef;
+    --nav-shadow: 0 10px 28px rgba(40, 28, 16, 0.08);
+    --elev-shadow: 0 16px 40px rgba(40, 28, 16, 0.1);
+    --elev-shadow-lg: 0 24px 60px rgba(40, 28, 16, 0.12);
+    /* Same arc as dark, inked for paper: a blue hairline and a wash that dies into the page. */
+    --horizon-rim: #1d6fce;
+    --horizon-rim-soft: #7eb6ef;
+    --horizon-glow: #b9dcff;
+    --horizon-body-0: #6eb4f6;
+    --horizon-body-1: #a9d4f8;
+    --horizon-body-2: #d5eafb;
+    --horizon-body-3: #eaf4fc;
+    /* Star field, inked so the points sit on paper. */
+    --star: #1c1917;
+    --star-blue: #1a4a9e;
+    --star-rose: #8a5a28;
+    --code-keyword: #c4385a;
+    --code-string: #c4385a;
+    --code-name: #3451c7;
+    --code-comment: #6e6862;
+    --code-bg: #fffdf9;
+    --code-line: rgba(28, 25, 23, 0.14);
+    --code-ink: #1c1917;
+    --code-chip: rgba(28, 25, 23, 0.06);
+  }
+
+  /*
+    A dark plate sitting on the paper page: viewers, photo captions, and
+    reserved slots. Restores the dark tokens locally so labels and
+    hairlines stay light without turning literal white into ink everywhere.
+  */
+  html[data-theme='light'] [data-theme-scope='dark'] {
+    color-scheme: dark;
+    --bg: #000000;
+    --color-background: #000000;
+    --color-surface: #0a0a0a;
+    --color-surface-2: #101014;
+    --color-foreground: #f4f4f4;
+    --color-muted: #8d8d97;
+    --color-muted-2: #757580;
+    --color-border: rgba(255, 255, 255, 0.08);
+    --color-border-strong: rgba(255, 255, 255, 0.16);
+    --color-wash: rgba(255, 255, 255, 0.04);
+    --color-wash-strong: rgba(255, 255, 255, 0.08);
+    --color-hairline: rgba(255, 255, 255, 0.06);
+    --color-track: rgba(255, 255, 255, 0.12);
+    --color-warm-1: #f8c39a;
+    --color-warm-2: #e07a3c;
+    --color-card: #0a0a0a;
+    --color-card-foreground: #f4f4f4;
+    --color-popover: #161618;
+    --color-popover-foreground: #f4f4f4;
+    --color-primary: #f4f4f4;
+    --color-primary-foreground: #000000;
+    --color-secondary: #101014;
+    --color-secondary-foreground: #f4f4f4;
+    --color-accent: #101014;
+    --color-accent-foreground: #f4f4f4;
+    --color-muted-foreground: #8d8d97;
+    --color-destructive: #f0678f;
+    --color-destructive-foreground: #f4f4f4;
+    --color-input: rgba(255, 255, 255, 0.16);
+    --color-ring: #f4f4f4;
+    --glass-bg: rgba(14, 14, 20, 0.72);
+    --glass-bg-scrolled: rgba(10, 10, 14, 0.86);
+    --glass-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+    --scrollbar: rgba(255, 255, 255, 0.28);
+  }
+
+  html {
+    /* Dark defaults live in this layer so the light theme, also in this
+       layer, can override them. An unlayered :root value would win instead. */
+    --bg: #000000;
+    --glass-bg: rgba(14, 14, 20, 0.72);
+    --glass-bg-scrolled: rgba(10, 10, 14, 0.86);
+    --glass-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+    --scrollbar: rgba(255, 255, 255, 0.28);
+    --atmos-grid: rgba(47, 123, 255, 0.05);
+    --atmos-line: rgba(255, 255, 255, 0.016);
+    --page-rail: #262626;
+    --page-mark: #404040;
+    --band-hatch-line: rgba(255, 255, 255, 0.05);
+    --explore-photo-from: #16233f;
+    --explore-photo-via: #0e0f16;
+    --explore-photo-to: #0a0a0e;
+    --explore-about-from: #261a36;
+    --explore-about-via: #130f1a;
+    --explore-about-to: #0a0a0e;
+    --nav-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+    --elev-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+    --elev-shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.55);
+    /* Planet edge under the hero. One rim, one body - colors only, geometry is shared. */
+    --horizon-rim: #ffffff;
+    --horizon-rim-soft: #7fe6ff;
+    --horizon-glow: #9ee9ff;
+    --horizon-body-0: #3db8ff;
+    --horizon-body-1: #0a7aef;
+    --code-keyword: #9ec1ff;
+    --code-string: #f0a0c0;
+    --code-name: #d6e4ff;
+    --code-comment: rgba(255, 255, 255, 0.4);
+    --code-bg: #0c0c0e;
+    --code-line: rgba(255, 255, 255, 0.1);
+    --code-ink: rgba(255, 255, 255, 0.86);
+    --code-chip: rgba(255, 255, 255, 0.06);
+    --horizon-body-2: #0054ce;
+    --horizon-body-3: #062ca9;
+    /* Same field, lit so the points glow on black. */
+    --star: #f4f7ff;
+    --star-blue: #9ecbff;
+    --star-rose: #f0d0a4;
+    background: var(--bg);
+    color-scheme: dark;
+    scrollbar-color: var(--scrollbar) transparent;
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    /* Horizon arc and section glows are intentionally wider than the viewport;
+       without this they would introduce a horizontal scrollbar. */
+    overflow-x: hidden;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    transition: background-color 180ms linear, color 180ms linear;
+    font-family: var(--font-sans);
+    font-feature-settings: 'kern' 1, 'liga' 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* While the curtain is moving, the page swaps in one step behind it. */
+  html.theme-settling body,
+  html.theme-settling .glass-surface,
+  html.theme-settling .glass-surface-scrolled {
+    transition: none;
+  }
+
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent-blue);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-accent-purple);
+    color: #fff;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  figure {
+    margin: 0;
+  }
+}
+
+@layer components {
+  /*
+    Study-card Safari fan. Arbitrary group-hover:[translate:…] utilities are
+    not emitted reliably; drive rest/hover geometry from these hooks instead.
+    Stage + card keep overflow:hidden so chrome never clears the rounded shell.
+  */
+  [data-safari-frame='back'] {
+    translate: -60% 3%;
+    rotate: -1.2deg;
+  }
+  [data-safari-frame='front'] {
+    translate: -40% 0%;
+    rotate: 1.2deg;
+  }
+  a.group:hover [data-safari-frame='back'],
+  [data-safari-frame='back'][data-safari-open] {
+    translate: -76% 6%;
+    rotate: -2.8deg;
+  }
+  a.group:hover [data-safari-frame='front'],
+  [data-safari-frame='front'][data-safari-open] {
+    translate: -24% -1%;
+    rotate: 2.4deg;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-safari-frame] {
+      transition: none !important;
+    }
+  }
+
+  /* Case-study code and diagrams. Light theme follows the paper page;
+     dark keeps the ink panel. Token colors live on html. */
+  .code-panel {
+    background: var(--code-bg);
+    border: 1px solid var(--code-line);
+    color: var(--code-ink);
+  }
+
+  .code-file {
+    background: var(--code-chip);
+    color: var(--code-comment);
+  }
+
+  .tok-key {
+    color: var(--code-keyword);
+  }
+
+  .tok-str {
+    color: var(--code-string);
+  }
+
+  .tok-name {
+    color: var(--code-name);
+  }
+
+  .tok-note {
+    color: var(--code-comment);
+  }
+
+  /* --- Layout shells ------------------------------------------------------
+     One container system for every page so wide desktops keep editorial
+     margins instead of stretching to the viewport edge. */
+  .shell {
+    width: var(--frame);
+    margin-inline: auto;
+    /*
+      The rails are this box's outer edge. The reference keeps type 20px inside
+      the line, and 40px from the md breakpoint (px-5 / md:px-10).
+    */
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 48rem) {
+    .shell {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .shell-wide {
+    width: var(--frame-wide);
+    margin-inline: auto;
+  }
+
+  .shell-narrow {
+    width: min(100% - 2.5rem, var(--container-narrow));
+    margin-inline: auto;
+  }
+
+  .section-y {
+    padding-block: var(--section-pad-y);
+  }
+
+  /* Homepage world previews. Shorter than a full section so the run stays scannable. */
+  .section-compact {
+    padding-block: clamp(3.25rem, 6vw, 5.5rem);
+  }
+
+  /* --- Page frame ---------------------------------------------------------
+     Two rails on the content column, drawn once for a whole page so the line
+     never breaks between sections. Decorative only.
+     The rail color is the reference's solid step up from the page, #262626
+     on black and a warm gray on paper. A translucent white reads thinner. */
+  .page-rails {
+    position: absolute;
+    inset-block: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: var(--frame);
+    border-inline: 1px solid var(--page-rail);
+    pointer-events: none;
+  }
+
+  /* The joint between two bands. The hatch runs the full width of the page,
+     and the column is knocked back to the page color, so the diagonals show
+     in the margins only. The hairline crosses the whole viewport. */
+  .band-break {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    left: 0;
+    height: 2.5rem;
+    border-block: 1px solid var(--page-rail);
+    background: repeating-linear-gradient(
+      160deg,
+      var(--band-hatch-line) 0 1px,
+      transparent 1px 3px
+    );
+    pointer-events: none;
+  }
+
+  /* Sits on the boundary, half in this band's padding and half in the one above. */
+  .band-break-start {
+    top: -1.25rem;
+  }
+
+  /* Stays inside the last band so it does not run under the footer. */
+  .band-break-end {
+    bottom: 1px;
+  }
+
+  /* A section rule. Sits in the section's own top padding, so it does not cover the type. */
+  .band-break-rule {
+    top: 0;
+  }
+
+  /* A section that was pulled flush to its rule. The joint takes its own height. */
+  .band-break-flow {
+    position: relative;
+    top: auto;
+  }
+
+  /*
+    One measure of air on each side of a rail. The band is 2.5rem and sits at
+    the top of the following section, so that section's top padding is the
+    band plus the measure.
+  */
+  .seam-before {
+    padding-bottom: 3rem;
+  }
+
+  .seam-after {
+    padding-top: calc(2.5rem + 3rem);
+  }
+
+  .band-break::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    left: 50%;
+    width: calc(var(--frame) - 2px);
+    transform: translateX(-50%);
+    background: var(--bg);
+  }
+
+  /* A 5px square on each corner, ringed in the page color so the lines break around it. */
+  .band-mark {
+    position: absolute;
+    z-index: 1;
+    width: 5px;
+    height: 5px;
+    background: var(--page-mark);
+    box-shadow: 0 0 0 3px var(--bg);
+  }
+
+  .band-mark-tl,
+  .band-mark-bl {
+    left: calc((100% - var(--frame)) / 2);
+  }
+
+  .band-mark-tr,
+  .band-mark-br {
+    right: calc((100% - var(--frame)) / 2);
+  }
+
+  .band-mark-tl,
+  .band-mark-tr {
+    top: 0;
+  }
+
+  .band-mark-bl,
+  .band-mark-br {
+    bottom: 0;
+  }
+
+  .band-mark-tl { transform: translate(-50%, -50%); }
+  .band-mark-tr { transform: translate(50%, -50%); }
+  .band-mark-bl { transform: translate(-50%, 50%); }
+  .band-mark-br { transform: translate(50%, 50%); }
+
+  /* --- Typographic voices ------------------------------------------------- */
+  .display {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+    line-height: 0.98;
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .body-copy {
+    color: var(--color-muted);
+    font-size: clamp(1rem, 1.2vw, 1.08rem);
+    line-height: 1.75;
+  }
+
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    color: var(--color-muted-2);
+  }
+
+  /* Warm italic accent used on the second word of editorial headings. */
+  .warm-italic {
+    font-style: italic;
+    background-image: linear-gradient(100deg, var(--color-warm-1), var(--color-warm-2) 78%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /*
+    The same wash, stretched over a whole heading. The italic phrase inherits
+    the heading's gradient instead of starting a second one.
+  */
+  .title-warm {
+    background-image: linear-gradient(100deg, var(--color-warm-1), var(--color-warm-2) 78%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .title-warm .warm-italic {
+    background-image: none;
+    color: inherit;
+  }
+
+  /*
+    Theme curtain. The cloth is twice the viewport, so once it has dropped
+    it covers the page with room above and below. The theme swaps in that
+    still moment. The ease-out only fades opacity, so no edge travels back
+    across the screen.
+  */
+  .theme-curtain {
+    position: fixed;
+    z-index: 80;
+    top: 0;
+    right: -1px;
+    left: -1px;
+    height: 200%;
+    background: #000000;
+    pointer-events: auto;
+    opacity: 1;
+    transform: translate3d(0, -100%, 0);
+    will-change: transform, opacity;
+  }
+
+  .theme-curtain::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 4.5rem;
+    background: linear-gradient(to top, transparent, #000000);
+  }
+
+  .theme-curtain-light {
+    background: #f3efe8;
+  }
+
+  .theme-curtain-light::after {
+    background: linear-gradient(to top, transparent, #f3efe8);
+  }
+
+  /*
+    Top edge. A light wash only - never a solid plate over the nav.
+    Strongest at the screen edge, already thin through the bar, gone below it.
+  */
+  .screen-fade-top {
+    position: fixed;
+    z-index: 40;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 7rem;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--bg) 72%, transparent) 0%,
+      color-mix(in srgb, var(--bg) 38%, transparent) 2.25rem,
+      color-mix(in srgb, var(--bg) 12%, transparent) 4.5rem,
+      transparent 100%
+    );
+  }
+
+  .glass-surface {
+    background: var(--glass-bg);
+    border: 1px solid var(--color-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: background-color 180ms linear, border-color 180ms linear, box-shadow 180ms linear;
+  }
+
+  /*
+    Primary nav track. The frost is only the upper half; the lower half stays
+    a thin tint. The current link is a solid chip, not part of the glass.
+  */
+  .nav-glass {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, transparent 48%),
+      color-mix(in srgb, var(--color-chrome) 50%, transparent);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.24),
+      var(--nav-shadow);
+  }
+
+  html[data-theme='light'] .nav-glass {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, transparent 48%),
+      color-mix(in srgb, var(--color-chrome) 64%, transparent);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      var(--nav-shadow);
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .nav-glass {
+      background: var(--color-chrome);
+    }
+  }
+
+  /* Slightly denser glass once the page has scrolled under the nav. */
+  .glass-surface-scrolled {
+    background: var(--glass-bg-scrolled);
+    backdrop-filter: blur(26px);
+    -webkit-backdrop-filter: blur(26px);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+  }
+
+  html[data-theme='light'] .grain::after {
+    opacity: 0.07;
+    mix-blend-mode: multiply;
+  }
+
+  html[data-theme='light'] [data-theme-scope='dark'].grain::after,
+  html[data-theme='light'] [data-theme-scope='dark'] .grain::after {
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+  }
+
+  /* Soft pulse on the hero "NEW" mark. Held still when motion is reduced. */
+  .badge-glow {
+    box-shadow: 0 0 10px rgba(47, 123, 255, 0.75);
+    animation: badge-glow 2.6s ease-in-out infinite;
+  }
+
+  @keyframes badge-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 6px rgba(47, 123, 255, 0.45);
+    }
+    50% {
+      box-shadow: 0 0 16px rgba(47, 123, 255, 0.95);
+    }
+  }
+
+  /* Live point beside research "In progress" — glow + soft ring, not spectacle. */
+  .status-pulse {
+    position: relative;
+    display: inline-block;
+    width: 0.42rem;
+    height: 0.42rem;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background: var(--color-accent-blue);
+    box-shadow: 0 0 6px rgba(47, 123, 255, 0.55);
+    animation: status-pulse-glow 2.4s ease-in-out infinite;
+  }
+
+  .status-pulse::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: inherit;
+    border: 1px solid rgba(47, 123, 255, 0.55);
+    opacity: 0;
+    animation: status-pulse-ring 2.4s ease-out infinite;
+  }
+
+  @keyframes status-pulse-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 4px rgba(47, 123, 255, 0.35);
+    }
+    50% {
+      box-shadow: 0 0 10px rgba(47, 123, 255, 0.85);
+    }
+  }
+
+  @keyframes status-pulse-ring {
+    0% {
+      transform: scale(0.85);
+      opacity: 0.65;
+    }
+    100% {
+      transform: scale(1.85);
+      opacity: 0;
+    }
+  }
+
+  /* Soft text glow for live eyebrows (Guest Journal). Accent-blue, restrained. */
+  .eyebrow-live {
+    text-shadow: 0 0 10px rgba(47, 123, 255, 0.28);
+    animation: eyebrow-live-glow 2.6s ease-in-out infinite;
+  }
+
+  @keyframes eyebrow-live-glow {
+    0%,
+    100% {
+      text-shadow: 0 0 6px rgba(47, 123, 255, 0.18);
+    }
+    50% {
+      text-shadow: 0 0 14px rgba(47, 123, 255, 0.45);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .badge-glow {
+      animation: none;
+    }
+
+    .status-pulse,
+    .status-pulse::after {
+      animation: none;
+    }
+
+    .status-pulse::after {
+      opacity: 0.4;
+      transform: none;
+    }
+
+    .eyebrow-live {
+      animation: none;
+      text-shadow: 0 0 10px rgba(47, 123, 255, 0.28);
+    }
+  }
+
+  .link-underline {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0.18);
+    transform-origin: left;
+    opacity: 0.5;
+    transition: transform var(--t-base) var(--ease-cinematic);
+  }
+
+  .link-underline:hover::after {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+
+  /* --- Horizon (SVG planet-edge) -----------------------------------------
+     Geometry and glow live in HorizonGlow.tsx. These rules only size the
+     stage and fade the blue body into the page background. */
+  .horizon {
+    position: relative;
+    height: clamp(240px, 36vw, 540px);
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .horizon-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    /* Additive against the page, so overlapping blurs brighten like light. */
+    mix-blend-mode: screen;
+  }
+
+  html[data-theme='light'] .horizon-svg {
+    mix-blend-mode: normal;
+  }
+
+  .horizon-fade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 52%, var(--bg) 100%);
+  }
+
+  /* --- Page atmospheres ---------------------------------------------------
+     Each destination gets a distinct but restrained backdrop so the site reads
+     as one world seen through different rooms. All are decorative and sit
+     behind content at very low opacity. */
+  .atmos {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  /* Projects - faint blueprint grid. */
+  .atmos-blueprint {
+    background-image:
+      linear-gradient(var(--atmos-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--atmos-grid) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(ellipse at 50% 0%, black 10%, transparent 70%);
+  }
+
+  /* Music - horizontal wave bands, like a room lit by a monitor. */
+  .atmos-room {
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(139, 108, 246, 0.16), transparent 60%),
+      repeating-linear-gradient(
+        to bottom,
+        var(--atmos-line) 0px,
+        var(--atmos-line) 1px,
+        transparent 1px,
+        transparent 9px
+      );
+    mask-image: linear-gradient(to bottom, black 0%, transparent 75%);
+  }
+
+  /* Writing / books - warm paper light. */
+  .atmos-paper {
+    background: radial-gradient(ellipse at 50% -10%, rgba(224, 122, 60, 0.1), transparent 62%);
+  }
+
+  /* Artwork - a gallery wall wash. */
+  .atmos-gallery {
+    background: radial-gradient(ellipse at 50% -5%, rgba(240, 103, 143, 0.1), transparent 60%);
+  }
+
+  /* Photography - darkroom red at the very top edge. */
+  .atmos-darkroom {
+    background: radial-gradient(ellipse at 50% -8%, rgba(200, 60, 60, 0.1), transparent 58%);
+  }
+
+  /* About / contact - a single quiet spotlight. */
+  .atmos-spotlight {
+    background: radial-gradient(ellipse at 50% -10%, rgba(47, 123, 255, 0.12), transparent 62%);
+  }
+
+  /* Closing band. Stars stay sharp at the edges and blur only behind the type. */
+  .nebula {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  /* One disk, nucleus left of the type, cool arm to the right. A dust lane cuts it. */
+  .galaxy {
+    position: absolute;
+    inset: -18% -8%;
+  }
+
+  .galaxy-disk {
+    position: absolute;
+    left: 4%;
+    top: 22%;
+    width: 96%;
+    height: 62%;
+    transform: rotate(-7deg);
+    background:
+      radial-gradient(ellipse 16% 42% at 14% 64%, color-mix(in srgb, var(--star) 16%, transparent), transparent 70%),
+      radial-gradient(ellipse 44% 30% at 74% 38%, color-mix(in srgb, var(--star-blue) 13%, transparent), transparent 74%),
+      radial-gradient(ellipse 26% 24% at 8% 70%, color-mix(in srgb, var(--star-rose) 12%, transparent), transparent 72%);
+    filter: blur(10px);
+  }
+
+  .galaxy-lane {
+    position: absolute;
+    left: 10%;
+    top: 64%;
+    width: 68%;
+    height: 7%;
+    transform: rotate(-7deg);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--bg) 72%, transparent) 22%,
+      color-mix(in srgb, var(--bg) 48%, transparent) 58%,
+      transparent 100%
+    );
+    filter: blur(5px);
+  }
+
+  html[data-theme='light'] .galaxy-disk {
+    background:
+      radial-gradient(ellipse 22% 46% at 30% 58%, color-mix(in srgb, var(--star-blue) 10%, transparent), transparent 72%),
+      radial-gradient(ellipse 46% 32% at 62% 44%, color-mix(in srgb, var(--star) 7%, transparent), transparent 74%),
+      radial-gradient(ellipse 28% 26% at 18% 64%, color-mix(in srgb, var(--star-rose) 9%, transparent), transparent 72%);
+  }
+
+  html[data-theme='light'] .galaxy-lane {
+    opacity: 1;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--star) 9%, transparent) 24%,
+      color-mix(in srgb, var(--star) 5%, transparent) 62%,
+      transparent 100%
+    );
+  }
+
+  .starfield {
+    position: absolute;
+    inset: 0;
+  }
+
+  .starfield-star {
+    position: absolute;
+    overflow: visible;
+    transform: translate(-50%, -50%);
+    animation-name: star-drift;
+    animation-duration: var(--drift-dur);
+    animation-delay: var(--drift-delay);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  /* A small loop around home, so the point shivers instead of commuting. */
+  @keyframes star-drift {
+    0% {
+      translate: 0 0;
+    }
+    22% {
+      translate: var(--dx) calc(var(--dy) * 0.4);
+    }
+    48% {
+      translate: calc(var(--dx) * -0.55) var(--dy);
+    }
+    73% {
+      translate: calc(var(--dx) * 0.45) calc(var(--dy) * -0.65);
+    }
+    100% {
+      translate: 0 0;
+    }
+  }
+
+  /* Brightness wanders. The glow swells a little with it. */
+  .star-core {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation-duration: var(--dur);
+    animation-delay: var(--delay);
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+
+  .star-core-dust {
+    animation-name: star-core-dust;
+  }
+
+  .star-core-mid {
+    animation-name: star-core-mid;
+  }
+
+  .star-core-bright {
+    animation-name: star-core-bright;
+  }
+
+  /* Paper can't hold a glow. The brighter points become short ink streaks. */
+  .star-shoot {
+    opacity: 0;
+  }
+
+  html[data-theme='light'] .starfield-star:not(.is-shoot) {
+    display: none;
+  }
+
+  html[data-theme='light'] .is-shoot .star-core {
+    visibility: hidden;
+  }
+
+  html[data-theme='light'] .star-shoot {
+    opacity: 1;
+  }
+
+  html[data-theme='light'] .starfield-star.is-shoot {
+    animation-name: star-shoot;
+    animation-duration: var(--shoot-dur);
+    animation-delay: var(--shoot-delay);
+    animation-timing-function: linear;
+  }
+
+  @keyframes star-shoot {
+    0%,
+    70% {
+      translate: 0 0;
+      opacity: 0;
+    }
+    73% {
+      opacity: 0.95;
+    }
+    86% {
+      translate: var(--sx) var(--sy);
+      opacity: 0.8;
+    }
+    91%,
+    100% {
+      translate: var(--sx) var(--sy);
+      opacity: 0;
+    }
+  }
+
+  .starfield-sharp {
+    mask-image: radial-gradient(ellipse 38% 86% at 50% 50%, transparent 0% 48%, #000 100%);
+  }
+
+  .starfield-soft {
+    filter: blur(16px);
+    mask-image: radial-gradient(ellipse 38% 86% at 50% 50%, #000 0% 55%, transparent 100%);
+  }
+
+  /* The type fills a phone, so the sharp sky has to stay above and below it. */
+  @media (max-width: 700px) {
+    .starfield-sharp {
+      mask-image: radial-gradient(ellipse 88% 54% at 50% 48%, transparent 0% 34%, #000 100%);
+    }
+
+    .starfield-soft {
+      filter: blur(12px);
+      mask-image: radial-gradient(ellipse 88% 54% at 50% 48%, #000 0% 42%, transparent 100%);
+    }
+
+    .nebula-edge {
+      background: linear-gradient(to bottom, var(--bg) 0%, transparent 7%, transparent 93%, var(--bg) 100%);
+    }
+  }
+
+  .nebula-edge {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, var(--bg) 0%, transparent 14%, transparent 86%, var(--bg) 100%);
+  }
+
+  @keyframes star-core-dust {
+    0%,
+    14% {
+      opacity: var(--o);
+      transform: scale(1);
+    }
+    24% {
+      opacity: calc(var(--o) * 0.35);
+      transform: scale(0.82);
+    }
+    34%,
+    52% {
+      opacity: var(--o);
+      transform: scale(1);
+    }
+    63% {
+      opacity: var(--dip);
+      transform: scale(0.88);
+    }
+    72%,
+    86% {
+      opacity: calc(var(--o) * 0.75);
+      transform: scale(1);
+    }
+    94% {
+      opacity: calc(var(--o) * 0.45);
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: var(--o);
+      transform: scale(1);
+    }
+  }
+
+  @keyframes star-core-mid {
+    0%,
+    16% {
+      opacity: var(--o);
+      transform: scale(1);
+    }
+    28% {
+      opacity: calc(var(--o) * 0.55);
+      transform: scale(0.9);
+    }
+    40%,
+    58% {
+      opacity: var(--o);
+      transform: scale(1.04);
+    }
+    70% {
+      opacity: var(--dip);
+      transform: scale(0.86);
+    }
+    82%,
+    100% {
+      opacity: var(--o);
+      transform: scale(1);
+    }
+  }
+
+  @keyframes star-core-bright {
+    0%,
+    20% {
+      opacity: var(--o);
+      transform: scale(1);
+    }
+    32% {
+      opacity: calc(var(--o) * 0.7);
+      transform: scale(0.92);
+    }
+    44%,
+    64% {
+      opacity: var(--o);
+      transform: scale(1.06);
+    }
+    76% {
+      opacity: var(--dip);
+      transform: scale(0.94);
+    }
+    88%,
+    100% {
+      opacity: var(--o);
+      transform: scale(1);
+    }
+  }
+}
+
+@layer utilities {
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mask-fade-b {
+    mask-image: linear-gradient(to bottom, black 68%, transparent 100%);
+  }
+}
+
+@keyframes timeline-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Scroll-linked only when motion is allowed. Otherwise the copy stays visible. */
+@media (prefers-reduced-motion: no-preference) {
+  .timeline-chapter {
+    animation: timeline-rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
+  }
+}
+
+.timeline-chapter:focus-within {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .timeline-chapter {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Standing hardcover. The angle is the object, not a hover. */
+.book-scene {
+  perspective: 640px;
+  width: 100%;
+  max-width: 17rem;
+  padding: 1.1rem 0.25rem 1.6rem 0.75rem;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.book-scene:active {
+  cursor: grabbing;
+}
+
+/* Home title page only. The archive plate stays the smaller rest size. */
+.book-home .book-scene {
+  max-width: 20rem;
+}
+
+.book-home .book {
+  width: 13rem;
+}
+
+@media (max-width: 40rem) {
+  .book-home .book-scene {
+    margin-inline: auto;
+  }
+
+  .book-home .book {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.book-scene::after {
+  content: '';
+  position: absolute;
+  right: 8%;
+  bottom: 0.35rem;
+  left: 22%;
+  height: 1.35rem;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.55), transparent 72%);
+  filter: blur(5px);
+  pointer-events: none;
+}
+
+.book {
+  --d: 36px;
+  position: relative;
+  width: 11rem;
+  aspect-ratio: 2 / 3;
+  margin-left: 0.85rem;
+  transform-style: preserve-3d;
+  transform: rotateY(-36deg) rotateX(10deg);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.book-cover,
+.book-spine,
+.book-pages,
+.book-page-top,
+.book-back {
+  position: absolute;
+}
+
+.book-cover {
+  inset: 0;
+  overflow: hidden;
+  border-radius: 0 2px 2px 0;
+  background: #f3efe6;
+  transform: translateZ(1px);
+}
+
+.book-cover img {
+  pointer-events: none;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.book-hinge {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 18px;
+  background: linear-gradient(90deg, rgba(40, 28, 16, 0.38), rgba(40, 28, 16, 0.08) 55%, transparent);
+  pointer-events: none;
+}
+
+.book-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.16) 0%, transparent 32%);
+  pointer-events: none;
+}
+
+.book-spine {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  width: var(--d);
+  align-items: center;
+  justify-content: center;
+  transform-origin: left center;
+  transform: rotateY(90deg);
+  background: linear-gradient(90deg, #5e574e 0%, #d4cbbd 12%, #f7f2e8 38%, #e7dccb 70%, #8f877b 100%);
+}
+
+.book-spine::before,
+.book-spine::after {
+  content: '';
+  position: absolute;
+  right: 4px;
+  left: 4px;
+  height: 3px;
+  background: #241f1a;
+}
+
+.book-spine::before {
+  top: 7px;
+}
+
+.book-spine::after {
+  bottom: 7px;
+}
+
+.book-spine span {
+  color: #1c1915;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 0.5rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+}
+
+.book-pages {
+  top: 3%;
+  right: 0;
+  bottom: 3%;
+  width: calc(var(--d) - 2px);
+  transform-origin: right center;
+  transform: rotateY(-90deg);
+  background:
+    linear-gradient(90deg, rgba(40, 28, 16, 0.28), transparent 30%, rgba(255, 252, 246, 0.4)),
+    repeating-linear-gradient(#f8f3ea 0 1px, #c9beab 1px 2px);
+}
+
+.book-page-top {
+  top: 3%;
+  right: 2%;
+  left: 2%;
+  height: calc(var(--d) - 2px);
+  transform-origin: center top;
+  transform: rotateX(-90deg);
+  background: repeating-linear-gradient(90deg, #f4efe4 0 2px, #c9beab 2px 3px);
+}
+
+.book-back {
+  inset: 0;
+  background: #e4dccb;
+  transform: translateZ(calc(var(--d) * -1));
+}
+
+/* Long-form MDX. Same measure and color as the research documents. */
+.article-prose {
+  max-width: 40rem;
+  color: var(--color-muted);
+  font-size: 1.02rem;
+  line-height: 1.75;
+}
+
+.article-prose > * + * {
+  margin-top: 1.25rem;
+}
+
+.article-prose h2,
+.article-prose h3 {
+  color: var(--color-foreground);
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.article-prose h2 {
+  margin-top: 2.5rem;
+  font-size: 1.65rem;
+}
+
+.article-prose h3 {
+  font-size: 1.25rem;
+  font-style: italic;
+}
+
+.article-prose a {
+  color: var(--color-foreground);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.article-prose ul,
+.article-prose ol {
+  display: grid;
+  gap: 0.65rem;
+  padding-left: 1.15rem;
+}
+
+.article-prose code {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.86em;
+}
+
+.article-prose blockquote {
+  border-left: 1px solid var(--color-border);
+  padding-left: 1.25rem;
+  color: var(--color-foreground);
+}
+
+/* —— Progressive enhancement motion (SSR-safe; content never gated on JS) —— */
+
+@keyframes blur-text-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.14em);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.blur-text__unit {
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .blur-text__unit {
+    animation: blur-text-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(var(--blur-start, 0ms) + (var(--blur-i, 0) * var(--blur-stagger, 55ms)));
+  }
+}
+
+@keyframes reveal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Default: fully visible (no JS, no timeline support). Enhance with scroll-driven CSS when available. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+      animation-delay: var(--reveal-delay, 0s);
+    }
+  }
+}
+
+@keyframes gradient-word-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-word {
+  background-image: linear-gradient(
+    90deg,
+    var(--grad-1),
+    var(--grad-2),
+    var(--grad-3),
+    var(--grad-1)
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .gradient-word {
+    animation: gradient-word-flow 6s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blur-text__unit,
+  .reveal,
+  .gradient-word {
+    animation: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .gradient-word {
+    background-position: 0% 50%;
+  }
+}
+

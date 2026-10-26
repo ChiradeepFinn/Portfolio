@@ -1,0 +1,328 @@
+[
+  {
+    "file": "public\\images\\photography\\IMG_20261009_212558.jpg",
+    "action": "skip",
+    "before": 23978,
+    "dims": "398x512"
+  },
+  {
+    "file": "public\\images\\photography\\IMG_3351.JPG",
+    "action": "skip",
+    "before": 126622,
+    "dims": "2200x1235"
+  },
+  {
+    "file": "public\\images\\photography\\IMG_4928.JPG",
+    "action": "skip",
+    "before": 367615,
+    "dims": "2200x1235"
+  },
+  {
+    "file": "public\\images\\photography\\IMG_4936.JPG",
+    "action": "skip",
+    "before": 110484,
+    "dims": "1235x2200"
+  },
+  {
+    "file": "public\\images\\photography\\IMG_8604.JPG",
+    "action": "skip",
+    "before": 373921,
+    "dims": "2200x1467"
+  },
+  {
+    "file": "public\\images\\photography\\IMG_8643.JPG",
+    "action": "skip",
+    "before": 213973,
+    "dims": "2200x1467"
+  },
+  {
+    "file": "public\\images\\photography\\_MG_6595.JPG",
+    "action": "skip",
+    "before": 377328,
+    "dims": "1467x2200"
+  },
+  {
+    "file": "public\\images\\artwork\\20261011_224824.jpg",
+    "action": "skip",
+    "format": "webp",
+    "before": 29522
+  },
+  {
+    "file": "public\\images\\artwork\\20261014_110306.jpg",
+    "action": "skip",
+    "format": "webp",
+    "before": 22312
+  },
+  {
+    "file": "public\\images\\artwork\\54ad14f8b852c82f329a4fbd36f95c78.jpg",
+    "action": "skip",
+    "format": "webp",
+    "before": 35768
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_0236.jpg",
+    "action": "skip",
+    "format": "webp",
+    "before": 23730
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_1586.jpg",
+    "action": "skip",
+    "format": "webp",
+    "before": 73128
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_1945.jpg",
+    "action": "skip",
+    "format": "webp",
+    "before": 70002
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_20261011_023720_598.jpg",
+    "action": "skip",
+    "format": "webp",
+    "before": 113422
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_8476.jpg",
+    "action": "png-to-jpeg",
+    "before": 370887,
+    "after": 27861,
+    "dims": "640x480",
+    "savedPct": 92
+  },
+  {
+    "file": "public\\images\\artwork\\5B81483C-E590-4C06-B4B3-E14A8F3CB04F.jpg",
+    "action": "png-to-jpeg",
+    "before": 220683,
+    "after": 22235,
+    "dims": "384x512",
+    "savedPct": 90
+  },
+  {
+    "file": "public\\images\\artwork\\3f8b51c1-9948-42bc-84bc-64b4a9cdaa3e.jpg",
+    "action": "png-to-jpeg",
+    "before": 138562,
+    "after": 14482,
+    "dims": "385x512",
+    "savedPct": 90
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_7037.jpg",
+    "action": "png-to-jpeg",
+    "before": 409924,
+    "after": 38984,
+    "dims": "480x640",
+    "savedPct": 90
+  },
+  {
+    "file": "public\\images\\artwork\\IMG-20230423-WA0030.jpg",
+    "action": "png-to-jpeg",
+    "before": 128184,
+    "after": 18559,
+    "dims": "288x512",
+    "savedPct": 86
+  },
+  {
+    "file": "public\\images\\artwork\\IMG-20261004-WA0002.jpg",
+    "action": "png-to-jpeg",
+    "before": 328104,
+    "after": 36396,
+    "dims": "384x512",
+    "savedPct": 89
+  },
+  {
+    "file": "public\\images\\artwork\\IMG20260519213810.jpg",
+    "action": "png-to-jpeg",
+    "before": 303813,
+    "after": 37148,
+    "dims": "640x482",
+    "savedPct": 88
+  },
+  {
+    "file": "public\\images\\artwork\\37968ec0-cde3-44d0-b7f2-077882b1eecd.jpg",
+    "action": "png-to-jpeg",
+    "before": 134967,
+    "after": 17812,
+    "dims": "480x640",
+    "savedPct": 87
+  },
+  {
+    "file": "public\\images\\artwork\\IMG-20260907-WA0006.jpg",
+    "action": "png-to-jpeg",
+    "before": 298419,
+    "after": 30845,
+    "dims": "384x512",
+    "savedPct": 90
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_20260916_224423.jpg",
+    "action": "png-to-jpeg",
+    "before": 281860,
+    "after": 37838,
+    "dims": "359x640",
+    "savedPct": 87
+  },
+  {
+    "file": "public\\images\\artwork\\image.jpg",
+    "action": "png-to-jpeg",
+    "before": 388591,
+    "after": 30301,
+    "dims": "431x640",
+    "savedPct": 92
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_4204.jpg",
+    "action": "png-to-jpeg",
+    "before": 256590,
+    "after": 31432,
+    "dims": "359x640",
+    "savedPct": 88
+  },
+  {
+    "file": "public\\images\\artwork\\IMG-20261003-WA0002.jpg",
+    "action": "png-to-jpeg",
+    "before": 266055,
+    "after": 31818,
+    "dims": "384x512",
+    "savedPct": 88
+  },
+  {
+    "file": "public\\images\\artwork\\IMG20260702153531.jpg",
+    "action": "png-to-jpeg",
+    "before": 108481,
+    "after": 12469,
+    "dims": "385x512",
+    "savedPct": 89
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_2862.jpg",
+    "action": "png-to-jpeg",
+    "before": 406610,
+    "after": 49119,
+    "dims": "460x640",
+    "savedPct": 88
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_2923.jpg",
+    "action": "png-to-jpeg",
+    "before": 319593,
+    "after": 50480,
+    "dims": "1024x574",
+    "savedPct": 84
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_6421.jpg",
+    "action": "png-to-jpeg",
+    "before": 372465,
+    "after": 36550,
+    "dims": "480x640",
+    "savedPct": 90
+  },
+  {
+    "file": "public\\images\\artwork\\Untitled753_20261016224716.jpg",
+    "action": "png-to-jpeg",
+    "before": 229870,
+    "after": 48383,
+    "dims": "640x640",
+    "savedPct": 79
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_20260625_202732.jpg",
+    "action": "png-to-jpeg",
+    "before": 213441,
+    "after": 21719,
+    "dims": "469x512",
+    "savedPct": 90
+  },
+  {
+    "file": "public\\images\\artwork\\20260924_184114.jpg",
+    "action": "png-to-jpeg",
+    "before": 366912,
+    "after": 32404,
+    "dims": "480x640",
+    "savedPct": 91
+  },
+  {
+    "file": "public\\images\\artwork\\IMG20260819235537.jpg",
+    "action": "png-to-jpeg",
+    "before": 194458,
+    "after": 20856,
+    "dims": "385x512",
+    "savedPct": 89
+  },
+  {
+    "file": "public\\images\\artwork\\886b3d51-bcb6-4df6-86ed-6d7fd31e2d6c.jpg",
+    "action": "skip",
+    "format": "jpeg",
+    "before": 45918
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_8280.jpg",
+    "action": "skip",
+    "format": "jpeg",
+    "before": 29723
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_1986.jpg",
+    "action": "skip",
+    "format": "jpeg",
+    "before": 57251
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_8477.jpg",
+    "action": "skip",
+    "format": "jpeg",
+    "before": 32302
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_9824.jpg",
+    "action": "skip",
+    "format": "jpeg",
+    "before": 49656
+  },
+  {
+    "file": "public\\images\\artwork\\IMG_8177.jpg",
+    "action": "skip",
+    "format": "jpeg",
+    "before": 29015
+  },
+  {
+    "file": "public/images/photography/IMG_8556.JPG",
+    "action": "resize-jpeg",
+    "before": 6667098,
+    "after": 252606,
+    "dims": "6000x4000",
+    "savedPct": 96,
+    "method": "rename-replace"
+  },
+  {
+    "file": "public/images/photography/IMG_9659[1].JPG",
+    "action": "resize-jpeg",
+    "before": 7115292,
+    "after": 207363,
+    "dims": "6000x4000",
+    "savedPct": 97,
+    "method": "rename-replace"
+  },
+  {
+    "file": "public/brand/1000054925.gif",
+    "action": "gif-resize",
+    "before": 4093750,
+    "after": 471174,
+    "pages": 73,
+    "fromWidth": 800,
+    "toWidth": 160,
+    "savedPct": 88,
+    "method": "powershell-rename-replace"
+  },
+  {
+    "file": "public/brand/logo.jpg",
+    "action": "logo-resize",
+    "before": 159301,
+    "after": 9758,
+    "dims": "1024x1024",
+    "savedPct": 94,
+    "method": "rename-replace"
+  }
+]

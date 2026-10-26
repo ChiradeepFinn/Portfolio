@@ -1,0 +1,42 @@
+# Chiradeep
+
+> Chiradeep is a creative technologist in Karur, Tamil Nadu, India. This site is a personal portfolio of software projects, music, photography, artwork, books, research, and essays. It is not a shop, a local-service listing, or a company.
+
+## What this site is
+
+- A personal portfolio and archive.
+- Contact is a form that emails Chiradeep. It does not create an account.
+- The guest journal lets a visitor sign in with Google or GitHub and leave one public note. The email address is not shown on the page.
+
+## Pages
+
+- / - Introduction, selected work, and the rooms of the site
+- /about - Biography and portrait
+- /projects - Case studies
+- /projects/sidequest - Sidequest, a quest system sized to the time you have
+- /projects/synesthesia - Synesthesia, a system that moves a work across media
+- /music - Music and how it is made
+- /archive - Entrance to the archive
+- /archive/photography - Photographs
+- /archive/artwork - Artwork
+- /archive/books - Published books, including The Inward Silhouette
+- /archive/research - Research studies
+- /archive/certifications - Credentials
+- /philosophy - Essays
+- /timeline - A life in progress
+- /now - Current work, left blank until it is real
+- /bucket-list - Intentions, left blank until they are real
+- /links - Profiles elsewhere
+- /journal - Guest journal
+- /contact - Contact form and direct email
+- /privacy - What the site collects
+- /terms - How the work may be read and quoted
+
+## Contact
+
+- Email: softwarechiradeep@gmail.com
+- Location: Karur, Tamil Nadu, India
+
+## Notes for crawlers
+
+The readable text of each page is in the HTML. Do not treat placeholder slots labelled as reserved as published work.
