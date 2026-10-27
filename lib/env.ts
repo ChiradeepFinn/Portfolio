@@ -33,11 +33,6 @@ function isUrl(protocols: readonly string[]) {
   };
 }
 
-const httpsUrl = present.refine(
-  (value) => value === undefined || isUrl(['https:'])(value),
-  'must be an https URL',
-);
-
 const secret = present.refine(
   (value) => value === undefined || !/\s/.test(value),
   'must not contain whitespace',
@@ -69,8 +64,10 @@ const schema = z.object({
   JOURNAL_RATE_LIMIT_MAX: positiveInt,
   JOURNAL_RATE_LIMIT_WINDOW_SECONDS: positiveInt,
   /** Optional. Set it and a successful contact message pings the channel. */
-  DISCORD_WEBHOOK_URL: httpsUrl.refine(
-    (value) => value === undefined || /^https:\/\/(?:\w+\.)?discord(?:app)?\.com\/api\/webhooks\//.test(value),
+  DISCORD_WEBHOOK_URL: present.refine(
+    (value) =>
+      value === undefined ||
+      /^https:\/\/(?:\w+\.)?discord(?:app)?\.com\/api\/webhooks\//.test(value),
     'must be a Discord webhook URL',
   ),
 });

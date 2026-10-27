@@ -135,7 +135,11 @@ A twin is built from the source the page renders, never from its HTML. MDX is re
 
 Twins answer `text/markdown`, a `Link` header naming the HTML page as canonical, and `X-Robots-Tag: noindex`, so a twin never competes with its own page in search. They are not listed in the sitemap. They are cached for an hour in the browser and six at the edge.
 
-Content negotiation on `Accept: text/markdown` is deliberately not implemented. `proxy.ts` is scoped to the journal and auth paths, and widening it to inspect `Accept` on every HTML route is a larger change than the explicit `.md` URLs are worth.
+Content negotiation on `Accept: text/markdown` is implemented in `proxy.ts` for twin-capable HTML paths (`/`, `/projects/:slug`, `/philosophy/:slug`, `/archive/research/:slug`). Negotiated responses come from the same twin handler, include `Vary: Accept`, and keep the HTML page as canonical. Unknown paths that ask for Markdown receive a Markdown 404 that links to home, projects, `llms.txt`, and the sitemap.
+
+### WebMCP (experimental)
+
+The contact form carries Declarative WebMCP attributes (`toolname` / `tooldescription`). `WebMcpTools` registers read-only imperative tools (`list_projects`, `list_site_sections`, `get_contact_details`) when `document.modelContext` exists. Registration is a no-op without Chrome's WebMCP origin trial or `chrome://flags/#enable-webmcp-testing`. Lighthouse Agentic Browsing audits for WebMCP need Chrome 150+ and an origin-trial token on the production origin.
 
 ### FAQ and TL;DR
 

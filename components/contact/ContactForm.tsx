@@ -157,6 +157,9 @@ export function ContactForm() {
           exit={reduce ? { opacity: 0 } : { opacity: 0, y: -8 }}
           className="relative grid gap-8 sm:gap-9"
           aria-busy={busy}
+          // WebMCP Declarative API (Chrome origin trial / flag). No-op in browsers without it.
+          toolname="submit_contact"
+          tooldescription="Send Chiradeep a contact message about freelance work, collaborations, or a full-time role. Fills the on-page form; the visitor still confirms send."
         >
           <div className="grid gap-8 sm:grid-cols-2 sm:gap-x-10 sm:gap-y-8">
             <Field id="name" label="Name">
@@ -169,6 +172,7 @@ export function ContactForm() {
                 autoComplete="name"
                 disabled={busy}
                 className={fieldClass}
+                toolparamdescription="Visitor's name"
               />
             </Field>
             <Field id="email" label="Email">
@@ -181,6 +185,7 @@ export function ContactForm() {
                 autoComplete="email"
                 disabled={busy}
                 className={fieldClass}
+                toolparamdescription="Visitor's reply-to email address"
               />
             </Field>
           </div>
@@ -194,6 +199,7 @@ export function ContactForm() {
               maxLength={160}
               disabled={busy}
               className={fieldClass}
+              toolparamdescription="Short subject line for the message"
             />
           </Field>
 
@@ -207,6 +213,7 @@ export function ContactForm() {
               maxLength={5000}
               disabled={busy}
               className={cn(fieldClass, 'min-h-[10.5rem] resize-y pb-4')}
+              toolparamdescription="The message body. Include context for the ask."
             />
           </Field>
 

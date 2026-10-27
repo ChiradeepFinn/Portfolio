@@ -531,7 +531,12 @@ export const FilmPlayer = forwardRef<FilmPlayerHandle, FilmPlayerProps>(function
           )}
         />
 
-        <div className="absolute inset-0 z-[1] cursor-pointer touch-manipulation" onClick={onStageClick} />
+        <button
+          type="button"
+          className="absolute inset-0 z-[1] cursor-pointer touch-manipulation border-0 bg-transparent p-0"
+          onClick={onStageClick}
+          aria-label={playing ? 'Pause introduction film' : 'Play introduction film'}
+        />
 
         {!playing && !failed ? (
           <span className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center">

@@ -9,6 +9,8 @@ import { GuestLogPrompt } from '@/components/layout/GuestLogPrompt';
 import { ClosingBand } from '@/components/layout/ClosingBand';
 import { SmoothScroll } from '@/components/providers/SmoothScrollProvider';
 import { DeferredAnalytics } from '@/components/providers/DeferredAnalytics';
+import { WebMcpTools } from '@/components/providers/WebMcpTools';
+import { publishedCatalog } from '@/lib/feeds/catalog';
 import { buildSearchIndex } from '@/lib/search';
 import { feedAlternateTypes, siteDescription } from '@/lib/seo';
 
@@ -56,13 +58,20 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-icon',
   },
+  // Selects the Is Agentic report lens; does not change the score.
+  other: {
+    'is-agentic-site-type': 'content',
+  },
   ...(googleSiteVerification
     ? { verification: { google: googleSiteVerification } }
     : {}),
 };
 
 export default async function RootLayout({ children }: { readonly children: React.ReactNode }) {
-  const searchIndex = await buildSearchIndex();
+  const [searchIndex, catalog] = await Promise.all([buildSearchIndex(), publishedCatalog()]);
+  const webmcpProjects = catalog
+    .filter((entry) => entry.kind === 'project')
+    .map((entry) => ({ title: entry.title, summary: entry.summary, path: entry.path }));
 
   return (
     <html lang="en" className={`${displayFont.variable} ${sansFont.variable}`} suppressHydrationWarning>
@@ -71,6 +80,7 @@ export default async function RootLayout({ children }: { readonly children: Reac
           {`(function(){function apply(){try{var root=document.documentElement;if(localStorage.getItem('theme')==='light')root.dataset.theme='light';else root.removeAttribute('data-theme');}catch(e){}}apply();window.addEventListener('pageshow',apply);})();`}
         </Script>
         <SmoothScroll />
+        <WebMcpTools projects={webmcpProjects} />
         <div className="screen-fade-top" aria-hidden="true" />
         <NavShell searchIndex={searchIndex} />
         <div className="relative">

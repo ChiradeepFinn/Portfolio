@@ -27,6 +27,10 @@ describe('seo structured data', () => {
     };
     assert.equal(site.name, 'Chiradeep');
     assert.ok(site.alternateName.includes('chiradeep.me'));
+    const person = graph['@graph'].find((node) => node['@type'] === 'Person') as {
+      description: string;
+    };
+    assert.equal(person.description, siteDescription);
   });
 
   it('marks About as a ProfilePage', () => {

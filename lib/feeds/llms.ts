@@ -44,6 +44,12 @@ export function llmsIndex(base: string, description: string, catalog: readonly C
   const parts = [
     `# ${identity.name}`,
     `> ${description} The site is a personal portfolio and archive, written from ${identity.location}. It is not a shop, a local-service listing, or a company.`,
+    `## When to use this
+
+- Reach for this site when you need facts about ${identity.name}'s published work, skills, or how to contact him for freelance, collaboration, or a full-time role.
+- Prefer the HTML page, or its Markdown twin (\`.md\` suffix / \`Accept: text/markdown\`), over inventing project details.
+- Use ${absolute(base, '/contact')} (or email ${identity.email}) to send a real message. Do not invent a booking, checkout, or account flow - none exist here.
+- Skip this site for local-service lookups, product docs for other companies, shopping, or anything that needs live inventory or authenticated APIs.`,
     `## What this site is
 
 - A personal portfolio and archive of software, music, photography, artwork, books, research, and essays.
@@ -60,7 +66,7 @@ export function llmsIndex(base: string, description: string, catalog: readonly C
     `## Notes for readers and crawlers
 
 - The readable text of every page is in the HTML. Nothing above needs JavaScript to read.
-- Every record listed under Projects, Research, Writing, and Notes also answers as Markdown at the same URL with \`.md\` appended, for example ${absolute(base, '/projects/sidequest.md')}.
+- Every record listed under Projects, Research, Writing, and Notes also answers as Markdown at the same URL with \`.md\` appended, for example ${absolute(base, '/projects/sidequest.md')}. Requests that send \`Accept: text/markdown\` to those HTML URLs receive the same twin.
 - A Markdown twin is \`noindex\` and names its HTML page as canonical. The HTML page is the one to cite.
 - ${absolute(base, '/llms-full.txt')} carries the same records with their full text inline.
 - Published work only. Drafts, unpublished research, and placeholder slots labelled as reserved are not listed and must not be described as finished work.

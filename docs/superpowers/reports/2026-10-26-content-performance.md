@@ -92,11 +92,12 @@ Confirm: draft `article-template` absent from RSS and llms; twin headers include
 ## Deliberately deferred
 
 - IndexNow  
-- Accept: text/markdown negotiation  
 - Shared/distributed rate limiting (Upstash)  
 - React Compiler  
 - Migrating auth/DB away from Supabase  
 - Deploy / DNS / real Discord test pings  
+
+Note: `Accept: text/markdown` negotiation and agent Markdown 404s were added later for agentic readiness (see `proxy.ts` and `docs/ARCHITECTURE.md`). 
 
 ---
 

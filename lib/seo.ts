@@ -41,6 +41,9 @@ export function withCanonical(path: string, meta: Metadata): Metadata {
       types: { ...feedAlternateTypes, ...(alternates.types ?? {}) },
     },
     openGraph: {
+      type: 'website',
+      siteName: identity.name,
+      locale: 'en_IN',
       ...openGraph,
       url: path,
       images: openGraph.images ?? [
@@ -268,12 +271,14 @@ export function articleGraph(input: {
       '@type': 'Person',
       '@id': personId(),
       name: identity.name,
+      description: siteDescription,
       url: absoluteUrl('/about'),
     },
     publisher: {
       '@type': 'Person',
       '@id': personId(),
       name: identity.name,
+      description: siteDescription,
       url: absoluteUrl('/about'),
     },
     ...(input.image ? { image: [absoluteUrl(input.image)] } : {}),

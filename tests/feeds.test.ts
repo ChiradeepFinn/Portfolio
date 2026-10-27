@@ -116,6 +116,7 @@ describe('twin paths', () => {
     assert.equal(markdownTwinDestination('/projects/sidequest'), null);
     assert.equal(markdownTwinDestination('/rss.xml'), null);
   });
+
 });
 
 describe('xml helpers', () => {
@@ -192,8 +193,15 @@ describe('llms files', () => {
     assert.match(index, /Published work only/);
   });
 
+  it('tells agents when to use the site', () => {
+    assert.match(index, /## When to use this/);
+    assert.match(index, /freelance, collaboration, or a full-time role/);
+    assert.match(index, /Skip this site for local-service lookups/);
+  });
+
   it('points at the markdown twins and the full file', () => {
     assert.match(index, /\.md` appended/);
+    assert.match(index, /Accept: text\/markdown/);
     assert.match(index, /https:\/\/chiradeep\.me\/llms-full\.txt/);
   });
 
