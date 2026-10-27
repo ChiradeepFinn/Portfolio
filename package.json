@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "type-check": "tsc --noEmit",
-    "test": "node ./node_modules/tsx/dist/cli.mjs --test tests/contact.test.ts tests/content.test.ts tests/journal.test.ts"
+    "test": "node ./node_modules/tsx/dist/cli.mjs --test tests/contact.test.ts tests/content.test.ts tests/env.test.ts tests/feeds.test.ts tests/journal.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

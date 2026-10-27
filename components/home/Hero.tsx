@@ -51,13 +51,14 @@ export function Hero() {
         </p>
 
         <div className="mt-7 flex flex-wrap items-center justify-center gap-2.5 sm:mt-8 sm:gap-3">
-          <ArrowPill href="/contact">Let&apos;s Connect</ArrowPill>
+          <ArrowPill href="/projects">Projects</ArrowPill>
+          <ArrowPill href="/about">About</ArrowPill>
           <a
-            href={`mailto:${identity.email}`}
+            href="/contact"
             className="flex items-center gap-2 rounded-pill px-3 py-2 text-[0.8rem] text-muted transition-colors duration-200 hover:text-foreground sm:text-sm"
           >
             <Mail size={14} aria-hidden="true" className="shrink-0" />
-            <span className="break-all">{identity.email}</span>
+            <span>Contact</span>
           </a>
         </div>
       </div>

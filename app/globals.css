@@ -959,6 +959,12 @@
     pointer-events: none;
     overflow: hidden;
     background: var(--bg);
+    /*
+      Own compositing group, clipped. Without this, Chromium on Android can
+      spill filtered star layers into neighbouring page tiles as RGB static.
+    */
+    isolation: isolate;
+    contain: paint;
   }
 
   /* One disk, nucleus left of the type, cool arm to the right. A dust lane cuts it. */
@@ -1132,13 +1138,30 @@
       mask-image: radial-gradient(ellipse 88% 54% at 50% 48%, transparent 0% 34%, #000 100%);
     }
 
+    /*
+      Mobile Chromium (especially Android) corrupts nearby tiles when a full-bleed
+      layer uses filter:blur with hundreds of animated SVG children. Soft field is
+      not mounted on narrow screens; galaxy blurs drop here for the same reason.
+      Readability behind the type comes from a stronger edge veil instead.
+    */
+    .galaxy-disk,
+    .galaxy-lane,
     .starfield-soft {
-      filter: blur(12px);
-      mask-image: radial-gradient(ellipse 88% 54% at 50% 48%, #000 0% 42%, transparent 100%);
+      filter: none;
+    }
+
+    .starfield-soft {
+      display: none;
     }
 
     .nebula-edge {
-      background: linear-gradient(to bottom, var(--bg) 0%, transparent 7%, transparent 93%, var(--bg) 100%);
+      background: linear-gradient(
+        to bottom,
+        var(--bg) 0%,
+        color-mix(in srgb, var(--bg) 58%, transparent) 12%,
+        color-mix(in srgb, var(--bg) 58%, transparent) 88%,
+        var(--bg) 100%
+      );
     }
   }
 
@@ -1607,5 +1630,18 @@
   .gradient-word {
     background-position: 0% 50%;
   }
+}
+
+/*
+ * Nothing animates where nobody is looking.
+ *
+ * `usePauseOffscreen()` sets `data-offscreen` while an element is outside the
+ * viewport or the tab is hidden. This rule is deliberately unlayered, so it
+ * wins over the component rules in `@layer components` without `!important`.
+ * Paused is not stopped: an animation keeps its position and resumes mid-loop.
+ */
+[data-offscreen],
+[data-offscreen] * {
+  animation-play-state: paused;
 }
 

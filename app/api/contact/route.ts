@@ -7,6 +7,8 @@ import { contactIdempotency, contactIdempotencyKey, type DeliveryResult } from '
 import { hasRecentDuplicate, storeContact } from '@/lib/contact/persist';
 import { contactRateLimitStore, decideRateLimit } from '@/lib/contact/rate-limit';
 import { MAX_BODY_BYTES, parseContactPayload } from '@/lib/contact/validate';
+import { env } from '@/lib/env';
+import { notifyContact } from '@/lib/notify/discord';
 
 export const runtime = 'nodejs';
 
@@ -84,7 +86,7 @@ async function deliver(submission: {
   subject: string;
   message: string;
 }): Promise<DeliveryResult> {
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = env().RESEND_API_KEY;
   if (!apiKey) {
     console.error('[contact] RESEND_API_KEY is not set; no email was sent.');
     return {
@@ -98,7 +100,7 @@ async function deliver(submission: {
     return { success: true };
   }
 
-  const email = buildContactEmail(submission);
+  const email = buildContactEmail(submission, env());
   if ('error' in email) {
     console.error('[contact] email headers rejected');
     return { success: false, error: 'Your message could not be sent. Please try again.', status: 400 };
@@ -123,5 +125,7 @@ async function deliver(submission: {
   }
 
   await storeContact(submission);
+  // Both are after delivery and neither can fail the response: the email is sent.
+  await notifyContact({ name: submission.name, email: submission.email, subject: submission.subject });
   return { success: true };
 }

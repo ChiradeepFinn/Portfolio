@@ -9,7 +9,8 @@ import { GradientWord } from '@/components/ui/GradientWord';
 
 export const metadata: Metadata = withCanonical('/links', {
   title: 'Links',
-  description: 'Everywhere else I exist.',
+  description:
+    "Find Chiradeep's social profiles, contact links, and ways to follow the work across GitHub, LinkedIn, Instagram, and more.",
 });
 
 export default function LinksPage() {

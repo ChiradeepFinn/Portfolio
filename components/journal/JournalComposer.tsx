@@ -9,7 +9,7 @@ import { JournalSignOut } from './JournalSignIn';
 import { PeekRating } from './PeekRating';
 
 const composerShell =
-  'relative flex min-h-52 flex-col gap-4 rounded-[2rem] border border-border bg-surface px-5 py-5 text-left sm:px-6';
+  'relative flex h-full min-h-52 w-full min-w-0 flex-col gap-4 rounded-[2rem] border border-border bg-surface px-5 py-5 text-left sm:px-6';
 
 const fieldClass =
   'w-full border border-border bg-background text-sm text-foreground outline-none transition-[border-color,background-color] duration-200 placeholder:text-muted-2 focus:border-foreground';

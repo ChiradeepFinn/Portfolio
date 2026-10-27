@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {
   BookOpen,
+  Bot,
   Camera,
   Circle,
   FileText,
@@ -21,12 +22,13 @@ import {
   Palette,
   PenLine,
   Route,
+  Rss,
   ScrollText,
   Shield,
   User,
   type LucideIcon,
 } from 'lucide-react';
-import { footerBio, footerColumns, footerLegal, identity, type FooterLink } from '@/lib/site';
+import { documentHrefs, footerBio, footerColumns, footerLegal, identity, type FooterLink } from '@/lib/site';
 import { BrandMark } from './BrandMark';
 import { Container } from './Container';
 import { FrameBreak } from './FrameBreak';
@@ -59,6 +61,8 @@ const icons: Record<string, LucideIcon> = {
   Shield,
   FileText,
   Network,
+  Rss,
+  Bot,
 };
 
 function FooterIcon({ name }: { readonly name: string }) {
@@ -80,8 +84,8 @@ function FooterAnchor({ link, className }: { readonly link: FooterLink; readonly
 
   const external = link.href.startsWith('http');
   const mail = link.href.startsWith('mailto:');
-  // The sitemap is an XML document. A client navigation would ask for a page payload.
-  const document = link.href === '/sitemap.xml';
+  // Generated documents, not pages. A client navigation would ask for a page payload.
+  const document = documentHrefs.includes(link.href);
 
   if (external || mail || document) {
     return (

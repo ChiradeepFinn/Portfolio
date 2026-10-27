@@ -3,6 +3,7 @@
 import { useEffect, useState, type CSSProperties } from 'react';
 import { ArrowPill } from '@/components/ui/ArrowPill';
 import { Reveal } from '@/components/ui/Reveal';
+import { usePauseOffscreen } from '@/lib/use-pause-offscreen';
 
 type Tint = '--star' | '--star-blue' | '--star-rose';
 
@@ -45,11 +46,11 @@ function mulberry32(seed: number) {
  * A fixed field so the server and the browser draw the same sky. Stars gather
  * on a tilted disk: warm toward one end, cool toward the other.
  */
-function makeStars(seed: number): Star[] {
+function makeStars(seed: number, count: number): Star[] {
   const rand = mulberry32(seed);
   const stars: Star[] = [];
 
-  for (let i = 0; i < 150; i += 1) {
+  for (let i = 0; i < count; i += 1) {
     const along = rand();
     const plane = 300 - along * 150;
     const arm = Math.abs(along - 0.3);
@@ -112,7 +113,9 @@ function makeStars(seed: number): Star[] {
   return stars;
 }
 
-const STARS = makeStars(11);
+/** Desktop field. Phones use a thinner set so the GPU is not asked for 300 loops. */
+const STARS = makeStars(11, 150);
+const STARS_COMPACT = makeStars(11, 64);
 
 function starStyle(star: Star): CSSProperties {
   return {
@@ -197,10 +200,11 @@ function StarMark({ star, id }: { readonly star: Star; readonly id: string }) {
   );
 }
 
-function Starfield({ soft }: { readonly soft?: boolean }) {
+function Starfield({ soft, compact }: { readonly soft?: boolean; readonly compact?: boolean }) {
   /** Defer SVG stars until after mount to avoid SSR/client float attr hydration mismatches. */
   const [ready, setReady] = useState(false);
   const prefix = soft ? 'star-soft' : 'star-sharp';
+  const field = compact ? STARS_COMPACT : STARS;
 
   useEffect(() => {
     setReady(true);
@@ -209,7 +213,7 @@ function Starfield({ soft }: { readonly soft?: boolean }) {
   return (
     <div className={soft ? 'starfield starfield-soft' : 'starfield starfield-sharp'}>
       {ready
-        ? STARS.map((star, index) => (
+        ? field.map((star, index) => (
             <StarMark key={index} id={`${prefix}-${index}`} star={star} />
           ))
         : null}
@@ -219,18 +223,34 @@ function Starfield({ soft }: { readonly soft?: boolean }) {
 
 /**
  * Closing band. The sky is the same drawing in both themes; the ink flips.
- * Behind the type the field is blurred so the words stay readable.
+ * Behind the type the field is blurred so the words stay readable — except on
+ * narrow viewports, where that blur + a second full star copy paints RGB static
+ * into neighbouring tiles on Android Chrome. Phones get a thinner sharp field
+ * and a CSS veil instead.
  */
 export function NebulaCta() {
+  // Stars each run an infinite loop. The band sits at the foot of every page,
+  // so without the offscreen pause it twinkles through whatever you are reading.
+  const sky = usePauseOffscreen<HTMLDivElement>();
+  const [compact, setCompact] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 700px)');
+    const sync = () => setCompact(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+
   return (
     <section className="nebula-cta relative overflow-hidden text-center" aria-labelledby="nebula-cta-title">
-      <div className="nebula" aria-hidden="true">
+      <div ref={sky} className="nebula" aria-hidden="true">
         <div className="galaxy">
           <div className="galaxy-disk" />
           <div className="galaxy-lane" />
         </div>
-        <Starfield />
-        <Starfield soft />
+        <Starfield compact={compact} />
+        {!compact ? <Starfield soft /> : null}
         <div className="nebula-edge" />
       </div>
 
@@ -248,7 +268,7 @@ export function NebulaCta() {
           </h2>
         </Reveal>
         <Reveal delay={0.12} className="mt-6">
-          <ArrowPill href="/contact">Start a conversation</ArrowPill>
+          <ArrowPill href="/contact">Contact</ArrowPill>
         </Reveal>
       </div>
     </section>

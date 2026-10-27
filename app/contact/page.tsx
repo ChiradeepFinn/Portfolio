@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { withCanonical } from '@/lib/seo';
+import { contactPageGraph, withCanonical } from '@/lib/seo';
+import { JsonLd } from '@/components/seo/JsonLd';
 import {
   ArrowUpRight,
   Circle,
@@ -38,7 +39,8 @@ function SocialIcon({ name }: { readonly name: string }) {
 
 export const metadata: Metadata = withCanonical('/contact', {
   title: 'Contact',
-  description: 'Start a conversation.',
+  description:
+    'Get in touch with Chiradeep about freelance work, collaborations, or a full-time role across AI, web, and creative technology.',
 });
 
 const faqs = [
@@ -62,6 +64,7 @@ const faqs = [
 export default function ContactPage() {
   return (
     <>
+      <JsonLd data={contactPageGraph(faqs)} />
       <PageHeader
         eyebrow="Contact"
         title={

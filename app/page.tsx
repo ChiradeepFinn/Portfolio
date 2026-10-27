@@ -10,6 +10,8 @@ import { getBooks, getResearchStudies, getTracks } from '@/lib/content';
 export const metadata: Metadata = withCanonical('/', {
   title: { absolute: 'Chiradeep - Creative Technologist' },
   description: siteDescription,
+  // The twin of `/` is `/index.md`, not `/.md`.
+  alternates: { types: { 'text/markdown': [{ url: '/index.md', title: 'Markdown' }] } },
 });
 
 /**

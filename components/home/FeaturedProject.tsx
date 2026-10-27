@@ -27,7 +27,7 @@ export async function FeaturedProject() {
           </p>
         </div>
         <ArrowPill href="/projects" className="shrink-0">
-          See my projects
+          Projects
         </ArrowPill>
       </div>
 

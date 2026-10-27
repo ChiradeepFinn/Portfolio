@@ -6,6 +6,9 @@ import Lenis from 'lenis';
 /**
  * Leaf Lenis mount. Does not wrap page content — layout keeps RSC children
  * as siblings so this file only ships the scroll effect.
+ *
+ * The loop stops while the tab is hidden. Lenis has nothing useful to do on a
+ * background tab, and leaving `requestAnimationFrame` running burns battery.
  */
 export function SmoothScroll() {
   useEffect(() => {
@@ -18,14 +21,34 @@ export function SmoothScroll() {
     });
 
     let frameId = 0;
-    const raf = (time: number) => {
+
+    const tick = (time: number) => {
       lenis.raf(time);
-      frameId = requestAnimationFrame(raf);
+      frameId = requestAnimationFrame(tick);
     };
-    frameId = requestAnimationFrame(raf);
+
+    const start = () => {
+      if (frameId || document.hidden) return;
+      frameId = requestAnimationFrame(tick);
+    };
+
+    const stop = () => {
+      if (!frameId) return;
+      cancelAnimationFrame(frameId);
+      frameId = 0;
+    };
+
+    const onVisibility = () => {
+      if (document.hidden) stop();
+      else start();
+    };
+
+    start();
+    document.addEventListener('visibilitychange', onVisibility);
 
     return () => {
-      cancelAnimationFrame(frameId);
+      document.removeEventListener('visibilitychange', onVisibility);
+      stop();
       lenis.destroy();
     };
   }, []);

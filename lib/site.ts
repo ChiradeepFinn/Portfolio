@@ -45,8 +45,8 @@ export interface NavItem {
 export const navItems: readonly NavItem[] = [
   { label: 'Home', href: '/' },
   { label: 'Projects', href: '/projects' },
-  { label: 'Music', href: '/music' },
-  { label: 'Archive', href: '/archive' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 export const footerBio =
@@ -74,9 +74,12 @@ export const footerColumns: readonly FooterColumn[] = [
       { label: 'Home', href: '/', icon: 'House' },
       { label: 'About', href: '/about', icon: 'User' },
       { label: 'Projects', href: '/projects', icon: 'FolderOpen' },
+      { label: 'Contact', href: '/contact', icon: 'Mail' },
       { label: 'Music', href: '/music', icon: 'Music' },
+      { label: 'Archive', href: '/archive', icon: 'BookOpen' },
       { label: 'Writing', href: '/philosophy', icon: 'PenLine' },
       { label: 'Guest journal', href: '/journal', icon: 'NotebookPen' },
+      { label: 'Links', href: '/links', icon: 'Link2' },
     ],
   },
   {
@@ -89,7 +92,6 @@ export const footerColumns: readonly FooterColumn[] = [
       { label: 'Philosophy', href: '/philosophy', icon: 'ScrollText' },
       { label: 'Bucket List', href: '/bucket-list', icon: 'ListTodo' },
       { label: 'Timeline', href: '/timeline', icon: 'Route' },
-      { label: 'Links', href: '/links', icon: 'Link2' },
     ],
   },
   {
@@ -109,4 +111,12 @@ export const footerLegal: readonly FooterLink[] = [
   { label: 'Privacy Policy', href: '/privacy', icon: 'Shield' },
   { label: 'Terms of Use', href: '/terms', icon: 'FileText' },
   { label: 'Sitemap', href: '/sitemap.xml', icon: 'Network' },
+  { label: 'RSS', href: '/rss.xml', icon: 'Rss' },
+  { label: 'llms.txt', href: '/llms.txt', icon: 'Bot' },
 ];
+
+/**
+ * Generated files, not pages. A client navigation would ask Next for a page
+ * payload, so the footer links to them with a plain anchor.
+ */
+export const documentHrefs: readonly string[] = ['/sitemap.xml', '/rss.xml', '/llms.txt', '/llms-full.txt'];

@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { LongformArticle } from '@/components/mdx/LongformArticle';
+import { JsonLd } from '@/components/seo/JsonLd';
 import { loadCollection, publicArticles } from '@/lib/mdx/files';
 import { getPublicMdx } from '@/lib/mdx/registry';
-import { withCanonical } from '@/lib/seo';
+import { articleGraph, breadcrumbGraph, markdownAlternate, withCanonical } from '@/lib/seo';
 
 interface PageProps {
   readonly params: Promise<{ readonly slug: string }>;
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return withCanonical(article.meta.href, {
     title: article.meta.title,
     description: article.meta.summary,
+    alternates: { types: markdownAlternate(article.meta.href) },
     openGraph: {
       title: article.meta.title,
       description: article.meta.summary,
@@ -35,9 +37,26 @@ export default async function EssayPage({ params }: PageProps) {
   if (!article) notFound();
   const { Component } = article;
 
+  const crumbs = breadcrumbGraph([
+    { name: 'Philosophy', path: '/philosophy' },
+    { name: article.meta.title },
+  ]);
+
   return (
-    <LongformArticle meta={article.meta}>
-      <Component />
-    </LongformArticle>
+    <>
+      <JsonLd
+        data={articleGraph({
+          path: article.meta.href,
+          headline: article.meta.title,
+          description: article.meta.summary,
+          datePublished: article.meta.publishedAt,
+          image: article.meta.coverImage,
+        })}
+      />
+      {crumbs ? <JsonLd data={crumbs} /> : null}
+      <LongformArticle meta={article.meta}>
+        <Component />
+      </LongformArticle>
+    </>
   );
 }

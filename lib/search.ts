@@ -32,9 +32,10 @@ function keywordsOf(...parts: readonly (string | readonly string[] | null | unde
 
 const staticPages = [
   { group: 'Pages', label: 'Home', href: '/', description: 'Back to the start' },
-  { group: 'Pages', label: 'About', href: '/about', description: 'Who I am and what drives me' },
-  { group: 'Pages', label: 'Contact', href: '/contact', description: 'Start a conversation' },
-  { group: 'Pages', label: 'Bucket List', href: '/about', description: 'Things still ahead' },
+  { group: 'Pages', label: 'About', href: '/about', description: 'Who I am, what I build, and what drives the work' },
+  { group: 'Pages', label: 'Projects', href: '/projects', description: 'Case studies across AI, web, and creative tech' },
+  { group: 'Pages', label: 'Contact', href: '/contact', description: 'Freelance, collaborations, or full-time roles' },
+  { group: 'Pages', label: 'Bucket List', href: '/bucket-list', description: 'Things still ahead' },
   { group: 'Pages', label: 'Archive', href: '/archive', description: 'The collections' },
   { group: 'Music', label: 'Music', href: '/music', description: 'The listening room' },
   { group: 'Photography', label: 'Photography', href: '/archive/photography', description: 'How I see the world' },
@@ -42,11 +43,11 @@ const staticPages = [
   { group: 'Books', label: 'Books', href: '/archive/books', description: 'Published writing, including The Inward Silhouette' },
   { group: 'Research', label: 'Research', href: '/archive/research', description: 'Two investigations into models, music, and making' },
   { group: 'Archive', label: 'Certifications', href: '/archive/certifications', description: 'The proof shelf' },
-  { group: 'Philosophy', label: 'Philosophy', href: '/about', description: 'Essays and reflections, filed when written' },
+  { group: 'Philosophy', label: 'Philosophy', href: '/philosophy', description: 'Essays and reflections, filed when written' },
   { group: 'Elsewhere', label: 'Guest journal', href: '/journal', description: 'One public note in the margin' },
   { group: 'Elsewhere', label: 'Now', href: '/now', description: 'What I am doing at the moment' },
   { group: 'Elsewhere', label: 'Timeline', href: '/timeline', description: 'A life in progress' },
-  { group: 'Elsewhere', label: 'Links', href: '/contact', description: 'Everywhere else I exist' },
+  { group: 'Elsewhere', label: 'Links', href: '/links', description: 'Social profiles and ways to follow the work' },
 ] as const;
 
 const staticIndex: readonly SearchItem[] = staticPages.map((item) => ({

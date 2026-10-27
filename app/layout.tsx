@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import { Fraunces, Inter } from 'next/font/google';
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import './globals.css';
 import { NavShell } from '@/components/nav/NavShell';
 import { Footer } from '@/components/layout/Footer';
@@ -10,7 +8,9 @@ import { FrameBreak } from '@/components/layout/FrameBreak';
 import { GuestLogPrompt } from '@/components/layout/GuestLogPrompt';
 import { ClosingBand } from '@/components/layout/ClosingBand';
 import { SmoothScroll } from '@/components/providers/SmoothScrollProvider';
+import { DeferredAnalytics } from '@/components/providers/DeferredAnalytics';
 import { buildSearchIndex } from '@/lib/search';
+import { feedAlternateTypes, siteDescription } from '@/lib/seo';
 
 const displayFont = Fraunces({
   subsets: ['latin'],
@@ -26,18 +26,20 @@ const sansFont = Inter({
   display: 'swap',
 });
 
+const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
+
 export const metadata: Metadata = {
   title: {
     default: 'Chiradeep - Creative Technologist',
     template: '%s - Chiradeep',
   },
-  description:
-    'Chiradeep is a multidisciplinary creative technologist working across AI, web development, music, writing, photography, and research.',
+  description: siteDescription,
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
   applicationName: 'Chiradeep',
   authors: [{ name: 'Chiradeep' }],
   creator: 'Chiradeep',
   robots: { index: true, follow: true },
+  alternates: { types: feedAlternateTypes },
   openGraph: {
     type: 'website',
     siteName: 'Chiradeep',
@@ -46,10 +48,17 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
   },
+  // PNG from app/icon.tsx for Google Search; SVG kept for modern browsers.
   icons: {
-    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
+    icon: [
+      { url: '/icon', type: 'image/png', sizes: '48x48' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
     apple: '/apple-icon',
   },
+  ...(googleSiteVerification
+    ? { verification: { google: googleSiteVerification } }
+    : {}),
 };
 
 export default async function RootLayout({ children }: { readonly children: React.ReactNode }) {
@@ -74,8 +83,7 @@ export default async function RootLayout({ children }: { readonly children: Reac
           <div aria-hidden="true" className="page-rails" />
         </div>
         <GuestLogPrompt />
-        <Analytics />
-        <SpeedInsights />
+        <DeferredAnalytics />
       </body>
     </html>
   );

@@ -42,8 +42,8 @@ const featureLinks: readonly (TrayLink & {
   },
   {
     label: 'About',
-    copy: 'Who I am & what drives me',
-    cta: 'Meet Me',
+    copy: 'Who I am and what I build',
+    cta: 'About',
     href: '/about',
     icon: User,
     wash: 'from-[var(--explore-about-from)] via-[var(--explore-about-via)] to-[var(--explore-about-to)]',
@@ -53,13 +53,13 @@ const featureLinks: readonly (TrayLink & {
 
 const compactLinks: readonly TrayLink[] = [
   { label: 'Books', copy: 'The Inward Silhouette', cta: 'Read Books', href: '/archive/books', icon: BookOpen },
-  { label: 'Philosophy', copy: 'Essays and questions', cta: 'Open Shelf', href: '/about', icon: ScrollText },
+  { label: 'Philosophy', copy: 'Essays and questions', cta: 'Open Shelf', href: '/philosophy', icon: ScrollText },
   { label: 'Art Gallery', copy: 'Canvas & colour', cta: 'View Gallery', href: '/archive/artwork', icon: Palette },
   { label: 'Timeline', copy: 'A life in progress', cta: 'See Journey', href: '/timeline', icon: Clock },
   { label: 'Now', copy: 'What I am doing', cta: "What's New", href: '/now', icon: Radio },
   { label: 'Guest journal', copy: 'One note in the margin', cta: 'Leave a note', href: '/journal', icon: NotebookPen },
-  { label: 'Contact', copy: 'Start a conversation', cta: 'Get in Touch', href: '/contact', icon: Mail },
-  { label: 'Links', copy: 'Everywhere else', cta: 'Open Links', href: '/contact', icon: Link2 },
+  { label: 'Contact', copy: 'Freelance, collab, or roles', cta: 'Contact', href: '/contact', icon: Mail },
+  { label: 'Links', copy: 'Socials and profiles', cta: 'Links', href: '/links', icon: Link2 },
 ];
 
 interface ExploreTrayProps {

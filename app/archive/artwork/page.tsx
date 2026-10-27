@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
-import { withCanonical } from '@/lib/seo';
+import { breadcrumbGraph, withCanonical } from '@/lib/seo';
 import { getArtworks } from '@/lib/content';
 import { artworkWorld } from '@/lib/data/worlds';
 import { listPublicImages } from '@/lib/public-images';
 import { isBlank } from '@/lib/present';
+import { JsonLd } from '@/components/seo/JsonLd';
 import { Section } from '@/components/layout/Section';
 import { Masonry } from '@/components/archive/Masonry';
 import { ratioForSize, type GalleryItem } from '@/components/archive/gallery-item';
@@ -15,6 +16,10 @@ export const metadata: Metadata = withCanonical('/archive/artwork', {
 });
 
 export default async function ArtworkPage() {
+  const crumbs = breadcrumbGraph([
+    { name: 'Archive', path: '/archive' },
+    { name: 'Artwork' },
+  ]);
   const files = listPublicImages('artwork');
   const artworks = files.length > 0 ? [] : await getArtworks();
 
@@ -40,6 +45,7 @@ export default async function ArtworkPage() {
 
   return (
     <>
+      {crumbs ? <JsonLd data={crumbs} /> : null}
       <ArtworkIntro />
 
       <Section id="gallery" className="scroll-mt-28 pt-0" width="wide" labelledBy="gallery-heading">

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { withCanonical } from '@/lib/seo';
+import { profilePageGraph, withCanonical } from '@/lib/seo';
 import Link from 'next/link';
+import { JsonLd } from '@/components/seo/JsonLd';
 import {
   Gamepad2,
   Ghost,
@@ -25,7 +26,8 @@ import { GradientWord } from '@/components/ui/GradientWord';
 
 export const metadata: Metadata = withCanonical('/about', {
   title: 'About',
-  description: 'Who I am and what drives me.',
+  description:
+    "I'm Chiradeep, a creative technologist from Karur. Who I am, what I build, and what drives the work across AI, web, music, and the arts.",
 });
 
 const socialIcons: Record<string, LucideIcon> = {
@@ -54,6 +56,7 @@ export default async function AboutPage() {
 
   return (
     <>
+      <JsonLd data={profilePageGraph()} />
       <header className="relative">
         <Container className="grid items-center gap-10 pt-32 pb-8 sm:pt-36 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,50rem)] lg:gap-8 lg:pt-40 lg:pb-12">
           <div>

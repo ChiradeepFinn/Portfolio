@@ -55,7 +55,28 @@ const nextConfig: NextConfig = {
     turbopackFileSystemCacheForDev: false,
   },
   async redirects() {
-    return [{ source: '/sitemap', destination: '/sitemap.xml', permanent: false }];
+    return [
+      { source: '/sitemap', destination: '/sitemap.xml', permanent: false },
+      { source: '/feed.xml', destination: '/rss.xml', permanent: false },
+      { source: '/rss', destination: '/rss.xml', permanent: false },
+    ];
+  },
+  /**
+   * Markdown twins. A published page answers at the same URL with `.md`
+   * appended; the handler serializes the record the page renders. The pattern
+   * requires the suffix, so `/projects/sidequest` still returns the HTML page.
+   */
+  async rewrites() {
+    return {
+      beforeFiles: [
+        { source: '/index.md', destination: '/api/md/index' },
+        { source: '/projects/:slug\\.md', destination: '/api/md/projects/:slug' },
+        { source: '/philosophy/:slug\\.md', destination: '/api/md/philosophy/:slug' },
+        { source: '/archive/research/:slug\\.md', destination: '/api/md/archive/research/:slug' },
+      ],
+      afterFiles: [],
+      fallback: [],
+    };
   },
   async headers() {
     return [

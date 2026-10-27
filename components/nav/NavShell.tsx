@@ -30,10 +30,15 @@ function LogoMark() {
       aria-label={`${identity.name} - home`}
       className="relative z-10 block h-10 w-10 shrink-0 overflow-hidden rounded-full bg-black"
     >
+      {/*
+        Eager, but not preloaded. The mark is an unoptimized animated GIF of
+        about 460 KB shown at 40px; `priority` put it in front of the hero
+        heading in the critical path, and the mark is never the LCP element.
+      */}
       <BrandMark
         alt=""
         fill
-        priority
+        loading="eager"
         sizes="80px"
         className="origin-center scale-[1.08] object-cover"
       />

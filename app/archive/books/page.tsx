@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { bookGraph, withCanonical } from '@/lib/seo';
+import { bookGraph, breadcrumbGraph, withCanonical } from '@/lib/seo';
 import { getBooks } from '@/lib/content';
 import { booksWorld } from '@/lib/data/worlds';
 import { Section } from '@/components/layout/Section';
@@ -18,8 +18,14 @@ export default async function BooksPage() {
   const further = published.slice(1);
   const untitled = books.some((book) => book.isPlaceholder);
 
+  const crumbs = breadcrumbGraph([
+    { name: 'Archive', path: '/archive' },
+    { name: 'Books' },
+  ]);
+
   return (
     <>
+      {crumbs ? <JsonLd data={crumbs} /> : null}
       {published.length > 0 ? <JsonLd data={bookGraph(published)} /> : null}
       <BooksIntro book={featured} />
 

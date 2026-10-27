@@ -43,7 +43,7 @@ function NotePortrait({ name, src }: { readonly name: string; readonly src: stri
 export function journalSlipClass(index: number, className?: string): string {
   const paper = index % 2 === 0 ? 'bg-surface' : 'bg-surface-2';
   return cn(
-    'relative flex w-fit max-w-full flex-col gap-3 rounded-[2rem] border border-border px-5 py-4 text-left sm:px-6',
+    'relative flex w-full min-w-0 flex-col gap-3 rounded-[2rem] border border-border px-5 py-4 text-left sm:px-6',
     paper,
     className,
   );
@@ -66,7 +66,11 @@ export function JournalEntries({
 
   return (
     <div>
-      <ul className="grid grid-cols-1 items-start gap-5 sm:grid-cols-2 xl:grid-cols-3">
+      {/*
+        Equal columns + full-width slips keep the gap between every card exact
+        (row and column). New notes inherit the same rhythm automatically.
+      */}
+      <ul className="grid grid-cols-1 items-stretch gap-6 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3 xl:gap-6">
         {lead ? <li className="min-w-0">{lead}</li> : null}
         {notes.map((note, index) => {
           const date = formatJournalDate(note.createdAt);
@@ -105,7 +109,7 @@ export function JournalEntries({
                 {note.body}
               </p>
               {date && (
-                <time dateTime={note.createdAt} className="meta">
+                <time dateTime={note.createdAt} className="meta mt-auto pt-1">
                   {date}
                 </time>
               )}

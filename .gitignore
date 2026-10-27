@@ -41,6 +41,7 @@ scripts/.audit-*
 
 # Editor / local agent state
 .cursor/
+.tmp-agent/
 
 # Supabase CLI local cache
 supabase/.temp/

@@ -42,7 +42,7 @@ export function JournalReel({ notes }: { readonly notes: readonly JournalSlipNot
   return (
     <figure
       aria-hidden="true"
-      className="mt-14 mb-14 sm:mt-16 sm:mb-16"
+      className="mt-12 mb-12 sm:mt-14 sm:mb-14"
       onPointerEnter={() => setPaused(true)}
       onPointerLeave={() => setPaused(false)}
     >

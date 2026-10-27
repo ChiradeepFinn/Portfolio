@@ -3,8 +3,12 @@
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
-/** WebGL field — code-split only; motion props stay identical at the call site. */
-const GradientASCII = dynamic(() => import('@/components/ui/GradientASCII'));
+/**
+ * WebGL field — code-split, and never rendered on the server: the canvas does
+ * nothing useful in HTML, and shipping the shader pipeline into the RSC payload
+ * only delays the study title.
+ */
+const GradientASCII = dynamic(() => import('@/components/ui/GradientASCII'), { ssr: false });
 
 const FONT = "ui-monospace, 'Cascadia Mono', 'SFMono-Regular', Consolas, monospace";
 /** Density ramp; includes 0/1 so the field reads as a binary lattice up close. */

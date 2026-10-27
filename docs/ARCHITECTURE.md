@@ -113,9 +113,47 @@ The store is an in-memory map. On Vercel, and on serverless hosts generally, ins
 
 When `VERCEL=1`, the key is a hash of `x-real-ip`, which Vercel sets. The raw address is not stored. In local development, and on any host that does not set `VERCEL=1`, forwarded IP headers are ignored and every caller shares one bucket. If the store throws or returns nothing, the route responds with 503 instead of allowing the request.
 
+## Generated files
+
+One published record has one source. `lib/feeds/` derives every other representation from it, so nothing is copied by hand and nothing drifts.
+
+| URL | What it is |
+| --- | --- |
+| `/sitemap.xml` | Canonical public pages. `lastmod` only where a record carries a real date. |
+| `/rss.xml` | RSS 2.0 for published records. Also reachable at `/feed.xml` and `/rss`. |
+| `/llms.txt` | One line per published record, with the canonical URL. |
+| `/llms-full.txt` | The same records with their Markdown inline. |
+| `<page>.md` | The Markdown twin of one page. |
+
+`lib/feeds/catalog.ts` is the single eligibility list: published projects, the research studies, and MDX that is not a draft. Reserved placeholder slots, drafts, and guest journal notes are never in it. Ordering is newest dated record first, then undated records in site order, so an unchanged site produces an unchanged file.
+
+### Markdown twins
+
+A published page answers at the same URL with `.md` appended: `/projects/sidequest.md`, `/philosophy/<slug>.md`, `/archive/research/<slug>.md`, and `/index.md` for the homepage. The rewrites in `next.config.ts` require the suffix, so the HTML routes are untouched, and they point at `app/api/md/[...path]/route.ts`. That handler also answers directly, which is why it strips a trailing `.md` from every segment.
+
+A twin is built from the source the page renders, never from its HTML. MDX is read from disk and passed through `mdxToMarkdown()`; projects, case studies, and the research studies are serialized from the typed records. `mdxToMarkdown()` strips JSX with regular expressions, which is only safe because it never sees a fenced block or an inline code span - a code sample containing `<Suspense />` stays a code sample. Components that carry copy in their props or children (`Callout`, `Figure`, `Citation`) are expanded into Markdown first. **A new content-bearing MDX component needs a rule in `lib/feeds/mdx-to-markdown.ts`, or its text disappears from the twin.**
+
+Twins answer `text/markdown`, a `Link` header naming the HTML page as canonical, and `X-Robots-Tag: noindex`, so a twin never competes with its own page in search. They are not listed in the sitemap. They are cached for an hour in the browser and six at the edge.
+
+Content negotiation on `Accept: text/markdown` is deliberately not implemented. `proxy.ts` is scoped to the journal and auth paths, and widening it to inspect `Accept` on every HTML route is a larger change than the explicit `.md` URLs are worth.
+
+### FAQ and TL;DR
+
+The case studies already show a question list on the page; `faqGraph()` repeats that visible text as `FAQPage` structured data. No question or answer is written for the markup, and a page without questions does not get an empty graph. The TL;DR line in a twin is the record's own summary - it is not a second piece of copy to maintain.
+
+### IndexNow
+
+Not implemented, deliberately. IndexNow does not notify Google, publishing here is infrequent, and a working integration needs a hosted verification key plus a postbuild sitemap diff so a deploy does not resubmit unchanged URLs. The sitemap and the feed already cover discovery. Revisit if the publishing cadence rises.
+
+Neither `llms.txt` nor `llms-full.txt` makes a model cite the site. They are a convenience for machine readers, and the files say so.
+
 ## Environment
 
 Names only. Copy `.env.example` to `.env.local`. Never put the service-role key or the Resend key in a `NEXT_PUBLIC_` variable.
+
+`lib/env.ts` is the typed read, validated with Zod. Every variable is optional, because the site renders from the seed with no environment at all and a fresh clone must still build. What is checked is the shape of a value that *was* set: a URL that does not parse, a secret with whitespace in it, a rate limit that is not a positive integer, a webhook that is not a Discord webhook. A bad value is dropped and named in the server log, so the feature that needs it reports "not configured" instead of failing mid-request. An empty string counts as unset - Vercel and `.env` files both produce one for a variable that was added and never filled in.
+
+It is a server-side read. Code that runs in the browser keeps reading `process.env.NEXT_PUBLIC_*` directly, which is what the bundler can inline.
 
 | Name | Purpose |
 | --- | --- |
@@ -125,7 +163,8 @@ Names only. Copy `.env.example` to `.env.local`. Never put the service-role key 
 | `RESEND_API_KEY` | Server-only. Required before email succeeds. |
 | `RESEND_FROM_EMAIL` | From header. Defaults to the Resend onboarding address. |
 | `CONTACT_TO_EMAIL` | Inbox. Defaults to the address in `lib/site.ts`. |
-| `NEXT_PUBLIC_SITE_URL` | Canonical origin for metadata. |
+| `NEXT_PUBLIC_SITE_URL` | Canonical origin for metadata and every generated file. `https://chiradeep.me` in production. |
+| `DISCORD_WEBHOOK_URL` | Optional. A delivered contact message pings this channel with the sender and subject only. |
 | `CONTACT_RATE_LIMIT_MAX` | Optional. Default 5. |
 | `CONTACT_RATE_LIMIT_WINDOW_SECONDS` | Optional. Default 600. |
 | `JOURNAL_RATE_LIMIT_MAX` | Optional. Default 8 attempts per window for the guest journal. |
@@ -151,6 +190,22 @@ The site renders from seed data with no environment variables. The contact form 
 Vercel is the intended host. Do not commit `.env.local`. Set the variables above in the Vercel project. `chiradeep.me` is the production domain; point it at the Vercel project in the Vercel domain settings and at the DNS host. This repository does not change DNS.
 
 CSS is linked, not inlined. `inlineCss` is left off: many routes share one stylesheet, returning visitors can cache it, and there is no measurement that says inlining would help. Images use AVIF and WebP through `next/image` where the components already do. MDX figures use a normal image for a local public path. Fraunces and Inter are loaded with `next/font` and served by this site.
+
+The React Compiler is **not** enabled. Next 16 needs `babel-plugin-react-compiler` as a dev dependency before `reactCompiler` can be turned on, that package is not installed, and the change cannot be validated without a production build to compare against. Turning on a compiler whose output nobody has measured is not an improvement. Install the plugin, build before and after, compare the homepage JS, then decide.
+
+## Motion that stops
+
+Nothing animates where nobody is looking.
+
+`usePauseOffscreen()` sets `data-offscreen` on an element while it is more than 200px outside the viewport or the tab is hidden, and one unlayered rule in `globals.css` pauses every CSS animation beneath it. The closing band uses it: 300 stars, each on its own infinite loop, sit at the foot of every page. Paused is not stopped - an animation keeps its position and resumes mid-loop, so coming back does not restart the sky.
+
+`components/ui/globe.tsx` cannot work that way. cobe owns its own `requestAnimationFrame` loop and offers no pause, so the only way to stop the work is to destroy the instance: off screen or on a hidden tab the globe is destroyed, and it is rebuilt from the rotation kept in a ref when it comes back. Reduced motion is treated differently - the globe is still drawn, because removing it would take content away; it just stops turning. The 200px margin means it is drawing again before it is visible.
+
+`components/ui/GradientASCII.jsx` already did all of this: intersection observer, page visibility, reduced motion, WebGL context loss, and texture disposal. It was left alone.
+
+Analytics load on idle through `components/providers/DeferredAnalytics.tsx`, with a 3-second fallback. Neither script renders anything, so nothing moves; waiting for idle keeps two requests out of the window where the hero is still painting. Idle rather than first interaction, because Speed Insights reports Core Web Vitals from buffered entries and a visit without a click still counts.
+
+The nav mark is eager but not `priority`. It is an unoptimized animated GIF of about 460 KB drawn at 40px, and it is never the largest contentful paint - the hero heading is, and that heading is server-rendered text with a CSS entrance.
 
 ## Authentication
 

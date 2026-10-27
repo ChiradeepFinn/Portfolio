@@ -101,20 +101,20 @@ export function JournalWall({
       </div>
       {showLeave && <JournalTray open={open} onClose={close} />}
 
-      <div className="mt-8">
+      <div className="mt-10 border-t border-border pt-10 sm:mt-12 sm:pt-12">
         {listState === 'ready' ? (
           <JournalEntries notes={shownNotes} truncated={truncated} yoursId={yoursId} lead={lead} />
         ) : listState === 'unconfigured' ? (
-          <p className="border-t border-border pt-8 text-sm text-muted">
+          <p className="text-sm text-muted">
             The journal is not open on this copy of the site. Notes are not being stored.
           </p>
         ) : listState === 'missing' ? (
-          <p className="border-t border-border pt-8 text-sm text-muted">
+          <p className="text-sm text-muted">
             The journal table is not in the database yet. Nothing can be published until that migration has been applied.
           </p>
         ) : (
-          <div className="grid gap-8">
-            <p role="alert" className="border-t border-border pt-8 text-sm text-accent-rose">
+          <div className="grid gap-6">
+            <p role="alert" className="text-sm text-accent-rose">
               The notes could not be loaded. Refresh the page before assuming the margin is empty.
             </p>
             {lead}

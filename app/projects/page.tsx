@@ -11,7 +11,8 @@ import { IntroFrame, WorldHeadline, WorldIndex } from '@/components/worlds/World
 
 export const metadata: Metadata = withCanonical('/projects', {
   title: 'Projects',
-  description: 'Case studies across AI, web development, and creative technology.',
+  description:
+    'Selected projects and case studies - AI products, web apps, and creative technology builds from concept through ship.',
 });
 
 export default async function ProjectsPage() {
