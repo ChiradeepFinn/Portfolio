@@ -18,14 +18,19 @@ export function escapeHtml(value: string): string {
     .replace(/'/g, '&#39;');
 }
 
-type Env = { readonly [key: string]: string | undefined };
+/** Only the mail headers this builder reads. Accepts the full typed `env()` object. */
+type ContactMailEnv = {
+  readonly RESEND_FROM_EMAIL?: string;
+  readonly CONTACT_TO_EMAIL?: string;
+};
 
 export function buildContactEmail(
   submission: ContactSubmission,
-  env: Env = process.env,
+  env?: ContactMailEnv,
 ): OutboundContactEmail | { readonly error: string } {
-  const from = (env.RESEND_FROM_EMAIL ?? 'Chiradeep Portfolio <onboarding@resend.dev>').trim();
-  const to = (env.CONTACT_TO_EMAIL ?? 'softwarechiradeep@gmail.com').trim();
+  const source = env ?? process.env;
+  const from = (source.RESEND_FROM_EMAIL ?? 'Chiradeep Portfolio <onboarding@resend.dev>').trim();
+  const to = (source.CONTACT_TO_EMAIL ?? 'softwarechiradeep@gmail.com').trim();
 
   if (hasHeaderBreak(from) || hasHeaderBreak(to) || hasHeaderBreak(submission.email) || hasHeaderBreak(submission.subject)) {
     return { error: 'Email headers are not usable.' };
