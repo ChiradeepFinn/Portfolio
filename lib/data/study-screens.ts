@@ -7,7 +7,7 @@ import type { Project } from '@/lib/types';
  *
  * Drop shots into `public/images/screenshots/` as `{slug}-01.webp`,
  * `{slug}-02.webp`, … (any image extension). They are picked up in
- * filename order. Missing files leave the frame empty — same honesty as
+ * filename order. Missing files leave the frame empty - same honesty as
  * other placeholder slots on the site.
  */
 

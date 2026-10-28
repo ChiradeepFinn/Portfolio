@@ -5,19 +5,20 @@ import type { Project } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Reveal } from '@/components/ui/Reveal';
 import { StudyDevices } from '@/components/projects/StudyDevices';
+import { studyPlateFrameClass, studyPlateInnerLinkedClass } from '@/components/projects/study-plate';
 import { getStudyScreens } from '@/lib/data/study-screens';
 
 type TitleTag = 'h1' | 'h2' | 'h3';
 
 const fields: Record<string, string> = {
   sidequest:
-    'radial-gradient(72% 68% at 0% 0%, rgba(255,255,255,0.42), transparent 44%), radial-gradient(78% 72% at 100% 100%, rgba(74,8,32,0.78), transparent 54%), linear-gradient(128deg, #ffd6e8 0%, #ff6ea6 18%, #ef2d78 44%, #9d174d 70%, #4c1028 100%)',
+    'radial-gradient(70% 60% at 12% 8%, rgba(255,120,168,0.18), transparent 52%), radial-gradient(80% 70% at 92% 96%, rgba(40,4,18,0.92), transparent 58%), linear-gradient(132deg, #2a0a16 0%, #5c1030 28%, #8f1d4a 52%, #3a0c20 78%, #12040a 100%)',
   synesthesia:
-    'radial-gradient(72% 68% at 0% 0%, rgba(255,255,255,0.4), transparent 44%), radial-gradient(78% 72% at 100% 100%, rgba(36,12,78,0.78), transparent 54%), linear-gradient(128deg, #ddd6fe 0%, #a78bfa 18%, #7c3aed 44%, #5b21b6 70%, #2e1065 100%)',
+    'radial-gradient(70% 60% at 12% 8%, rgba(167,139,250,0.16), transparent 52%), radial-gradient(80% 70% at 92% 96%, rgba(16,6,40,0.92), transparent 58%), linear-gradient(132deg, #14082c 0%, #2e1560 28%, #4c1d95 52%, #1e0f45 78%, #0a0418 100%)',
   framework:
-    'radial-gradient(72% 68% at 0% 0%, rgba(255,255,255,0.4), transparent 44%), radial-gradient(78% 72% at 100% 100%, rgba(68,22,6,0.76), transparent 54%), linear-gradient(128deg, #fde0c4 0%, #f0a05a 18%, #d46a1e 46%, #9a3412 72%, #431407 100%)',
-  path: 'radial-gradient(72% 68% at 0% 0%, rgba(255,255,255,0.4), transparent 44%), radial-gradient(78% 72% at 100% 100%, rgba(12,24,68,0.78), transparent 54%), linear-gradient(128deg, #dbeafe 0%, #60a5fa 18%, #2563eb 46%, #1e3a8a 72%, #172554 100%)',
-  stem: 'radial-gradient(72% 68% at 0% 0%, rgba(255,255,255,0.32), transparent 44%), radial-gradient(78% 72% at 100% 100%, rgba(8,28,24,0.78), transparent 54%), linear-gradient(128deg, #d5e4de 0%, #5f8f84 18%, #2f5e54 46%, #16332e 72%, #0c1c19 100%)',
+    'radial-gradient(70% 60% at 12% 8%, rgba(240,160,90,0.14), transparent 52%), radial-gradient(80% 70% at 92% 96%, rgba(36,12,4,0.92), transparent 58%), linear-gradient(132deg, #1c0c06 0%, #5c2410 28%, #9a3f12 52%, #3a1808 78%, #0e0603 100%)',
+  path: 'radial-gradient(70% 60% at 12% 8%, rgba(96,165,250,0.14), transparent 52%), radial-gradient(80% 70% at 92% 96%, rgba(6,12,36,0.92), transparent 58%), linear-gradient(132deg, #08101f 0%, #163068 28%, #1d4ed8 52%, #12204a 78%, #040812 100%)',
+  stem: 'radial-gradient(70% 60% at 12% 8%, rgba(95,143,132,0.14), transparent 52%), radial-gradient(80% 70% at 92% 96%, rgba(4,16,14,0.92), transparent 58%), linear-gradient(132deg, #061210 0%, #134038 28%, #1f6b5c 52%, #0e2a24 78%, #030908 100%)',
 };
 
 /** The lightest stop of each study card, so the mark reads as that field. */
@@ -72,7 +73,7 @@ export function ProjectDetail({
         <Link
           href={`/projects/${project.slug}`}
           className={cn(
-            'group relative block rounded-[1.65rem] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-blue',
+            'group relative block rounded-[1.75rem] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-blue',
             copyLeads && 'lg:order-2',
           )}
         >
@@ -146,28 +147,24 @@ function StudyCard({ project, linked }: { readonly project: Project; readonly li
   return (
     <div
       className={cn(
-        // overflow-hidden keeps Safari/Android chrome inside the rounded shell
-        'flex h-full flex-col overflow-hidden rounded-[1.65rem] border border-black/40 bg-[length:280%_280%] bg-[position:0%_0%] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.28)] sm:p-7',
-        linked &&
-          'transition-[background-position,box-shadow] duration-700 ease-cinematic hover:bg-[position:100%_100%] hover:shadow-[0_32px_72px_rgba(0,0,0,0.4)]',
+        studyPlateFrameClass,
+        linked && 'transition-[box-shadow] duration-700 ease-cinematic group-hover:shadow-[0_28px_64px_rgba(0,0,0,0.36)]',
       )}
-      style={{ backgroundImage: field }}
     >
-      <div className="flex items-start justify-between gap-5">
-        <p className="max-w-[34rem] font-display text-[clamp(1.45rem,2.1vw,1.95rem)] leading-[1.18] font-normal tracking-[-0.02em] text-white">
-          {project.hook}
-        </p>
-        {linked ? (
-          <ArrowRight
-            size={22}
-            strokeWidth={1.5}
-            aria-hidden="true"
-            className="mt-1 shrink-0 text-white transition-transform duration-300 ease-cinematic group-hover:translate-x-1"
-          />
-        ) : null}
-      </div>
-      {/* Gap under hook ≈ ref phoneTop (~26% of card) */}
-      <div className="mt-5 sm:mt-6">
+      <div className={studyPlateInnerLinkedClass(linked)} style={{ backgroundImage: field }}>
+        <div className="pointer-events-none absolute inset-x-5 top-5 z-10 flex items-start justify-between gap-5 sm:inset-x-7 sm:top-7">
+          <p className="max-w-[34rem] font-display text-[clamp(1.45rem,2.1vw,1.95rem)] leading-[1.18] font-normal tracking-[-0.02em] text-white">
+            {project.hook}
+          </p>
+          {linked ? (
+            <ArrowRight
+              size={22}
+              strokeWidth={1.5}
+              aria-hidden="true"
+              className="pointer-events-none mt-1 shrink-0 text-white transition-transform duration-500 ease-cinematic group-hover:translate-x-1 group-focus-visible:translate-x-1"
+            />
+          ) : null}
+        </div>
         <Study project={project} lift={linked} />
       </div>
     </div>

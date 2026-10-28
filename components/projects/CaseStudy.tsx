@@ -80,7 +80,7 @@ export function CaseStudy({ study }: { readonly study: CaseStudyContent }) {
                   +
                 </span>
                 <span aria-hidden="true" className="mt-0.5 hidden shrink-0 font-mono text-sm text-muted-2 group-open:inline">
-                  –
+                  -
                 </span>
               </summary>
               <p className="max-w-2xl pb-5 text-[1.02rem] leading-[1.75] text-muted">{item.answer}</p>

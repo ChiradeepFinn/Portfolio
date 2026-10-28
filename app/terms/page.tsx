@@ -51,7 +51,7 @@ export default function TermsPage() {
         <>
           <P>
             The site is a personal portfolio: projects, software, research, music, books, photography, artwork, and
-            writing. The projects page includes case studies and a spine entry for this site itself — how it is built —
+            writing. The projects page includes case studies and a spine entry for this site itself - how it is built -
             so the portfolio is treated as work, not only as a frame around other work. Some of it is finished. Some of
             it is still being made. The guest journal is a public page of notes left by visitors. A page that says the
             work is in progress means exactly that. It is a record of the current state, not a finished result and not a

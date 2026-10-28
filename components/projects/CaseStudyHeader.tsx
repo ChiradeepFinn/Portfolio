@@ -45,7 +45,7 @@ export function CaseStudyHeader({
           <Fact term="Type" value={type} />
           <Fact term="Role" value={role} />
           <Fact term="Built" value={filled(project.year) ? project.year : '-'} />
-          <Fact term="Updated" value="-" />
+          <Fact term="Updated" value={filled(project.updated) ? project.updated : '-'} />
           <LinkFact term="Visit" href={project.liveUrl} icon="globe" />
           <LinkFact term="Source" href={project.repoUrl} icon="github" />
         </dl>

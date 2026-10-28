@@ -37,6 +37,7 @@ export function JournalWall({
   readonly own: OwnState;
 }) {
   const [open, setOpen] = useState(false);
+  const [composerDone, setComposerDone] = useState(false);
   const close = useCallback(() => setOpen(false), []);
   const signedOut = own.status === 'signed-out';
   const showLeave = canSignIn && signedOut;
@@ -46,14 +47,20 @@ export function JournalWall({
     yoursId && note.id === yoursId && liveRating >= 1 ? { ...note, rating: liveRating } : note,
   );
 
+  const signedInReady = own.status === 'ready' && Boolean(providerLabel);
+  const canCompose = signedInReady && !own.note && !composerDone;
+
   let lead: ReactNode = null;
-  if (own.status === 'ready' && providerLabel) {
+  // Composer only for a first note. After a successful compliment it vanishes
+  // with the confetti and stays gone while the note is on the wall.
+  if (canCompose && providerLabel) {
     lead = (
       <JournalComposer
-        key={own.note?.id ?? 'new'}
-        note={own.note}
+        key="new"
+        note={null}
         providerLabel={providerLabel}
         onRatingChange={setLiveRating}
+        onPublished={() => setComposerDone(true)}
       />
     );
   } else if (own.status === 'wrong-provider') {
@@ -98,6 +105,11 @@ export function JournalWall({
             </ArrowPill>
           </div>
         )}
+        {own.status === 'ready' && own.note ? (
+          <div className="shrink-0">
+            <JournalSignOut pill />
+          </div>
+        ) : null}
       </div>
       {showLeave && <JournalTray open={open} onClose={close} />}
 

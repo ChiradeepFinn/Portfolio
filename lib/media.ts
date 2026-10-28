@@ -20,6 +20,8 @@ export const media = {
     logo: '/brand/logo.jpg',
     /** Animated mark used everywhere else. */
     mark: '/brand/1000054925.gif',
+    /** Official abstract-C mark used for favicons / Google Search. */
+    official: '/brand/official-mark.png',
   },
   images: {
     profile: '/images/profile.webp',

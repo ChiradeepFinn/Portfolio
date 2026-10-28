@@ -12,6 +12,7 @@ import {
   seedTracks,
   seedWriting,
 } from '@/lib/data/seed';
+import { isBlank } from '@/lib/present';
 import type {
   Artwork,
   Book,
@@ -97,26 +98,35 @@ export async function getProjects(): Promise<readonly Project[]> {
   const rows = await fetchRows('projects');
   if (!rows) return seedProjects;
 
-  return rows.map((row) => ({
-    slug: str(row.slug),
-    isPlaceholder: bool(row.is_placeholder),
-    title: str(row.title),
-    category: str(row.category, '-'),
-    year: str(row.year, '-'),
-    status: str(row.status, '-'),
-    role: str(row.role, '-'),
-    summary: str(row.summary),
-    hook: str(row.hook, str(row.summary)),
-    description: str(row.description),
-    highlights: strList(row.highlights),
-    stack: strList(row.stack),
-    tone: (['blue', 'rose', 'teal'] as const).includes(row.tone as Project['tone'])
-      ? (row.tone as Project['tone'])
-      : 'blue',
-    liveUrl: nullableStr(row.live_url),
-    repoUrl: nullableStr(row.repo_url),
-    featured: bool(row.featured),
-  }));
+  const bySlug = new Map(seedProjects.map((project) => [project.slug, project]));
+
+  return rows.map((row) => {
+    const seed = bySlug.get(str(row.slug));
+    const year = str(row.year, '-');
+    const updated = str(row.updated, '-');
+
+    return {
+      slug: str(row.slug),
+      isPlaceholder: bool(row.is_placeholder),
+      title: str(row.title),
+      category: str(row.category, '-'),
+      year: isBlank(year) && seed ? seed.year : year,
+      updated: isBlank(updated) && seed ? seed.updated : updated,
+      status: str(row.status, '-'),
+      role: str(row.role, '-'),
+      summary: str(row.summary),
+      hook: str(row.hook, str(row.summary)),
+      description: str(row.description),
+      highlights: strList(row.highlights),
+      stack: strList(row.stack),
+      tone: (['blue', 'rose', 'teal'] as const).includes(row.tone as Project['tone'])
+        ? (row.tone as Project['tone'])
+        : 'blue',
+      liveUrl: nullableStr(row.live_url),
+      repoUrl: nullableStr(row.repo_url),
+      featured: bool(row.featured),
+    };
+  });
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | undefined> {

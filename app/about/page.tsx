@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { profilePageGraph, withCanonical } from '@/lib/seo';
 import Link from 'next/link';
 import { JsonLd } from '@/components/seo/JsonLd';
@@ -41,13 +42,13 @@ const socialIcons: Record<string, LucideIcon> = {
 };
 
 const places = [
-  { href: '/projects', label: 'Projects' },
-  { href: '/music', label: 'Music' },
-  { href: '/archive/books', label: 'Books' },
-  { href: '/archive/research', label: 'Research' },
-  { href: '/archive/photography', label: 'Photography' },
-  { href: '/archive/artwork', label: 'Artwork' },
-  { href: '/philosophy', label: 'Philosophy' },
+  { href: '/projects', label: 'Projects', image: '/images/rooms/project.jpg' },
+  { href: '/music', label: 'Music', image: '/images/rooms/music production.jpg' },
+  { href: '/archive/books', label: 'Books', image: '/images/rooms/books.jpg' },
+  { href: '/archive/research', label: 'Research', image: '/images/rooms/research.jpg' },
+  { href: '/archive/photography', label: 'Photography', image: '/images/rooms/photography.jpg' },
+  { href: '/archive/artwork', label: 'Artwork', image: '/images/rooms/art.jpg' },
+  { href: '/philosophy', label: 'Philosophy', image: '/images/rooms/philosophy.jpg' },
 ] as const;
 
 export default async function AboutPage() {
@@ -152,14 +153,23 @@ export default async function AboutPage() {
         >
           The work, filed in <GradientWord>different rooms.</GradientWord>
         </h2>
-        <ul className="mt-8 flex flex-wrap gap-2">
+        <ul className="mt-8 mx-auto grid w-[30%] min-w-[11.5rem] grid-cols-2 gap-1.5 sm:min-w-[16rem] sm:grid-cols-3 sm:gap-2 lg:min-w-[20rem] lg:grid-cols-4 lg:gap-2">
           {places.map((place) => (
             <li key={place.href}>
               <Link
                 href={place.href}
-                className="inline-flex rounded-pill border border-border px-3.5 py-1.5 text-sm text-muted transition-colors duration-200 hover:border-border-strong hover:text-foreground"
+                className="group relative block aspect-square overflow-hidden rounded-lg border border-border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-blue"
               >
-                {place.label}
+                <Image
+                  src={place.image}
+                  alt=""
+                  fill
+                  sizes="(max-width: 640px) 14vw, (max-width: 1024px) 9vw, 3.6rem"
+                  className="object-cover transition-[transform,filter] duration-500 ease-cinematic group-hover:scale-[1.03] group-hover:brightness-110"
+                />
+                <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-1.5 pt-4 pb-1.5 text-[0.55rem] font-medium leading-tight text-white sm:text-[0.62rem]">
+                  {place.label}
+                </span>
               </Link>
             </li>
           ))}

@@ -50,13 +50,13 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
   },
-  // PNG from app/icon.tsx for Google Search; SVG kept for modern browsers.
+  // Official mark via app/icon.tsx (PNG for Google) + SVG for modern browsers.
   icons: {
     icon: [
-      { url: '/icon', type: 'image/png', sizes: '48x48' },
+      { url: '/icon?v=official', type: 'image/png', sizes: '48x48' },
       { url: '/icon.svg', type: 'image/svg+xml' },
     ],
-    apple: '/apple-icon',
+    apple: '/apple-icon?v=official',
   },
   // Selects the Is Agentic report lens; does not change the score.
   other: {

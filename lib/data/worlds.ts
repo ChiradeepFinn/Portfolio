@@ -57,7 +57,7 @@ export const researchWorld = {
   headline: { before: 'Questions I would rather', emphasis: 'test than assume.', after: '' },
   lead: 'I explore questions at the intersection of machine learning and human creativity. My research investigates how models interpret musical emotion across different audio contexts, and how AI-assisted ideation influences the originality and ownership of human creative work.',
   homeLead: "Yea.. these are the ones I'm still chasing.",
-  tags: ['Machine learning', 'Music emotion', 'Human–AI creativity'],
+  tags: ['Machine learning', 'Music emotion', 'Human-AI creativity'],
 } as const satisfies WorldCopy;
 
 export const photographyWorld = {
@@ -67,7 +67,7 @@ export const photographyWorld = {
   anchor: '/archive/photography#gallery',
   enter: 'View the photographs',
   headline: { before: 'Looking at ordinary things', emphasis: 'a little longer.', after: '' },
-  lead: 'Photographs from the folder — ordinary light, held a little longer.',
+  lead: 'Photographs from the folder - ordinary light, held a little longer.',
   homeLead: 'A short look across the photographs, with artwork directly underneath.',
   tags: ['Photography', 'Artwork'],
 } as const satisfies WorldCopy;
@@ -93,7 +93,7 @@ export const philosophyWorld = {
   headline: { before: 'What is still mine', emphasis: 'when the model can answer?', after: '' },
   lead: 'Essays and observations on creativity, identity, consciousness, and the practice of making. The subjects below are the territory I want to write into. They are not finished essays, and they are not quotations.',
   homeLead:
-    "Still circling these. Open questions I keep running into — originality, identity, what making is worth when the model can answer. Not essays. Just the shelf I'm still walking.",
+    "Still circling these. Open questions I keep running into - originality, identity, what making is worth when the model can answer. Not essays. Just the shelf I'm still walking.",
   tags: [
     'Creativity and originality',
     'Human identity and technology',
@@ -135,6 +135,6 @@ export const projectsWorld = {
   label: 'Selected work',
   anchor: '/projects#studies',
   enter: 'The studies',
-  headline: { before: 'Five studies, then the site —', emphasis: 'by the mechanism.', after: '' },
+  headline: { before: 'Five studies, then the site -', emphasis: 'by the mechanism.', after: '' },
   lead: 'Six entries on one spine. Sidequest opens; the portfolio closes as 01. Each block is the mechanism, the refusal, and the trade-off underneath.',
 } as const;

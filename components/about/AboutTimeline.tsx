@@ -172,15 +172,19 @@ export function AboutTimeline({ chapters }: { readonly chapters: readonly Timeli
 
   return (
     <div className="relative mt-12 sm:mt-16">
+      {/*
+        Same desktop rail on every width. On narrow screens the label column
+        tightens and padding follows the shell so the composition stays intact.
+      */}
       <div
         aria-hidden="true"
-        className="absolute top-2 bottom-2 left-[12.5rem] hidden w-px -translate-x-1/2 bg-border sm:block"
+        className="absolute top-2 bottom-2 left-[7.25rem] w-px -translate-x-1/2 bg-border sm:left-[12.5rem]"
       />
       {/* Color only covers the distance already walked. The rest of the rail stays the plain rule. */}
       <div
         ref={trace}
         aria-hidden="true"
-        className="absolute top-2 left-[12.5rem] hidden w-0.5 -translate-x-1/2 rounded-full sm:block"
+        className="absolute top-2 left-[7.25rem] w-0.5 -translate-x-1/2 rounded-full sm:left-[12.5rem]"
         style={{
           height: 0,
           backgroundColor: 'var(--color-accent-blue)',
@@ -194,7 +198,7 @@ export function AboutTimeline({ chapters }: { readonly chapters: readonly Timeli
       <div
         ref={face}
         aria-hidden="true"
-        className="absolute left-[12.5rem] z-10 hidden h-9 w-9 overflow-hidden rounded-full border border-border-strong bg-black opacity-0 sm:block"
+        className="absolute left-[7.25rem] z-10 h-8 w-8 overflow-hidden rounded-full border border-border-strong bg-black opacity-0 sm:left-[12.5rem] sm:h-9 sm:w-9"
         style={{ top: 0, transform: 'translate(-50%, -50%)' }}
       >
         <Image
@@ -210,19 +214,19 @@ export function AboutTimeline({ chapters }: { readonly chapters: readonly Timeli
         {chapters.map((chapter, index) => (
           <li
             key={chapter.slug}
-            className="grid gap-3 border-t border-border py-8 first:border-t-0 first:pt-0 sm:grid-cols-[12.5rem_minmax(0,1fr)] sm:gap-0 sm:border-0 sm:py-7"
+            className="grid grid-cols-[7.25rem_minmax(0,1fr)] gap-0 py-6 sm:grid-cols-[12.5rem_minmax(0,1fr)] sm:py-7"
           >
-            <div className="relative sm:pr-12 sm:text-right">
-              <p className="meta sm:pt-1">{chapter.label}</p>
+            <div className="relative pr-6 text-right sm:pr-12">
+              <p className="meta pt-1">{chapter.label}</p>
               <span
                 aria-hidden="true"
                 ref={(node) => {
                   marks.current[index] = node;
                 }}
-                className="absolute top-2.5 right-0 hidden h-px w-px sm:block"
+                className="absolute top-2.5 right-0 h-px w-px"
               />
             </div>
-            <div className="sm:pl-10">
+            <div className="pl-6 sm:pl-10">
               <h3 className="text-[1.02rem] text-foreground">{chapter.title}</h3>
               <p className="mt-1 text-sm text-muted">{chapter.subtitle}</p>
               <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-2">{chapter.paragraphs[0]}</p>

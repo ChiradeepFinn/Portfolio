@@ -97,6 +97,7 @@
       transform: rotate(18deg);
     }
   }
+
 }
 
 /* ---------------------------------------------------------------------------
@@ -359,27 +360,42 @@
 
 @layer components {
   /*
-    Study-card Safari fan. Arbitrary group-hover:[translate:…] utilities are
-    not emitted reliably; drive rest/hover geometry from these hooks instead.
-    Stage + card keep overflow:hidden so chrome never clears the rounded shell.
+    Study-card Safari desk-stack - always centered on -50%.
+    Mobile/tablet: open split. Desktop: sunk nest → open on hover.
   */
   [data-safari-frame='back'] {
-    translate: -60% 3%;
-    rotate: -1.2deg;
+    translate: -68% 0%;
+    rotate: -2deg;
+    scale: 1;
   }
   [data-safari-frame='front'] {
-    translate: -40% 0%;
-    rotate: 1.2deg;
+    translate: -32% 0%;
+    rotate: 2deg;
+    scale: 1.02;
   }
-  a.group:hover [data-safari-frame='back'],
-  [data-safari-frame='back'][data-safari-open] {
-    translate: -76% 6%;
-    rotate: -2.8deg;
-  }
-  a.group:hover [data-safari-frame='front'],
-  [data-safari-frame='front'][data-safari-open] {
-    translate: -24% -1%;
-    rotate: 2.4deg;
+  @media (min-width: 1024px) {
+    [data-safari-frame='back'] {
+      translate: -51% 24%;
+      rotate: -0.8deg;
+      scale: 0.95;
+    }
+    [data-safari-frame='front'] {
+      translate: -49% 24%;
+      rotate: 0.8deg;
+      scale: 0.98;
+    }
+    a.group:hover [data-safari-frame='back'],
+    [data-safari-frame='back'][data-safari-open] {
+      translate: -68% 0%;
+      rotate: -2deg;
+      scale: 1;
+    }
+    a.group:hover [data-safari-frame='front'],
+    [data-safari-frame='front'][data-safari-open] {
+      translate: -32% 0%;
+      rotate: 2deg;
+      scale: 1.02;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     [data-safari-frame] {

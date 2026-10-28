@@ -460,7 +460,7 @@ export const researchStudies: readonly ResearchStudy[] = [
     status: 'Done',
     featured: false,
     domains: [
-      'Human–AI interaction',
+      'Human-AI interaction',
       'Computational creativity',
       'Generative AI',
       'Creative cognition and perceived ownership',

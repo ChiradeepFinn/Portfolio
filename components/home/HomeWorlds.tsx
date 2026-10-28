@@ -101,31 +101,32 @@ function MusicPreview({ track }: { readonly track: Track | null }) {
           as="h2"
           id="home-music"
           headline={musicWorld.headline}
-          className="max-w-xl text-[clamp(2rem,4.2vw,3.15rem)]"
+          className="max-w-3xl text-[clamp(2rem,4.2vw,3.15rem)]"
         />
       </HeadingRow>
 
-      <p className="mt-8 max-w-lg font-display text-[clamp(1.35rem,2.2vw,1.7rem)] leading-snug text-foreground italic">
-        I record at home, mostly at night.
-      </p>
+      <div className="mt-7 grid items-start gap-8 sm:mt-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-x-10 xl:gap-x-14">
+        <div className="min-w-0">
+          <p className="font-display text-[clamp(1.35rem,2.2vw,1.7rem)] leading-snug text-foreground italic">
+            I record at home, mostly at night.
+          </p>
+          <p className="mt-5 text-[clamp(1.05rem,1.35vw,1.2rem)] leading-[1.55] text-muted lg:mt-6">
+            Soft dream-pop loops when the house is quiet, bedroom takes that never leave the room,
+            then something cinematic or ambient if the night runs long enough.
+          </p>
+        </div>
 
-      <div className="mt-10 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(16rem,22rem)] lg:gap-x-16 xl:gap-x-24">
-        <p className="max-w-md text-[clamp(1.05rem,1.35vw,1.2rem)] leading-[1.55] text-muted">
-          Soft dream-pop loops when the house is quiet, bedroom takes that never leave the room,
-          then something cinematic or ambient if the night runs long enough.
-        </p>
-
-        <div className="flex flex-col gap-7 lg:pt-1">
+        <div className="flex min-w-0 flex-col gap-6 lg:gap-7 lg:pt-1">
           <div>
             <DawMarks />
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted">
+            <p className="mt-4 text-sm leading-relaxed text-muted lg:mt-5">
               BandLab on the couch, FL Studio when I sit down properly, GarageBand if the melody
               won&apos;t wait. Whatever is already open usually wins.
             </p>
           </div>
 
           <div className="border-t border-border pt-5">
-            <p className="max-w-xs text-sm leading-relaxed text-muted">
+            <p className="text-sm leading-relaxed text-muted">
               {named ? (
                 <>
                   <span className="text-foreground">{track.title}</span>
@@ -135,11 +136,11 @@ function MusicPreview({ track }: { readonly track: Track | null }) {
                 'A title appears when there is a recording to name.'
               )}
             </p>
-            <ArrowPill href={musicWorld.href} className="mt-5">
+            <ArrowPill href={musicWorld.href} className="mt-4 lg:mt-5">
               {musicWorld.enter}
             </ArrowPill>
             {playable && named ? (
-              <audio controls preload="none" className="mt-5 w-full" aria-label={`Play ${track.title}`}>
+              <audio controls preload="none" className="mt-4 w-full lg:mt-5" aria-label={`Play ${track.title}`}>
                 <source src={playable} />
               </audio>
             ) : null}
@@ -331,15 +332,15 @@ function FramesPreview() {
 }
 
 /**
- * Measure variation so each subject reads as a margin note, not a stacked card.
- * Offsets stay light — hierarchy comes from type, not decoration.
+ * Light measure variation so subjects stay notes, not cards - without
+ * leaving a hollow column on desktop.
  */
 const PHILOSOPHY_MEASURE = [
-  'max-w-[22rem] lg:ml-0',
-  'max-w-[24rem] lg:ml-10',
-  'max-w-[20rem] lg:ml-4',
-  'max-w-[23rem] lg:ml-14',
-  'max-w-[21rem] lg:ml-6',
+  'max-w-[38rem]',
+  'max-w-[36rem] lg:pl-3',
+  'max-w-[34rem]',
+  'max-w-[37rem] lg:pl-5',
+  'max-w-[35rem] lg:pl-2',
 ] as const;
 
 function PhilosophyPreview() {
@@ -362,34 +363,34 @@ function PhilosophyPreview() {
           as="h2"
           id="home-philosophy"
           headline={philosophyWorld.headline}
-          className="max-w-[13ch] text-[clamp(2.45rem,5.6vw,4rem)] leading-[0.94]"
+          className="max-w-[18ch] text-[clamp(2.45rem,5.6vw,4rem)] leading-[0.94]"
         />
       </HeadingRow>
 
-      <div className="mt-10 grid items-start gap-12 lg:mt-12 lg:grid-cols-[minmax(0,0.88fr)_minmax(0,1.12fr)] lg:gap-x-16 xl:gap-x-24">
-        <div className="max-w-sm">
-          <p className="max-w-[34ch] text-[0.8rem] leading-relaxed text-muted-2">
+      <div className="mt-7 grid items-start gap-8 sm:mt-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-x-10 xl:gap-x-14">
+        <div className="min-w-0">
+          <p className="text-[0.8rem] leading-relaxed text-muted-2 lg:text-[0.85rem] lg:leading-relaxed">
             {philosophyWorld.homeLead}
           </p>
-          <ArrowPill href={philosophyWorld.href} className="mt-8">
+          <ArrowPill href={philosophyWorld.href} className="mt-6 lg:mt-7">
             {philosophyWorld.enter}
           </ArrowPill>
         </div>
 
-        <ul className="flex flex-col border-t border-border" aria-label="Philosophy subjects">
+        <ul className="flex min-w-0 flex-col border-t border-border" aria-label="Philosophy subjects">
           {philosophyThemes.map((theme, index) => (
             <li
               key={theme.title}
               className={cn(
-                'group border-b border-border py-7 first:pt-6 last:border-b-0 last:pb-0',
-                PHILOSOPHY_MEASURE[index] ?? 'max-w-[22rem]',
+                'group border-b border-border py-5 first:pt-5 last:border-b-0 last:pb-0 lg:py-6 lg:first:pt-5',
+                PHILOSOPHY_MEASURE[index] ?? 'max-w-[36rem]',
               )}
             >
               <Reveal delay={0.04 + index * 0.06}>
                 <p className="font-display text-[clamp(1.08rem,1.65vw,1.32rem)] leading-[1.35] text-muted italic transition-colors duration-300 ease-cinematic group-hover:text-foreground">
                   {theme.line}
                 </p>
-                <p className="meta mt-3 text-[0.62rem] tracking-[0.12em] text-muted-2">
+                <p className="meta mt-2.5 text-[0.62rem] tracking-[0.12em] text-muted-2 lg:mt-3">
                   <span className="tabular-nums text-muted-2/70">
                     {String(index + 1).padStart(2, '0')}
                   </span>

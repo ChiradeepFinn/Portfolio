@@ -73,10 +73,12 @@ export function JournalComposer({
   note,
   providerLabel,
   onRatingChange,
+  onPublished,
 }: {
   readonly note: { readonly displayName: string; readonly body: string; readonly rating?: number | null } | null;
   readonly providerLabel: string;
   readonly onRatingChange?: (value: number) => void;
+  readonly onPublished?: () => void;
 }) {
   const router = useRouter();
   const submitRef = useRef<HTMLButtonElement>(null);
@@ -129,6 +131,7 @@ export function JournalComposer({
         );
       }
       setPhase('published');
+      onPublished?.();
       router.refresh();
     } catch (error) {
       setPhase('error');
@@ -152,14 +155,10 @@ export function JournalComposer({
     }
   }
 
+  // Confetti already fired from the submit button. Drop the form out of the
+  // layout so only the burst remains until refresh shows the wall note.
   if (phase === 'published' || phase === 'removed') {
-    return (
-      <div className={composerShell} role="status">
-        <p className="font-display text-lg italic text-foreground">
-          {phase === 'removed' ? 'The note was removed.' : 'Your note is in the journal.'}
-        </p>
-      </div>
-    );
+    return null;
   }
 
   return (

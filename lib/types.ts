@@ -17,6 +17,8 @@ export interface Project extends ContentBase {
   readonly title: string;
   readonly category: string;
   readonly year: string;
+  /** Year the study was last touched. Shown beside Built in the case study header. */
+  readonly updated: string;
   readonly status: string;
   readonly role: string;
   readonly summary: string;

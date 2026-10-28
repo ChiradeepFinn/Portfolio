@@ -50,7 +50,7 @@ export function ArrowPill({
   };
 
   const controlClass = cn(
-    'group flex w-fit max-w-full items-center gap-2 rounded-pill border border-border bg-wash py-1 pr-1 pl-4 text-[0.8rem] font-medium text-foreground backdrop-blur-md transition-[border-color,background-color,scale] duration-300 ease-cinematic hover:border-border-strong hover:bg-foreground/[0.04] focus-visible:border-border-strong focus-visible:bg-foreground/[0.04] focus-visible:outline-none active:scale-[0.98] sm:text-sm',
+    'group flex w-fit max-w-full items-center gap-1.5 rounded-pill border border-border bg-wash py-0.5 pr-0.5 pl-3.5 text-[0.72rem] font-medium text-foreground backdrop-blur-md transition-[border-color,background-color,scale] duration-300 ease-cinematic hover:border-border-strong hover:bg-foreground/[0.04] focus-visible:border-border-strong focus-visible:bg-foreground/[0.04] focus-visible:outline-none active:scale-[0.98] sm:gap-2 sm:text-[0.9rem]',
     className,
   );
   const inner = (
@@ -58,15 +58,15 @@ export function ArrowPill({
       <span className="min-w-0 transition-transform duration-500 ease-cinematic motion-safe:group-hover:translate-x-0.5 motion-safe:group-focus-visible:translate-x-0.5">
         {children}
       </span>
-      <span className="relative grid h-7 w-7 shrink-0 place-items-center overflow-hidden rounded-full bg-foreground text-background transition-colors duration-300 ease-cinematic group-hover:bg-accent-blue group-focus-visible:bg-accent-blue motion-reduce:transition-none sm:h-8 sm:w-8">
+      <span className="relative grid h-6 w-6 shrink-0 place-items-center overflow-hidden rounded-full bg-foreground text-background transition-colors duration-300 ease-cinematic group-hover:bg-accent-blue group-focus-visible:bg-accent-blue motion-reduce:transition-none sm:h-7 sm:w-7">
         <ArrowUpRight
-          size={14}
+          size={13}
           strokeWidth={2}
           aria-hidden="true"
           className="col-start-1 row-start-1 motion-safe:transition-transform motion-safe:duration-500 motion-safe:ease-cinematic motion-safe:group-hover:translate-x-[180%] motion-safe:group-hover:-translate-y-[180%] motion-safe:group-focus-visible:translate-x-[180%] motion-safe:group-focus-visible:-translate-y-[180%]"
         />
         <ArrowUpRight
-          size={14}
+          size={13}
           strokeWidth={2}
           aria-hidden="true"
           className="col-start-1 row-start-1 motion-reduce:hidden motion-safe:-translate-x-[180%] motion-safe:translate-y-[180%] motion-safe:transition-transform motion-safe:delay-0 motion-safe:duration-500 motion-safe:ease-cinematic motion-safe:group-hover:translate-x-0 motion-safe:group-hover:translate-y-0 motion-safe:group-hover:delay-100 motion-safe:group-focus-visible:translate-x-0 motion-safe:group-focus-visible:translate-y-0 motion-safe:group-focus-visible:delay-100"

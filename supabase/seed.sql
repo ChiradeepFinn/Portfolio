@@ -12,9 +12,9 @@ truncate table
 restart identity;
 
 insert into public.projects
-  (slug, title, category, year, status, role, summary, hook, description, highlights, stack, tone, featured, is_placeholder, position, live_url, repo_url)
+  (slug, title, category, year, updated, status, role, summary, hook, description, highlights, stack, tone, featured, is_placeholder, position, live_url, repo_url)
 values
-  ('sidequest', 'Sidequest', 'AI / Creative technology', '-', 'Study', '-',
+  ('sidequest', 'Sidequest', 'AI / Creative technology', '2026', '2026', 'Study', '-',
    $sq$A quest system that builds one doable action from interests, time, and place, then remembers what you actually did so the next one is not a repeat.$sq$,
    $sq$One quest, sized to the time you have.$sq$,
    $sq$What if an assistant did not tell you what to watch next, but gave you something worth doing?$sq$,
@@ -26,7 +26,7 @@ values
    ],
    array['React Native', 'Expo', 'TypeScript', 'React Native Web', 'Supabase', 'PostgreSQL', 'AI', 'Reanimated'],
    'rose', true, false, 0, 'https://sidequest.chiradeep.me', 'https://github.com/ChiradeepFinn/sidequest'),
-  ('synesthesia', 'Synesthesia', 'AI / Generative art', '-', 'Study', '-',
+  ('synesthesia', 'Synesthesia', 'AI / Generative art', '2025', '2026', 'Study', '-',
    $sy$A creative system that reads atmosphere, rhythm, and structure in one medium and constructs another, then lets a second person challenge that reading.$sy$,
    $sy$Photo to music to language to image.$sy$,
    $sy$A photograph becomes music. Music becomes language. Language becomes an image.$sy$,
@@ -38,7 +38,7 @@ values
    ],
    array['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'AI', 'Generative media', 'Supabase'],
    'blue', true, false, 1, 'https://synesthesia.chiradeep.me', 'https://github.com/ChiradeepFinn/synesthesia'),
-  ('framework', 'Framework', 'AI / Photography', '-', 'Study', '-',
+  ('framework', 'Framework', 'AI / Photography', '2025', '2026', 'Study', '-',
    $fw$A photography workspace that clusters a shoot, ranks what remains against composition and your own keeps, then sequences the frames that belong together.$fw$,
    $fw$Which five frames belong.$fw$,
    $fw$The hardest part of photography is not taking five hundred photographs. It is knowing which five matter.$fw$,
@@ -50,7 +50,7 @@ values
    ],
    array['Next.js', 'React', 'TypeScript', 'AI', 'Computer vision', 'Supabase'],
    'teal', true, false, 2, 'https://framework.chiradeep.me', 'https://github.com/ChiradeepFinn/framework'),
-  ('path', 'Path', 'AI / Education', '-', 'Study', '-',
+  ('path', 'Path', 'AI / Education', '2025', '2026', 'Study', '-',
    $pt$A learning system that turns a broad goal into a prerequisite graph, maps resources onto the nodes, and answers one question: what now?$pt$,
    $pt$One next action, always named.$pt$,
    $pt$The internet has infinite learning resources. The problem is knowing what to learn next.$pt$,
@@ -62,7 +62,7 @@ values
    ],
    array['Next.js', 'React', 'TypeScript', 'AI', 'Graph data', 'Supabase'],
    'blue', true, false, 3, 'https://path.chiradeep.me', 'https://github.com/ChiradeepFinn/path'),
-  ('stem', 'STEM', 'Music technology', '-', 'Study', '-',
+  ('stem', 'STEM', 'Music technology', '2024', '2026', 'Study', '-',
    $st$A workspace for the passes of a song - demos, vocals, mixes - with the reason each one changed kept on the version where it happened.$st$,
    $st$Every version, and why it changed.$st$,
    $st$Songs are not created in one file. They are created through hundreds of decisions.$st$,
@@ -122,7 +122,7 @@ values
    'How does AI-assisted ideation change the originality of human creative work, and the sense of owning it?',
    'Beyond the Prompt: Measuring the Effects of AI-Assisted Ideation on Human Creative Originality and Ownership',
    'A completed comparison of unaided and AI-assisted ideation. Originality, perceived ownership, and perceived agency were measured as separate things. Scored tables are not printed on this page.',
-   'Human–AI interaction', 'Done', false, false, 1);
+   'Human-AI interaction', 'Done', false, false, 1);
 
 insert into public.writing_entries (slug, title, category, excerpt, featured, position)
 values

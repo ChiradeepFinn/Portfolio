@@ -11,7 +11,7 @@ import type { ResearchFigure } from '@/lib/data/research';
 
 const captions: Record<ResearchFigure, string> = {
   valence:
-    'The valence–arousal plane, with an audio trace drawn underneath. Not a plot of songs or of model output.',
+    'The valence-arousal plane, with an audio trace drawn underneath. Not a plot of songs or of model output.',
   ideation:
     'Unaided and assisted ideation, held against the same three measures. Not a score chart.',
 };
