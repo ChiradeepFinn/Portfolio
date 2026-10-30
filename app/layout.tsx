@@ -12,7 +12,7 @@ import { DeferredAnalytics } from '@/components/providers/DeferredAnalytics';
 import { WebMcpTools } from '@/components/providers/WebMcpTools';
 import { publishedCatalog } from '@/lib/feeds/catalog';
 import { buildSearchIndex } from '@/lib/search';
-import { feedAlternateTypes, siteDescription } from '@/lib/seo';
+import { HOME_PAGE_TITLE, feedAlternateTypes, siteDescription } from '@/lib/seo';
 
 const displayFont = Fraunces({
   subsets: ['latin'],
@@ -32,7 +32,7 @@ const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?
 
 export const metadata: Metadata = {
   title: {
-    default: 'Chiradeep - Creative Technologist',
+    default: HOME_PAGE_TITLE,
     template: '%s - Chiradeep',
   },
   description: siteDescription,

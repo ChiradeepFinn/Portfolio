@@ -1,7 +1,8 @@
 import { markdownFor } from '@/lib/feeds/documents';
 import { publicOrigin } from '@/lib/feeds/origin';
-import { absolute, canonicalPathFor } from '@/lib/feeds/paths';
+import { canonicalPathFor } from '@/lib/feeds/paths';
 import { agentNotFoundMarkdown } from '@/lib/http/agent-markdown';
+import { markdownTwinSuccessHeaders } from '@/lib/http/markdown-twin-headers';
 import { siteDescription } from '@/lib/seo';
 
 /**
@@ -36,12 +37,6 @@ export async function GET(
   }
 
   return new Response(markdown.endsWith('\n') ? markdown : `${markdown}\n`, {
-    headers: {
-      'Content-Type': 'text/markdown; charset=utf-8',
-      Vary: 'Accept',
-      'Cache-Control': 'public, max-age=3600, s-maxage=21600, stale-while-revalidate=86400',
-      'X-Robots-Tag': 'noindex',
-      Link: `<${absolute(base, canonical)}>; rel="canonical"`,
-    },
+    headers: markdownTwinSuccessHeaders(base, canonical),
   });
 }

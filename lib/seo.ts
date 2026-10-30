@@ -7,6 +7,9 @@ import type { Book, Project } from '@/lib/types';
 export const siteDescription =
   "I'm Chiradeep - a creative technologist working across AI, web, music, and visual storytelling.";
 
+/** Approved absolute homepage document title (option 3). */
+export const HOME_PAGE_TITLE = 'Chiradeep - Creative Technologist, AI & Web';
+
 /** Stable node ids for the Person / WebSite graph Google expects on the home page. */
 export const personId = () => absoluteUrl('/#person');
 export const websiteId = () => absoluteUrl('/#website');
@@ -70,7 +73,7 @@ export function personNode() {
     '@type': 'Person' as const,
     '@id': personId(),
     name: identity.name,
-    alternateName: [identity.brand, identity.firstName],
+    // No alternateName unless the owner later approves explicit aliases.
     jobTitle: identity.role,
     description: siteDescription,
     email: identity.email,
@@ -119,7 +122,7 @@ export function homeGraph() {
         '@type': 'WebPage',
         '@id': absoluteUrl('/'),
         url: absoluteUrl('/'),
-        name: `${identity.name} - ${identity.role}`,
+        name: HOME_PAGE_TITLE,
         description: siteDescription,
         isPartOf: { '@id': websiteId() },
         about: { '@id': personId() },

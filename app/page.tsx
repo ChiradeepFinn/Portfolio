@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import { Hero } from '@/components/home/Hero';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { homeGraph, siteDescription, withCanonical } from '@/lib/seo';
+import { HOME_PAGE_TITLE, homeGraph, siteDescription, withCanonical } from '@/lib/seo';
 import { IntroVideo } from '@/components/home/IntroVideo';
 import { FeaturedProject } from '@/components/home/FeaturedProject';
 import { HomeWorlds } from '@/components/home/HomeWorlds';
 import { getBooks, getResearchStudies, getTracks } from '@/lib/content';
 
 export const metadata: Metadata = withCanonical('/', {
-  title: { absolute: 'Chiradeep - Creative Technologist' },
+  title: { absolute: HOME_PAGE_TITLE },
   description: siteDescription,
   // The twin of `/` is `/index.md`, not `/.md`.
   alternates: { types: { 'text/markdown': [{ url: '/index.md', title: 'Markdown' }] } },
