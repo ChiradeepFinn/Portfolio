@@ -1,10 +1,11 @@
 import type { MetadataRoute } from 'next';
 import { siteDescription } from '@/lib/seo';
+import { identity } from '@/lib/site';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Chiradeep',
-    short_name: 'CF',
+    name: identity.name,
+    short_name: identity.preferredName,
     description: siteDescription,
     start_url: '/',
     display: 'browser',

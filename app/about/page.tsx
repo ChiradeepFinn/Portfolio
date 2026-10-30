@@ -28,7 +28,7 @@ import { GradientWord } from '@/components/ui/GradientWord';
 export const metadata: Metadata = withCanonical('/about', {
   title: 'About',
   description:
-    "I'm Chiradeep, a creative technologist from Karur. Who I am, what I build, and what drives the work across AI, web, music, and the arts.",
+    "I'm Chiradeep Finn — Finn for short — a creative technologist from Karur. Who I am, what I build, and what drives the work across AI, web, music, and the arts.",
 });
 
 const socialIcons: Record<string, LucideIcon> = {
@@ -67,6 +67,10 @@ export default async function AboutPage() {
             </h1>
             <div className="mt-6 max-w-xl">
               <p className="body-copy">
+                Full name {identity.name}. Most people call me {identity.preferredName};{' '}
+                {identity.shortName} is the other name you&apos;ll see. Same person.
+              </p>
+              <p className="body-copy mt-4">
                 Based in {identity.location}. Most of what I make sits at the edges between disciplines -
                 where an interface decision is really a psychology decision, where a chord progression is
                 really an engineering constraint, where a photograph and a line of code are both attempts to

@@ -66,17 +66,20 @@ async function homeMarkdown(base: string, description: string): Promise<string> 
       ['title', `${identity.name} - ${identity.role}`],
       ['summary', description],
       ['author', identity.name],
+      ['preferredName', identity.preferredName],
+      ['alternateName', [identity.preferredName, identity.shortName]],
       ['canonical', absolute(base, '/')],
     ]),
     `# ${identity.name}`,
     `**TL;DR** ${description}`,
+    `## Identity\n\n- Primary name: ${identity.name}.\n- Preferred name: ${identity.preferredName}. Also known as ${identity.shortName}.\n- ${identity.preferredName} refers to ${identity.name}, not a separate person.\n- Role: ${identity.role}.`,
     `## Selected work\n\n${projects
       .map((item) => `- [${item.title}](${absolute(base, `/projects/${item.slug}`)}): ${item.summary}`)
       .join('\n')}`,
     `## Rooms of the site\n\n${siteSections
       .map((section) => `- [${section.label}](${absolute(base, section.path)}): ${section.note}`)
       .join('\n')}`,
-    `## Contact\n\n- Email: ${identity.email}\n- Location: ${identity.location}`,
+    `## Contact\n\n- Email: ${identity.email}\n- Location: ${identity.location}\n- About: ${absolute(base, '/about')}`,
   ].join('\n\n');
 }
 

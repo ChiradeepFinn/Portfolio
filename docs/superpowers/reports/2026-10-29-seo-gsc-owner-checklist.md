@@ -47,4 +47,4 @@ The agent does not have your Search Console session. Do not paste verification t
 
 - `site:` operator results are not a complete index report.
 - Schema and titles help clarity; they do not guarantee rankings or a knowledge panel.
-- Official site name and Person identity on the site are **Chiradeep** only.
+- Official Person identity is **Chiradeep Finn**, with alternate names **Finn** (preferred) and **Chiradeep**.

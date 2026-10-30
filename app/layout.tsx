@@ -13,6 +13,7 @@ import { WebMcpTools } from '@/components/providers/WebMcpTools';
 import { publishedCatalog } from '@/lib/feeds/catalog';
 import { buildSearchIndex } from '@/lib/search';
 import { HOME_PAGE_TITLE, feedAlternateTypes, siteDescription } from '@/lib/seo';
+import { identity } from '@/lib/site';
 
 const displayFont = Fraunces({
   subsets: ['latin'],
@@ -33,18 +34,18 @@ const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?
 export const metadata: Metadata = {
   title: {
     default: HOME_PAGE_TITLE,
-    template: '%s - Chiradeep',
+    template: `%s - ${identity.name}`,
   },
   description: siteDescription,
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
-  applicationName: 'Chiradeep',
-  authors: [{ name: 'Chiradeep' }],
-  creator: 'Chiradeep',
+  applicationName: identity.name,
+  authors: [{ name: identity.name, url: '/' }],
+  creator: identity.name,
   robots: { index: true, follow: true },
   alternates: { types: feedAlternateTypes },
   openGraph: {
     type: 'website',
-    siteName: 'Chiradeep',
+    siteName: identity.name,
     locale: 'en_IN',
   },
   twitter: {

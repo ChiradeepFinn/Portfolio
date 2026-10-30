@@ -39,7 +39,7 @@ export function GuestLogPrompt() {
   return (
     <aside className="guest-log" role="status" aria-label="Guest journal">
       <BrandMark
-        alt="Chiradeep"
+        alt="Chiradeep Finn"
         width={136}
         height={136}
         sizes="136px"

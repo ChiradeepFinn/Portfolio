@@ -193,6 +193,13 @@ describe('llms files', () => {
     assert.match(index, /Published work only/);
   });
 
+  it('states Chiradeep Finn identity with Finn and Chiradeep as the same person', () => {
+    assert.match(index, /## Identity/);
+    assert.match(index, /Primary name: Chiradeep Finn/);
+    assert.match(index, /Preferred name: Finn/);
+    assert.match(index, /not separate people or brands/);
+  });
+
   it('tells agents when to use the site', () => {
     assert.match(index, /## When to use this/);
     assert.match(index, /freelance, collaboration, or a full-time role/);

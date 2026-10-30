@@ -6,14 +6,26 @@
  * linked yet" instead of shipping a dead `#` href.
  */
 
+/**
+ * Public identity — one person, three legitimate name forms.
+ * `name` is the primary legal/public form used in schema, bylines, and copyright.
+ * `preferredName` (Finn) is how most people address him; `shortName` is the other
+ * common form. Do not invent further aliases.
+ */
 export const identity = {
-  name: 'Chiradeep',
-  firstName: 'Chiradeep',
+  name: 'Chiradeep Finn',
+  preferredName: 'Finn',
+  shortName: 'Chiradeep',
+  /** Conversational greeting form — preferred name. */
+  firstName: 'Finn',
   brand: 'CF°',
   role: 'Creative Technologist',
   location: 'Karur, Tamil Nadu, India',
   email: 'softwarechiradeep@gmail.com',
 } as const;
+
+/** Person.alternateName — only owner-approved legitimate name forms. */
+export const personAlternateNames = [identity.preferredName, identity.shortName] as const;
 
 export interface SocialProfile {
   readonly label: string;
@@ -50,7 +62,7 @@ export const navItems: readonly NavItem[] = [
 ];
 
 export const footerBio =
-  "I'm Chiradeep - a creative technologist working across AI, web, music, and visual storytelling. Thanks for checking out my site!";
+  "I'm Chiradeep Finn — Finn for short — a creative technologist working across AI, web, music, and visual storytelling. Thanks for checking out my site!";
 
 export interface FooterLink {
   readonly label: string;

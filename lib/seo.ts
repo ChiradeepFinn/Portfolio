@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import { configuredOrigin } from '@/lib/http/origin';
 import { media } from '@/lib/media';
-import { identity, socialProfiles } from '@/lib/site';
+import { identity, personAlternateNames, socialProfiles } from '@/lib/site';
 import type { Book, Project } from '@/lib/types';
 
 export const siteDescription =
-  "I'm Chiradeep - a creative technologist working across AI, web, music, and visual storytelling.";
+  "I'm Chiradeep Finn — Finn for short — a creative technologist working across AI, web, music, and visual storytelling.";
 
-/** Approved absolute homepage document title (option 3). */
-export const HOME_PAGE_TITLE = 'Chiradeep - Creative Technologist, AI & Web';
+/** Absolute homepage document title — primary identity + role. */
+export const HOME_PAGE_TITLE = 'Chiradeep Finn - Creative Technologist, AI & Web';
 
 /** Stable node ids for the Person / WebSite graph Google expects on the home page. */
 export const personId = () => absoluteUrl('/#person');
@@ -50,7 +50,12 @@ export function withCanonical(path: string, meta: Metadata): Metadata {
       ...openGraph,
       url: path,
       images: openGraph.images ?? [
-        { url: '/opengraph-image', width: 1200, height: 630, alt: 'Chiradeep, creative technologist' },
+        {
+          url: '/opengraph-image',
+          width: 1200,
+          height: 630,
+          alt: `${identity.name}, creative technologist`,
+        },
       ],
     },
     twitter: {
@@ -73,11 +78,13 @@ export function personNode() {
     '@type': 'Person' as const,
     '@id': personId(),
     name: identity.name,
-    // No alternateName unless the owner later approves explicit aliases.
+    alternateName: [...personAlternateNames],
+    givenName: identity.shortName,
+    familyName: 'Finn',
     jobTitle: identity.role,
     description: siteDescription,
     email: identity.email,
-    url: absoluteUrl('/about'),
+    url: absoluteUrl('/'),
     image: absoluteUrl(media.images.profile),
     address: {
       '@type': 'PostalAddress' as const,
@@ -87,8 +94,11 @@ export function personNode() {
     },
     knowsAbout: [
       'Artificial intelligence',
+      'Machine learning',
+      'Software engineering',
       'Web development',
       'Creative technology',
+      'Music production',
       'Music',
       'Photography',
       'Visual storytelling',
@@ -164,8 +174,7 @@ export function contactPageGraph(
         '@id': absoluteUrl('/contact'),
         url: absoluteUrl('/contact'),
         name: `Contact - ${identity.name}`,
-        description:
-          'Get in touch with Chiradeep about freelance work, collaborations, or a full-time role across AI, web, and creative technology.',
+        description: `Get in touch with ${identity.name} about freelance work, collaborations, or a full-time role across AI, web, and creative technology.`,
         isPartOf: { '@id': websiteId() },
         about: { '@id': personId() },
         mainEntity: { '@id': personId() },
@@ -236,15 +245,34 @@ export function bookGraph(books: readonly Book[]) {
   };
 }
 
+/**
+ * Project graph. Software products with a live or repo URL (or a declared stack)
+ * are typed as SoftwareApplication; everything else stays CreativeWork.
+ * No invented ratings, offers, or download claims.
+ */
 export function projectGraph(project: Project) {
+  const isSoftware = Boolean(project.liveUrl || project.repoUrl || project.stack.length > 0);
+  const external = [project.liveUrl, project.repoUrl].filter(
+    (href): href is string => typeof href === 'string' && href.startsWith('https://'),
+  );
   return {
     '@context': 'https://schema.org',
-    '@type': 'CreativeWork',
+    '@type': isSoftware ? ('SoftwareApplication' as const) : ('CreativeWork' as const),
     name: project.title,
     description: project.summary,
     url: absoluteUrl(`/projects/${project.slug}`),
     author: { '@id': personId() },
-    ...(project.liveUrl ? { sameAs: project.liveUrl } : {}),
+    ...(isSoftware
+      ? {
+          applicationCategory: 'DeveloperApplication',
+          ...(project.stack.length > 0 ? { keywords: project.stack.join(', ') } : {}),
+        }
+      : {}),
+    ...(external.length === 1
+      ? { sameAs: external[0] }
+      : external.length > 1
+        ? { sameAs: external }
+        : {}),
   };
 }
 

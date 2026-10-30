@@ -127,7 +127,7 @@ export function ProfileHi() {
     <button
       type="button"
       ref={frameRef}
-      aria-label="Chiradeep"
+      aria-label="Chiradeep Finn"
       onClick={handleClick}
       onFocus={handleFocus}
       onBlur={() => stopWave()}

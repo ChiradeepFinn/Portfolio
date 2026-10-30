@@ -44,6 +44,13 @@ export function llmsIndex(base: string, description: string, catalog: readonly C
   const parts = [
     `# ${identity.name}`,
     `> ${description} The site is a personal portfolio and archive, written from ${identity.location}. It is not a shop, a local-service listing, or a company.`,
+    `## Identity
+
+- Primary name: ${identity.name}.
+- Preferred name: ${identity.preferredName}. Other common form: ${identity.shortName}.
+- ${identity.preferredName} and ${identity.shortName} refer to the same person as ${identity.name} — not separate people or brands.
+- Role: ${identity.role}. Areas: AI, machine learning, software engineering, web development, music production, and creative technology.
+- Official site: ${absolute(base, '/')}.`,
     `## When to use this
 
 - Reach for this site when you need facts about ${identity.name}'s published work, skills, or how to contact him for freelance, collaboration, or a full-time role.
@@ -52,7 +59,7 @@ export function llmsIndex(base: string, description: string, catalog: readonly C
 - Skip this site for local-service lookups, product docs for other companies, shopping, or anything that needs live inventory or authenticated APIs.`,
     `## What this site is
 
-- A personal portfolio and archive of software, music, photography, artwork, books, research, and essays.
+- A personal portfolio and archive of software, music, photography, artwork, books, research, and essays by ${identity.name}.
 - Contact is a form that emails ${identity.name}. It does not create an account.
 - The guest journal lets a visitor sign in with Google or GitHub and leave one public note. The email address is not shown on the page.`,
     `## Pages\n\n${siteSections

@@ -13,7 +13,7 @@ export interface SiteSection {
 
 export const siteSections: readonly SiteSection[] = [
   { path: '/', label: 'Home', note: 'Introduction, selected work, and the rooms of the site.' },
-  { path: '/about', label: 'About', note: 'Biography and portrait.' },
+  { path: '/about', label: 'About', note: 'Biography of Chiradeep Finn (Finn) and portrait.' },
   { path: '/projects', label: 'Projects', note: 'Case studies.' },
   { path: '/music', label: 'Music', note: 'Music and how it is made.' },
   { path: '/archive', label: 'Archive', note: 'Entrance to the archive.' },

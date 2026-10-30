@@ -1,8 +1,8 @@
 # Personal entity SEO + discoverability — design
 
 **Date:** 2026-10-29  
-**Status:** Corrected for inline execution — Chiradeep-only identity; plan test contracts reconciled; commits/pushes/deploys require separate explicit authorization  
-**Approved direction:** Scope **B**; homepage title option **3**; sole public identity **Chiradeep**; Option **2** inline execution with per-task checkpoints  
+**Status:** Superseded for identity — primary public name is now **Chiradeep Finn**, with alternate names **Finn** (preferred) and **Chiradeep** (owner-approved 2026-10-31). Structural SEO guidance below still applies; Chiradeep-only name policy does not.  
+**Approved direction:** Scope **B**; homepage title hybrid with full name; Option **2** inline execution with per-task checkpoints  
 **Production:** `https://chiradeep.me`  
 **Repo:** `E:\1portfolio` (GitHub remote `ChiradeepFinn/Portfolio`, Vercel `chiradeep-portfolio`)
 

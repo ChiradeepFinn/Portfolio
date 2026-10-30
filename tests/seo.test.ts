@@ -15,27 +15,35 @@ import {
   homeGraph,
   personNode,
   profilePageGraph,
+  projectGraph,
   siteDescription,
   withCanonical,
 } from '../lib/seo';
-import { identity, socialProfiles } from '../lib/site';
+import { identity, personAlternateNames, socialProfiles } from '../lib/site';
 
 describe('seo structured data', () => {
   it('keeps the site description first-person and concise', () => {
-    assert.match(siteDescription, /^I'm Chiradeep/);
+    assert.match(siteDescription, /^I'm Chiradeep Finn/);
+    assert.match(siteDescription, /Finn for short/);
     assert.ok(siteDescription.length <= 160);
   });
 
   it('exports the approved homepage title constant', () => {
-    assert.equal(HOME_PAGE_TITLE, 'Chiradeep - Creative Technologist, AI & Web');
+    assert.equal(HOME_PAGE_TITLE, 'Chiradeep Finn - Creative Technologist, AI & Web');
   });
 
-  it('names the person Chiradeep only and omits alternateName', () => {
-    assert.equal(identity.name, 'Chiradeep');
-    assert.equal('fullName' in identity, false);
+  it('names the person Chiradeep Finn with Finn and Chiradeep alternates', () => {
+    assert.equal(identity.name, 'Chiradeep Finn');
+    assert.equal(identity.preferredName, 'Finn');
+    assert.equal(identity.shortName, 'Chiradeep');
+    assert.equal(identity.firstName, 'Finn');
+    assert.deepEqual([...personAlternateNames], ['Finn', 'Chiradeep']);
     const person = personNode();
-    assert.equal(person.name, 'Chiradeep');
-    assert.equal(Object.hasOwn(person, 'alternateName'), false);
+    assert.equal(person.name, 'Chiradeep Finn');
+    assert.deepEqual(person.alternateName, ['Finn', 'Chiradeep']);
+    assert.equal(person.givenName, 'Chiradeep');
+    assert.equal(person.familyName, 'Finn');
+    assert.match(person.url, /\/$/);
   });
 
   it('emits WebSite + Person for site name guidance', () => {
@@ -48,12 +56,14 @@ describe('seo structured data', () => {
       name: string;
       alternateName: string[];
     };
-    assert.equal(site.name, 'Chiradeep');
+    assert.equal(site.name, 'Chiradeep Finn');
     assert.ok(site.alternateName.includes('chiradeep.me'));
     const person = graph['@graph'].find((node) => node['@type'] === 'Person') as {
       description: string;
+      alternateName: string[];
     };
     assert.equal(person.description, siteDescription);
+    assert.deepEqual(person.alternateName, ['Finn', 'Chiradeep']);
   });
 
   it('aligns WebSite and WebPage names with approved branding', () => {
@@ -67,7 +77,7 @@ describe('seo structured data', () => {
     };
     assert.ok(siteNode);
     assert.ok(pageNode);
-    assert.equal(siteNode.name, 'Chiradeep');
+    assert.equal(siteNode.name, 'Chiradeep Finn');
     assert.equal(pageNode.name, HOME_PAGE_TITLE);
     const allowedSiteAlts = new Set(['CF°', 'Chiradeep Portfolio', 'chiradeep.me']);
     for (const alt of siteNode.alternateName ?? []) {
@@ -75,12 +85,12 @@ describe('seo structured data', () => {
     }
   });
 
-  it('marks About as a ProfilePage', () => {
+  it('marks About as a ProfilePage with the same Person entity', () => {
     const page = profilePageGraph();
     assert.equal(page['@type'], 'ProfilePage');
     assert.equal(page.mainEntity['@type'], 'Person');
-    assert.equal(page.mainEntity.name, 'Chiradeep');
-    assert.equal(Object.hasOwn(page.mainEntity, 'alternateName'), false);
+    assert.equal(page.mainEntity.name, 'Chiradeep Finn');
+    assert.deepEqual(page.mainEntity.alternateName, ['Finn', 'Chiradeep']);
   });
 
   it('builds breadcrumb trails with positions and omits item on the last crumb', () => {
@@ -118,6 +128,17 @@ describe('seo structured data', () => {
     assert.equal('datePublished' in article, false);
   });
 
+  it('types software projects as SoftwareApplication without invented ratings', async () => {
+    const projects = publishedProjects(await getProjects());
+    const sample = projects[0];
+    assert.ok(sample, 'expected at least one published project');
+    const graph = projectGraph(sample);
+    assert.equal(graph['@type'], 'SoftwareApplication');
+    assert.equal('aggregateRating' in graph, false);
+    assert.equal('offers' in graph, false);
+    assert.equal(graph.author['@id'].includes('#person'), true);
+  });
+
   it('sets relative canonical and openGraph url to the path argument', () => {
     for (const path of ['/', '/about', '/projects'] as const) {
       const meta = withCanonical(path, {
@@ -125,8 +146,9 @@ describe('seo structured data', () => {
         description: 'Sample description for tests.',
       });
       assert.equal(meta.alternates?.canonical, path);
-      const openGraph = meta.openGraph as { url?: string };
+      const openGraph = meta.openGraph as { url?: string; siteName?: string };
       assert.equal(openGraph.url, path);
+      assert.equal(openGraph.siteName, identity.name);
     }
   });
 
