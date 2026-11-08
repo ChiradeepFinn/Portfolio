@@ -25,7 +25,6 @@ export async function FeaturedArtwork() {
           </>
         }
         cta={{ label: 'Enter gallery', href: '/archive/artwork' }}
-        accentClassName="text-accent-rose"
       />
 
       <div className="mt-14 grid gap-6 lg:grid-cols-12 lg:gap-8">

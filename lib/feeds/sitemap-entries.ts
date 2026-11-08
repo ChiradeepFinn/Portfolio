@@ -1,6 +1,7 @@
-import { getProjects, getResearchStudies } from '@/lib/content';
+import { getBooks, getProjects, getResearchStudies } from '@/lib/content';
 import { loadCollection, publicArticles } from '@/lib/mdx/files';
 import { publishedProjects } from '@/lib/feeds/catalog';
+import { media } from '@/lib/media';
 import { listPublicImages } from '@/lib/public-images';
 
 export type SitemapChangeFreq = 'weekly' | 'monthly';
@@ -21,10 +22,16 @@ export type SitemapEntry = {
  * feed catalog uses. Markdown twins and `/api/*` are never listed.
  */
 export async function collectSitemapEntries(): Promise<readonly SitemapEntry[]> {
-  const [allProjects, studies] = await Promise.all([getProjects(), Promise.resolve(getResearchStudies())]);
+  const [allProjects, allBooks, studies] = await Promise.all([
+    getProjects(),
+    getBooks(),
+    Promise.resolve(getResearchStudies()),
+  ]);
   const projects = publishedProjects(allProjects);
+  const publishedBooks = allBooks.filter((book) => !book.isPlaceholder && book.title.trim().length > 0);
   const photographyImages = listPublicImages('photography');
   const artworkImages = listPublicImages('artwork');
+  const bookImages = publishedBooks.length > 0 ? [media.images.bookCover] : undefined;
 
   const entries: SitemapEntry[] = [
     { path: '/', changefreq: 'weekly', priority: 1 },
@@ -47,7 +54,12 @@ export async function collectSitemapEntries(): Promise<readonly SitemapEntry[]> 
       priority: 0.6,
       images: photographyImages,
     },
-    { path: '/archive/books', changefreq: 'weekly', priority: 0.5 },
+    {
+      path: '/archive/books',
+      changefreq: 'weekly',
+      priority: 0.5,
+      images: bookImages,
+    },
     { path: '/archive/certifications', changefreq: 'weekly', priority: 0.5 },
     { path: '/timeline', changefreq: 'weekly', priority: 0.5 },
     { path: '/philosophy', changefreq: 'weekly', priority: 0.6 },
@@ -56,6 +68,7 @@ export async function collectSitemapEntries(): Promise<readonly SitemapEntry[]> 
     { path: '/journal', changefreq: 'weekly', priority: 0.5 },
     { path: '/privacy', changefreq: 'monthly', priority: 0.2 },
     { path: '/terms', changefreq: 'monthly', priority: 0.2 },
+    { path: '/sitemap', changefreq: 'monthly', priority: 0.3 },
     ...studies.map((study) => ({
       path: `/archive/research/${study.slug}`,
       changefreq: 'weekly' as const,
@@ -67,12 +80,17 @@ export async function collectSitemapEntries(): Promise<readonly SitemapEntry[]> 
         changefreq: 'weekly' as const,
         priority: 0.6,
         lastmod: article.publishedAt,
+        ...(article.coverImage ? { images: [article.coverImage] as const } : {}),
       })),
     ),
     ...projects.map((project) => ({
       path: `/projects/${project.slug}`,
       changefreq: 'monthly' as const,
       priority: 0.7,
+      images: listPublicImages('screenshots').filter((href) => {
+        const name = decodeURIComponent(href.split('/').pop() ?? '').toLowerCase();
+        return name.startsWith(`${project.slug}-`);
+      }),
     })),
   ];
 

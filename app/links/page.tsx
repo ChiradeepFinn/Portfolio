@@ -37,7 +37,7 @@ export default function LinksPage() {
                   <a
                     href={profile.href}
                     target={profile.href.startsWith('mailto:') ? undefined : '_blank'}
-                    rel="noreferrer"
+                    rel={profile.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
                     className="group flex items-center justify-between gap-4 bg-surface px-6 py-5 transition-colors duration-300 hover:bg-surface-2"
                   >
                     <span className="text-sm text-foreground">{profile.label}</span>

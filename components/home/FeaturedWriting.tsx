@@ -17,7 +17,7 @@ export async function FeaturedWriting() {
     <Section border="top" atmosphere="atmos-paper">
       <div className="grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-3">
-          <p className="eyebrow text-warm-2">What I think</p>
+          <p className="eyebrow text-muted-2">What I think</p>
           <p className="meta mt-4">{entry.category}</p>
           {entry.published && <p className="meta mt-1">{entry.published}</p>}
         </div>

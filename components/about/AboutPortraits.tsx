@@ -3,23 +3,30 @@
 import { useEffect, useRef, useState } from 'react';
 import BounceCards from '@/components/ui/BounceCards';
 
+import { media } from '@/lib/media';
+
 const portraits = [
-  { src: '/images/about_pics/transit.jpg', alt: 'Chiradeep, seated on a bus at night.' },
-  { src: '/images/about_pics/studio.jpg', alt: 'Chiradeep, in a studio portrait.' },
-  { src: '/images/about_pics/wall.jpg', alt: 'Chiradeep, photographed against a pale wall.' },
+  { src: media.images.aboutPortraits.transit, alt: 'Chiradeep, seated on a bus at night.' },
+  { src: media.images.aboutPortraits.studio, alt: 'Chiradeep, in a studio portrait.' },
+  { src: media.images.aboutPortraits.wall, alt: 'Chiradeep, photographed against a pale wall.' },
 ];
 
-/** Wider fan than the pictures section, sized to stay inside the header slot. */
+/**
+ * Controlled fan for the about header.
+ * Image stays secondary to the copy: smaller cards, reserved height for the
+ * enter animation so the column does not shift when BounceCards mounts.
+ */
 function fanProps(width: number, count: number) {
-  const cardSize = width < 480 ? 136 : width < 720 ? 196 : 252;
-  const pushDistance = width < 480 ? 28 : width < 720 ? 52 : 64;
+  const cardSize = width < 420 ? 112 : width < 640 ? 132 : width < 900 ? 148 : 160;
+  const pushDistance = width < 420 ? 18 : width < 640 ? 24 : 30;
   const half = Math.max(1, (count - 1) / 2);
-  const halfBox = cardSize * 0.62;
+  const halfBox = cardSize * 0.58;
   const room = width / 2 - halfBox - pushDistance - 8;
-  const spread = Math.round(Math.max(36, Math.min(168, room / half)));
+  const spread = Math.round(Math.max(28, Math.min(78, room / half)));
+  const containerHeight = Math.round(cardSize * 1.28 + pushDistance * 0.35);
   return {
     containerWidth: Math.max(cardSize, Math.floor(width)),
-    containerHeight: width < 480 ? 220 : width < 720 ? 300 : 340,
+    containerHeight,
     cardSize,
     spread,
     pushDistance,
@@ -40,10 +47,15 @@ export function AboutPortraits() {
     return () => observer.disconnect();
   }, []);
 
-  const sized = fanProps(width || 360, portraits.length);
+  const sized = fanProps(width || 280, portraits.length);
 
   return (
-    <div ref={frame} className="about-portraits mx-auto min-w-0 w-full lg:mx-0 lg:justify-self-end">
+    <div
+      ref={frame}
+      className="about-portraits mx-auto w-full max-w-[18rem] min-w-0 px-1 py-2 sm:max-w-[20rem] md:max-w-[22rem] lg:mx-0 lg:max-w-[17.5rem] lg:justify-self-end lg:px-0 lg:py-1"
+      style={{ minHeight: sized.containerHeight }}
+      aria-label="Portrait photographs"
+    >
       {width > 0 ? (
         <BounceCards
           images={portraits}
@@ -51,21 +63,21 @@ export function AboutPortraits() {
           containerHeight={sized.containerHeight}
           cardSize={sized.cardSize}
           spread={sized.spread}
-          rotation={14}
-          arc={-4}
+          rotation={12}
+          arc={-3}
           pushDistance={sized.pushDistance}
-          hoverScale={1.06}
-          bounciness={0.35}
-          animationDelay={0.5}
-          animationStagger={0.5}
+          hoverScale={1.04}
+          bounciness={0.3}
+          animationDelay={0.35}
+          animationStagger={0.28}
           borderWidth={1}
           borderColor="var(--color-foreground)"
-          radius={25}
+          radius={18}
           shadow
           enableHover
         />
       ) : (
-        <div style={{ height: sized.containerHeight }} />
+        <div style={{ height: sized.containerHeight }} aria-hidden="true" />
       )}
     </div>
   );

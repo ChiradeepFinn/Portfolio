@@ -9,7 +9,7 @@ import { identity } from '@/lib/site';
 export const metadata: Metadata = withCanonical('/privacy', {
   title: 'Privacy Policy',
   description:
-    'What this site collects, why, who handles it, how long it is kept, and how to have it removed.',
+    'What this site collects, why it is kept, who handles it, how long it stays, and how to ask for removal — written in plain language.',
 });
 
 const EFFECTIVE = '25 October 2026';
@@ -46,14 +46,19 @@ export default function PrivacyPage() {
       body: (
         <>
           <P>
-            The site asks for personal details through the contact form, and through the guest journal if you choose to
-            sign in and leave a note. Hosting still records access logs, described below.
+            The site asks for personal details through the contact form, through the Cal.com booking embed if you choose
+            a call, and through the guest journal if you sign in and leave a note. Hosting still records access logs,
+            described below.
           </P>
           <Table
             rows={[
               {
                 term: 'The contact form',
                 text: 'Your name, email address, subject, and message. Only if you submit the form. Nothing is sent as you type. Delivery is through Resend; a database copy in Supabase is attempted afterwards and is best-effort.',
+              },
+              {
+                term: 'Booking a call',
+                text: 'If you use the calendar on the contact page, Cal.com hosts that booking flow. Details you enter there (name, email, time, notes) go to Cal.com so the meeting can be scheduled. Opening the embed loads Cal.com in place.',
               },
               {
                 term: 'Performance metrics',
@@ -97,7 +102,7 @@ export default function PrivacyPage() {
               'No advertising, retargeting, session-replay, or marketing pixels. None are installed.',
               'No product-analytics suite that builds a browse history about you. Vercel Speed Insights is limited to performance metrics, described above.',
               'No newsletter list. An account exists only if you choose Google or GitHub on the guest journal.',
-              'No advertising cookies. The only cookie this site sets is the journal session described above, and only after you sign in.',
+              'No advertising cookies. The only cookie this site sets itself is the journal session described above, and only after you sign in. The Cal.com booking embed may set its own cookies when that calendar loads.',
               'No fingerprinting, no cross-site tracking, and no attempt to work out who you are from how you browse.',
               'The typefaces are files served with this site. Opening a page does not call a third-party font service.',
               'No profiling for advertising, and no automated decision about you of any kind.',
@@ -118,6 +123,7 @@ export default function PrivacyPage() {
           <P>
             Contact-form data is used for one purpose: to read your message and reply to it. It is not used for
             marketing, it is not added to any list, and I will not write to you about anything you did not ask about.
+            A Cal.com booking is used only to schedule the call you asked for.
           </P>
           <P>
             The guest journal is there so a visitor can leave one public note. The sign-in exists so the page can keep
@@ -138,8 +144,8 @@ export default function PrivacyPage() {
       body: (
         <>
           <P>
-            A contact message, and a guest-journal sign-in if you start one, pass through the services below. Each
-            handles the data only to do the job described.
+            A contact message, a Cal.com booking if you start one, and a guest-journal sign-in if you start one, pass
+            through the services below. Each handles the data only to do the job described.
           </P>
           <Table
             rows={[
@@ -158,6 +164,10 @@ export default function PrivacyPage() {
               {
                 term: 'Resend',
                 text: 'Delivers the contact message to my inbox as an email. A successful form submission means Resend accepted that email.',
+              },
+              {
+                term: 'Cal.com',
+                text: 'Hosts the booking calendar on the contact page. If you book a call, Cal.com processes the details you enter there under its own terms and privacy policy.',
               },
               {
                 term: 'My email provider',
@@ -257,8 +267,8 @@ export default function PrivacyPage() {
       label: 'Links to other sites',
       body: (
         <P>
-          The site links to external profiles and project addresses, including GitHub, LinkedIn, Instagram, Snapchat,
-          Discord, BandLab, and the live pages of the case studies. Once you follow a link, that site’s own policy
+          The site links to external profiles and project addresses, including GitHub, LinkedIn, Instagram, YouTube,
+          Facebook, Snapchat, Discord, BandLab, and the live pages of the case studies. Once you follow a link, that site’s own policy
           applies, not this one. I am not responsible for what they collect.
         </P>
       ),

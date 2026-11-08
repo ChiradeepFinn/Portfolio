@@ -4,6 +4,7 @@ import {
   Bot,
   Camera,
   Circle,
+  Facebook,
   FileText,
   FlaskConical,
   FolderOpen,
@@ -26,6 +27,7 @@ import {
   ScrollText,
   Shield,
   User,
+  Youtube,
   type LucideIcon,
 } from 'lucide-react';
 import { documentHrefs, footerBio, footerColumns, footerLegal, identity, type FooterLink } from '@/lib/site';
@@ -55,6 +57,8 @@ const icons: Record<string, LucideIcon> = {
   Github,
   Linkedin,
   Instagram,
+  Youtube,
+  Facebook,
   Ghost,
   Gamepad2,
   Mail,
@@ -128,7 +132,7 @@ export function Footer() {
               />
             </span>
             <span className="font-display text-[1.25rem] leading-none text-foreground italic">
-              {identity.firstName}
+              {identity.shortName}
             </span>
           </div>
           <p className="mt-3 max-w-[16.5rem] text-[0.78rem] leading-5 text-muted">{footerBio}</p>

@@ -68,7 +68,7 @@ export function MagneticLink({
           ref={ref}
           href={href}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           className={className_}

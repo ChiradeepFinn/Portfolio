@@ -96,7 +96,7 @@ function LinkFact({
           <a
             href={href}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-accent-blue transition-opacity duration-200 hover:opacity-80"
           >
             {icon === 'globe' ? (

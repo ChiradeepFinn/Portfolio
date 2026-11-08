@@ -1,25 +1,35 @@
 import type { Metadata } from 'next';
-import { withCanonical } from '@/lib/seo';
+import { breadcrumbGraph, withCanonical } from '@/lib/seo';
 import { getCertifications } from '@/lib/content';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Section } from '@/components/layout/Section';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { JsonLd } from '@/components/seo/JsonLd';
 import { Reveal } from '@/components/ui/Reveal';
 
 export const metadata: Metadata = withCanonical('/archive/certifications', {
   title: 'Certifications',
-  description: 'Courses and credentials.',
+  description:
+    'Courses and credentials kept short on purpose — context for the work Chiradeep Finn ships, never the argument for hiring.',
 });
 
 export default async function CertificationsPage() {
   const certifications = await getCertifications();
+  const crumbs = [
+    { name: 'Archive', path: '/archive' },
+    { name: 'Certifications' },
+  ] as const;
+  const crumbGraph = breadcrumbGraph(crumbs);
 
   return (
     <>
+      {crumbGraph ? <JsonLd data={crumbGraph} /> : null}
       <PageHeader
         eyebrow="Certifications"
         title="The proof shelf."
         description="Kept short on purpose. Credentials are context for the work, not the argument for it."
         atmosphere="atmos-spotlight"
+        trail={<Breadcrumbs crumbs={crumbs} />}
       />
 
       <Section className="pt-0" width="narrow">
@@ -44,10 +54,10 @@ export default async function CertificationsPage() {
                   <a
                     href={certification.verifyUrl}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="link-underline shrink-0 text-xs text-muted"
                   >
-                    Verify
+                    Verify credential
                   </a>
                 )}
               </Reveal>

@@ -4,6 +4,7 @@ import { buildContactEmail, escapeHtml } from '../lib/contact/email';
 import { rateLimitKey } from '../lib/contact/client-key';
 import { createIdempotencyCache } from '../lib/contact/idempotency';
 import { decideRateLimit, MemoryRateLimitStore, type RateLimitStore } from '../lib/contact/rate-limit';
+import { contactPrefillFromSearch } from '../lib/contact/prefill';
 import { honeypotTripped, parseContactPayload } from '../lib/contact/validate';
 
 const valid = {
@@ -12,6 +13,19 @@ const valid = {
   subject: 'Hello',
   message: 'This is a real message.',
 };
+
+describe('contact prefill', () => {
+  it('prefills only for the free-copy deep link', () => {
+    assert.equal(contactPrefillFromSearch({}), null);
+    assert.equal(contactPrefillFromSearch({ request: 'collaborate' }), null);
+
+    const drafted = contactPrefillFromSearch({ request: 'free-copy', book: 'book-one' });
+    assert.ok(drafted);
+    assert.match(drafted.subject, /The Inward Silhouette/);
+    assert.match(drafted.message, /free copy of The Inward Silhouette/);
+    assert.doesNotMatch(drafted.message, /\u2014/);
+  });
+});
 
 describe('contact validation', () => {
   it('accepts a normal payload and lowercases the email', () => {

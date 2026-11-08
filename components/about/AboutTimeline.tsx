@@ -5,9 +5,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useReducedMotion } from 'framer-motion';
 import type { TimelineChapter } from '@/lib/data/timeline';
+import { media } from '@/lib/media';
 
 const portrait = {
-  src: '/images/about_pics/transit.jpg',
+  src: media.images.aboutPortraits.transit,
   /** The face sits high in the frame, so the circle crops there. */
   position: 'center 18%',
 } as const;

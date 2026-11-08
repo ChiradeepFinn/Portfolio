@@ -1,25 +1,20 @@
 import type { Metadata } from 'next';
-import { withCanonical } from '@/lib/seo';
+import { breadcrumbGraph, withCanonical } from '@/lib/seo';
 import Link from 'next/link';
 import { getResearchStudies } from '@/lib/content';
 import type { ResearchStatus, ResearchStudy } from '@/lib/data/research';
-import { researchWorld } from '@/lib/data/worlds';
 import { Section } from '@/components/layout/Section';
+import { JsonLd } from '@/components/seo/JsonLd';
 import { Reveal } from '@/components/ui/Reveal';
 import { ArrowPill } from '@/components/ui/ArrowPill';
 import { Schematic } from '@/components/research/Schematic';
 import { ResearchIntro } from '@/components/worlds/ResearchIntro';
 import { cn } from '@/lib/utils';
 
-const description = researchWorld.lead;
-
 export const metadata: Metadata = withCanonical('/archive/research', {
   title: 'Research',
-  description,
-  openGraph: {
-    title: 'Research',
-    description,
-  },
+  description:
+    'Machine learning meets creative work: music emotion across instrumental and vocal audio, and how writers judge AI-assisted ideas against independent review.',
 });
 
 const groups: readonly { readonly status: ResearchStatus; readonly id: string; readonly note: string }[] = [
@@ -37,25 +32,22 @@ const groups: readonly { readonly status: ResearchStatus; readonly id: string; r
 
 export default function ResearchPage() {
   const studies = getResearchStudies();
-  const inProgress = studies.filter((study) => study.status === 'In progress').length;
-  const done = studies.filter((study) => study.status === 'Done').length;
+  const crumbs = breadcrumbGraph([
+    { name: 'Archive', path: '/archive' },
+    { name: 'Research' },
+  ]);
 
   return (
     <>
+      {crumbs ? <JsonLd data={crumbs} /> : null}
       <ResearchIntro studies={studies} />
 
       <Section id="investigations" className="scroll-mt-28 pt-0" labelledBy="investigations-heading">
         <h2 id="investigations-heading" className="sr-only">
           Investigations
         </h2>
-        <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-3 border-b border-border pb-6">
-          <p className="text-sm text-muted">{tally(studies.length, 'investigations')}</p>
-          <p className="text-sm text-muted">
-            {tally(inProgress, 'In progress')} · {tally(done, 'Done')}
-          </p>
-        </div>
 
-        <div className="mt-16 grid gap-20">
+        <div className="grid gap-20">
           {groups.map((group) => {
             const items = studies.filter((study) => study.status === group.status);
             if (items.length === 0) return null;
@@ -122,6 +114,3 @@ function StudyCard({ study }: { readonly study: ResearchStudy }) {
   );
 }
 
-function tally(count: number, label: string) {
-  return `${String(count).padStart(2, '0')} ${label}`;
-}

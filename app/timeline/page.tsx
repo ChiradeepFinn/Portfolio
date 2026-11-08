@@ -10,7 +10,7 @@ import { GradientWord } from '@/components/ui/GradientWord';
 export const metadata: Metadata = withCanonical('/timeline', {
   title: 'Timeline',
   description:
-    'A life in progress. Curiosity, across technology, music, writing, and research - still being written.',
+    'A life in progress — curiosity across technology, music, writing, and research, still being written rather than presented as a finished résumé.',
 });
 
 const disciplines = ['Technology', 'Music', 'Words', 'Ideas'] as const;
@@ -20,7 +20,7 @@ export default function TimelinePage() {
     <>
       <header className="relative">
         <Container className="pt-36 pb-6 sm:pt-44 sm:pb-8">
-          <p className="eyebrow text-accent-blue">The story so far</p>
+          <p className="eyebrow text-muted-2">The story so far</p>
           <h1 className="display mt-5 max-w-3xl text-balance text-[clamp(2.6rem,6.4vw,4.75rem)] text-foreground">
             A life <GradientWord>in progress.</GradientWord>
           </h1>

@@ -7,7 +7,8 @@ import { GradientWord } from '@/components/ui/GradientWord';
 
 export const metadata: Metadata = withCanonical('/now', {
   title: 'Now',
-  description: 'What I am working on at the moment.',
+  description:
+    'A current snapshot of what Chiradeep Finn is building, recording, reading, and thinking about — left blank until an entry is real.',
 });
 
 /**

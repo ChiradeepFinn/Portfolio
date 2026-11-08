@@ -25,7 +25,6 @@ export async function FeaturedMusic() {
         }
         lede="Dream pop and bedroom recordings - the same ideas as the code, in a language that does not need explaining."
         cta={{ label: 'Explore music', href: '/music' }}
-        accentClassName="text-accent-purple"
       />
 
       <Reveal className="mt-12">

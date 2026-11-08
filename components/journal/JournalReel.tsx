@@ -46,7 +46,7 @@ export function JournalReel({ notes }: { readonly notes: readonly JournalSlipNot
       onPointerEnter={() => setPaused(true)}
       onPointerLeave={() => setPaused(false)}
     >
-      <p className="eyebrow text-warm-2">Already in the margin</p>
+      <p className="eyebrow text-muted-2">Already in the margin</p>
       {/* Every quote keeps its cell, so the block is as tall as the longest one and nothing jumps. */}
       <div className="mt-7 grid border-l border-border pl-6">
         {quotes.map((note, index) => (

@@ -28,7 +28,7 @@ export const siteSections: readonly SiteSection[] = [
   { path: '/bucket-list', label: 'Bucket list', note: 'Intentions, left blank until they are real.' },
   { path: '/links', label: 'Links', note: 'Profiles elsewhere.' },
   { path: '/journal', label: 'Guest journal', note: 'Public notes left by visitors who signed in.' },
-  { path: '/contact', label: 'Contact', note: 'Contact form and direct email.' },
+  { path: '/contact', label: 'Contact', note: 'Contact form, Cal.com booking, and direct email.' },
   { path: '/privacy', label: 'Privacy', note: 'What the site collects.' },
   { path: '/terms', label: 'Terms', note: 'How the work may be read and quoted.' },
 ];

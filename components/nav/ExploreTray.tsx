@@ -17,6 +17,7 @@ import {
   User,
   type LucideIcon,
 } from 'lucide-react';
+import { media } from '@/lib/media';
 
 interface TrayLink {
   readonly label: string;
@@ -38,7 +39,7 @@ const featureLinks: readonly (TrayLink & {
     href: '/archive/photography',
     icon: Camera,
     wash: 'from-[var(--explore-photo-from)] via-[var(--explore-photo-via)] to-[var(--explore-photo-to)]',
-    image: '/images/photography_pic.png',
+    image: media.images.photographyPic,
   },
   {
     label: 'About',
@@ -47,7 +48,7 @@ const featureLinks: readonly (TrayLink & {
     href: '/about',
     icon: User,
     wash: 'from-[var(--explore-about-from)] via-[var(--explore-about-via)] to-[var(--explore-about-to)]',
-    image: '/images/about_pic.webp',
+    image: media.images.aboutPic,
   },
 ];
 

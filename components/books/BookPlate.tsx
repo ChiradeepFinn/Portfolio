@@ -3,13 +3,14 @@
 import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { useReducedMotion } from 'framer-motion';
+import { media } from '@/lib/media';
 
 /**
  * A short hardcover, about seventy pages. The rest angle is already in
  * perspective. Moving the pointer tilts it; a drag turns it and stays.
  * The cover image is not a drag source.
  */
-const coverSrc = '/images/The Inward Silhouette.webp';
+const coverSrc = media.images.bookCover;
 
 const restY = -36;
 const restX = 10;

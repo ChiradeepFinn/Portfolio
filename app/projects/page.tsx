@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { withCanonical } from '@/lib/seo';
-import Link from 'next/link';
 import { getProjects } from '@/lib/content';
 import { siteStudy } from '@/lib/data/site-stack';
 import { projectsWorld } from '@/lib/data/worlds';
@@ -12,7 +11,7 @@ import { IntroFrame, WorldHeadline, WorldIndex } from '@/components/worlds/World
 export const metadata: Metadata = withCanonical('/projects', {
   title: 'Projects',
   description:
-    'Selected projects and case studies - AI products, web apps, and creative technology builds from concept through ship.',
+    'Selected projects and case studies by Chiradeep Finn — AI products, web apps, and creative technology builds from concept through ship.',
 });
 
 export default async function ProjectsPage() {
@@ -25,35 +24,14 @@ export default async function ProjectsPage() {
     <>
       <IntroFrame atmosphere="atmos-blueprint">
         <div className="lg:flex lg:items-start lg:justify-between lg:gap-x-10">
-          <WorldIndex label={projectsWorld.label} className="text-accent-blue lg:order-2 lg:pt-3" />
+          <WorldIndex label={projectsWorld.label} className="text-muted-2 lg:order-2 lg:pt-3" />
           <div className="mt-5 min-w-0 lg:order-1 lg:mt-0 lg:max-w-3xl">
             <WorldHeadline
               headline={projectsWorld.headline}
               className="text-[clamp(2.3rem,5.2vw,4.1rem)]"
             />
-            <p className="body-copy mt-6 max-w-xl">{projectsWorld.lead}</p>
           </div>
         </div>
-        <ul className="mt-8 flex flex-wrap gap-x-5 gap-y-2">
-          {studies.map((project) => (
-            <li key={project.slug}>
-              <Link
-                href={`#${project.slug}`}
-                className="text-sm text-muted transition-colors duration-200 hover:text-foreground"
-              >
-                {project.title}
-              </Link>
-            </li>
-          ))}
-          <li>
-            <Link
-              href={`#${siteStudy.id}`}
-              className="text-sm text-muted transition-colors duration-200 hover:text-foreground"
-            >
-              {siteStudy.title}
-            </Link>
-          </li>
-        </ul>
       </IntroFrame>
 
       <Section id="studies" className="pt-0" labelledBy="studies-heading">

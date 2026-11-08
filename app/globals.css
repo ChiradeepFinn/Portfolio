@@ -11,7 +11,7 @@
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
 
-  --color-background: #000000;
+  --color-background: #0d0d0f;
   --color-surface: #0a0a0a;
   --color-surface-2: #101014;
   --color-foreground: #f4f4f4;
@@ -219,8 +219,8 @@
   */
   html[data-theme='light'] [data-theme-scope='dark'] {
     color-scheme: dark;
-    --bg: #000000;
-    --color-background: #000000;
+    --bg: #0d0d0f;
+    --color-background: #0d0d0f;
     --color-surface: #0a0a0a;
     --color-surface-2: #101014;
     --color-foreground: #f4f4f4;
@@ -258,7 +258,7 @@
   html {
     /* Dark defaults live in this layer so the light theme, also in this
        layer, can override them. An unlayered :root value would win instead. */
-    --bg: #000000;
+    --bg: #0d0d0f;
     --glass-bg: rgba(14, 14, 20, 0.72);
     --glass-bg-scrolled: rgba(10, 10, 14, 0.86);
     --glass-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
@@ -339,6 +339,31 @@
   }
 
   :focus-visible {
+    outline: 2px solid var(--color-accent-blue);
+    outline-offset: 3px;
+  }
+
+  /* First focusable control: off-screen until keyboard focus reaches it. */
+  .skip-to-main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    padding: 0.7rem 1.1rem;
+    transform: translateY(-120%);
+    border: 1px solid var(--color-border-strong);
+    border-radius: 0.35rem;
+    background: var(--color-chrome);
+    color: var(--color-foreground);
+    font-size: 0.875rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    transition: transform 160ms var(--ease-cinematic);
+  }
+
+  .skip-to-main:focus,
+  .skip-to-main:focus-visible {
+    transform: translateY(0.75rem) translateX(0.75rem);
     outline: 2px solid var(--color-accent-blue);
     outline-offset: 3px;
   }
@@ -596,7 +621,7 @@
     letter-spacing: 0.14em;
     line-height: 1.4;
     text-transform: uppercase;
-    color: var(--color-muted);
+    color: var(--color-muted-2);
   }
 
   .body-copy {
@@ -650,7 +675,7 @@
     right: -1px;
     left: -1px;
     height: 200%;
-    background: #000000;
+    background: #0d0d0f;
     pointer-events: auto;
     opacity: 1;
     transform: translate3d(0, -100%, 0);
@@ -664,7 +689,7 @@
     bottom: 0;
     left: 0;
     height: 4.5rem;
-    background: linear-gradient(to top, transparent, #000000);
+    background: linear-gradient(to top, transparent, #0d0d0f);
   }
 
   .theme-curtain-light {
@@ -705,30 +730,26 @@
   }
 
   /*
-    Primary nav track. The frost is only the upper half; the lower half stays
-    a thin tint. The current link is a solid chip, not part of the glass.
+    Primary nav track. Matte chrome plate — opaque fill, no frost.
+    Matches search/control chrome; the current link stays a solid chip.
   */
   .nav-glass {
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, transparent 48%),
-      color-mix(in srgb, var(--color-chrome) 50%, transparent);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.24),
-      var(--nav-shadow);
+    background: var(--color-chrome);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: var(--nav-shadow);
   }
 
   html[data-theme='light'] .nav-glass {
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.7) 0%, transparent 48%),
-      color-mix(in srgb, var(--color-chrome) 64%, transparent);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.9),
-      var(--nav-shadow);
+    background: var(--color-chrome);
+    box-shadow: var(--nav-shadow);
   }
 
   @media (prefers-reduced-transparency: reduce) {
     .nav-glass {
       background: var(--color-chrome);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
     }
   }
 
@@ -1659,5 +1680,46 @@
 [data-offscreen],
 [data-offscreen] * {
   animation-play-state: paused;
+}
+
+/* Route loading: typographic placeholder, not a spinner. */
+.route-loading-track {
+  position: relative;
+  height: 1px;
+  max-width: 12rem;
+  overflow: hidden;
+  background: var(--color-border);
+}
+
+.route-loading-bar {
+  display: block;
+  height: 100%;
+  width: 42%;
+  background: var(--color-foreground);
+  opacity: 0.55;
+  transform: translateX(-120%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes route-loading-sweep {
+    from {
+      transform: translateX(-120%);
+    }
+    to {
+      transform: translateX(280%);
+    }
+  }
+
+  .route-loading-bar {
+    animation: route-loading-sweep 1.45s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-loading-bar {
+    width: 100%;
+    opacity: 0.35;
+    transform: none;
+  }
 }
 

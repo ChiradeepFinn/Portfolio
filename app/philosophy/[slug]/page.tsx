@@ -4,7 +4,14 @@ import { LongformArticle } from '@/components/mdx/LongformArticle';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { loadCollection, publicArticles } from '@/lib/mdx/files';
 import { getPublicMdx } from '@/lib/mdx/registry';
-import { articleGraph, breadcrumbGraph, markdownAlternate, withCanonical } from '@/lib/seo';
+import {
+  articleGraph,
+  breadcrumbGraph,
+  fitDocumentTitle,
+  fitMetaDescription,
+  markdownAlternate,
+  withCanonical,
+} from '@/lib/seo';
 
 interface PageProps {
   readonly params: Promise<{ readonly slug: string }>;
@@ -19,13 +26,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const article = getPublicMdx('essays', slug);
   if (!article) return { title: 'Essay not found', robots: { index: false, follow: false } };
 
+  const description = fitMetaDescription(article.meta.summary);
+  const title = fitDocumentTitle(article.meta.title);
   return withCanonical(article.meta.href, {
-    title: article.meta.title,
-    description: article.meta.summary,
+    title: { absolute: title },
+    description,
     alternates: { types: markdownAlternate(article.meta.href) },
     openGraph: {
-      title: article.meta.title,
-      description: article.meta.summary,
+      title,
+      description,
       type: 'article',
     },
   });

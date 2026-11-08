@@ -9,9 +9,14 @@ import { markdownTwinSuccessHeaders } from '../lib/http/markdown-twin-headers';
 import { loadCollection, publicArticles } from '../lib/mdx/files';
 import {
   HOME_PAGE_TITLE,
+  META_DESCRIPTION_MAX,
+  META_DESCRIPTION_MIN,
+  PAGE_TITLE_MAX,
   articleGraph,
   breadcrumbGraph,
   contactPageGraph,
+  fitDocumentTitle,
+  fitMetaDescription,
   homeGraph,
   personNode,
   profilePageGraph,
@@ -19,17 +24,142 @@ import {
   siteDescription,
   withCanonical,
 } from '../lib/seo';
+import { getResearchStudies } from '../lib/content';
 import { identity, personAlternateNames, socialProfiles } from '../lib/site';
 
+function assertMetaDescriptionLength(description: string, label: string) {
+  assert.ok(
+    description.length >= META_DESCRIPTION_MIN,
+    `${label} description too short (${description.length}): ${description}`,
+  );
+  assert.ok(
+    description.length <= META_DESCRIPTION_MAX,
+    `${label} description too long (${description.length}): ${description}`,
+  );
+}
+
 describe('seo structured data', () => {
-  it('keeps the site description first-person and concise', () => {
+  it('keeps the site description first-person and within snippet bounds', () => {
     assert.match(siteDescription, /^I'm Chiradeep Finn/);
     assert.match(siteDescription, /Finn for short/);
-    assert.ok(siteDescription.length <= 160);
+    assertMetaDescriptionLength(siteDescription, 'siteDescription');
+  });
+
+  it('fits long copy into the meta description window without inventing text', () => {
+    const long =
+      'This project examines whether writers judgments align with independent evaluators across human-only and AI-assisted ideation conditions using a public experimental dataset and exploratory measures that require independent validation afterward.';
+    const fitted = fitMetaDescription(long);
+    assert.ok(fitted.endsWith('…'));
+    assert.ok(fitted.length <= META_DESCRIPTION_MAX);
+    assert.ok(fitted.length >= META_DESCRIPTION_MIN - 15);
+    assert.equal(fitMetaDescription('Short enough already.').endsWith('…'), false);
+  });
+
+  it('fits long document titles under the SERP window and keeps the brand suffix', () => {
+    const long =
+      'Beyond Genre Classification: Evaluating Machine Learning Models for Music Emotion Recognition Across Instrumental and Vocal Audio';
+    const fitted = fitDocumentTitle(long);
+    assert.ok(fitted.length <= PAGE_TITLE_MAX, `title too long (${fitted.length}): ${fitted}`);
+    assert.ok(fitted.startsWith('Beyond Genre'));
+    assert.ok(fitted.includes(identity.name));
+    assert.equal(fitDocumentTitle('Sidequest'), `Sidequest - ${identity.name}`);
+  });
+
+  it('keeps research study document titles within the SERP window', () => {
+    for (const study of getResearchStudies()) {
+      const title = fitDocumentTitle(study.title);
+      assert.ok(title.length <= PAGE_TITLE_MAX, `${study.slug}: ${title.length} ${title}`);
+    }
   });
 
   it('exports the approved homepage title constant', () => {
     assert.equal(HOME_PAGE_TITLE, 'Chiradeep Finn - Creative Technologist, AI & Web');
+    assert.ok(HOME_PAGE_TITLE.length <= PAGE_TITLE_MAX);
+  });
+
+  it('keeps static route titles unique and under the SERP window with the brand template', async () => {
+    const { readdir, readFile } = await import('node:fs/promises');
+    const path = await import('node:path');
+    const brandSuffix = ` - ${identity.name}`;
+
+    async function collectPages(dir: string): Promise<string[]> {
+      const entries = await readdir(dir, { withFileTypes: true });
+      const files: string[] = [];
+      for (const entry of entries) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) files.push(...(await collectPages(full)));
+        else if (entry.name === 'page.tsx') files.push(full);
+      }
+      return files;
+    }
+
+    const pages = await collectPages(path.join(process.cwd(), 'app'));
+    const titles = new Map<string, string>();
+
+    for (const file of pages) {
+      const source = await readFile(file, 'utf8');
+      if (!source.includes('withCanonical(')) continue;
+      if (source.includes('generateMetadata')) continue;
+
+      const absolute = source.match(/title:\s*\{\s*absolute:\s*HOME_PAGE_TITLE\s*\}/);
+      if (absolute) {
+        titles.set(path.relative(process.cwd(), file), HOME_PAGE_TITLE);
+        continue;
+      }
+
+      const literal = source.match(/title:\s*(['"`])([^'"`]+)\1/);
+      if (!literal?.[2]) continue;
+      const documentTitle = `${literal[2]}${brandSuffix}`;
+      assert.ok(
+        documentTitle.length <= PAGE_TITLE_MAX,
+        `${path.relative(process.cwd(), file)} title too long (${documentTitle.length}): ${documentTitle}`,
+      );
+      titles.set(path.relative(process.cwd(), file), documentTitle);
+    }
+
+    assert.ok(titles.size >= 15, `expected static titles, got ${titles.size}`);
+    const unique = new Set(titles.values());
+    assert.equal(unique.size, titles.size, 'static page titles must be unique');
+  });
+
+  it('routes the archive Philosophy door to /philosophy', async () => {
+    const { readFile } = await import('node:fs/promises');
+    const source = await readFile(new URL('../app/archive/page.tsx', import.meta.url), 'utf8');
+    assert.match(source, /label:\s*'Philosophy'[\s\S]*?href:\s*'\/philosophy'/);
+    assert.equal(/label:\s*'Philosophy'[\s\S]*?href:\s*'\/about'/.test(source), false);
+  });
+
+  it('requires target=_blank external anchors to include noopener noreferrer', async () => {
+    const { readdir, readFile } = await import('node:fs/promises');
+    const path = await import('node:path');
+
+    async function collectSources(dir: string): Promise<string[]> {
+      const entries = await readdir(dir, { withFileTypes: true });
+      const files: string[] = [];
+      for (const entry of entries) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          if (entry.name === 'node_modules' || entry.name === '.next') continue;
+          files.push(...(await collectSources(full)));
+        } else if (/\.(tsx|jsx|ts|js)$/.test(entry.name)) files.push(full);
+      }
+      return files;
+    }
+
+    const roots = ['app', 'components'].map((name) => path.join(process.cwd(), name));
+    for (const root of roots) {
+      for (const file of await collectSources(root)) {
+        const source = await readFile(file, 'utf8');
+        if (!source.includes('target="_blank"') && !source.includes("target='_blank'")) continue;
+        const rel = path.relative(process.cwd(), file);
+        assert.ok(
+          /rel=\{[^}]*noopener noreferrer|rel=["']noopener noreferrer["']|rel=["']noreferrer noopener["']/.test(
+            source,
+          ),
+          `${rel} opens a new tab without noopener noreferrer`,
+        );
+      }
+    }
   });
 
   it('names the person Chiradeep Finn with Finn and Chiradeep alternates', () => {
@@ -79,7 +209,7 @@ describe('seo structured data', () => {
     assert.ok(pageNode);
     assert.equal(siteNode.name, 'Chiradeep Finn');
     assert.equal(pageNode.name, HOME_PAGE_TITLE);
-    const allowedSiteAlts = new Set(['CF°', 'Chiradeep Portfolio', 'chiradeep.me']);
+    const allowedSiteAlts = new Set([identity.preferredName, 'Chiradeep Portfolio', 'chiradeep.me']);
     for (const alt of siteNode.alternateName ?? []) {
       assert.ok(allowedSiteAlts.has(alt), `unexpected WebSite.alternateName: ${alt}`);
     }
@@ -150,6 +280,99 @@ describe('seo structured data', () => {
       assert.equal(openGraph.url, path);
       assert.equal(openGraph.siteName, identity.name);
     }
+  });
+
+  it('fills openGraph and twitter title/description from page metadata when omitted', () => {
+    const description =
+      'Selected projects and case studies by Chiradeep Finn across AI, web, and creative technology builds.';
+    const meta = withCanonical('/projects', {
+      title: 'Projects',
+      description,
+    });
+    const openGraph = meta.openGraph as { title?: string; description?: string };
+    const twitter = meta.twitter as {
+      title?: string;
+      description?: string;
+      card?: string;
+      site?: string;
+    };
+    assert.equal(openGraph.title, 'Projects');
+    assert.equal(openGraph.description, description);
+    assert.equal(twitter.title, 'Projects');
+    assert.equal(twitter.description, description);
+    assert.equal(twitter.card, 'summary_large_image');
+    assert.equal('site' in twitter, false);
+  });
+
+  it('does not invent a Twitter site handle when no X profile exists', () => {
+    assert.equal(
+      socialProfiles.some((profile) => /twitter|x\.com/i.test(profile.label) || /twitter\.com|x\.com/i.test(profile.href ?? '')),
+      false,
+    );
+  });
+
+  it('keeps static page metadata descriptions inside the snippet window', async () => {
+    const { readdir, readFile } = await import('node:fs/promises');
+    const path = await import('node:path');
+    const {
+      artworkWorld,
+      booksWorld,
+      musicWorld,
+      photographyWorld,
+    } = await import('../lib/data/worlds');
+
+    const worldLeads: Record<string, string> = {
+      'musicWorld.lead': musicWorld.lead,
+      'booksWorld.lead': booksWorld.lead,
+      'photographyWorld.lead': photographyWorld.lead,
+      'artworkWorld.lead': artworkWorld.lead,
+      siteDescription,
+    };
+
+    async function collectPages(dir: string): Promise<string[]> {
+      const entries = await readdir(dir, { withFileTypes: true });
+      const files: string[] = [];
+      for (const entry of entries) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) files.push(...(await collectPages(full)));
+        else if (entry.name === 'page.tsx') files.push(full);
+      }
+      return files;
+    }
+
+    const pages = await collectPages(path.join(process.cwd(), 'app'));
+    let checked = 0;
+
+    for (const file of pages) {
+      const source = await readFile(file, 'utf8');
+      if (!source.includes('withCanonical(')) continue;
+
+      const worldRef = source.match(
+        /description:\s*\n?\s*((?:music|books|photography|artwork)World\.lead|siteDescription)\b/,
+      );
+      const literal = source.match(/description:\s*\n?\s*(['"`])([\s\S]*?)\1/);
+
+      let description: string | undefined;
+      if (worldRef) {
+        description = worldLeads[worldRef[1] ?? ''];
+      } else if (literal) {
+        description = literal[2]?.replace(/\s+/g, ' ').trim();
+      }
+
+      // Dynamic generateMetadata pages are covered by fitMetaDescription instead.
+      if (!description) continue;
+      assertMetaDescriptionLength(description, path.relative(process.cwd(), file));
+      checked += 1;
+    }
+
+    assert.ok(checked >= 15, `expected to audit static metadata pages, checked ${checked}`);
+  });
+
+  it('includes the HTML sitemap route among public indexable entries', async () => {
+    const entries = await collectSitemapEntries();
+    assert.ok(entries.some((entry) => entry.path === '/'));
+    assert.ok(entries.some((entry) => entry.path === '/about'));
+    assert.ok(entries.some((entry) => entry.path === '/sitemap'));
   });
 
   it('keeps sameAs as https profile urls from socialProfiles only', () => {
@@ -235,9 +458,35 @@ describe('seo structured data', () => {
       const disallowList = Array.isArray(disallow) ? disallow : [disallow];
       assert.ok(disallowList.includes('/api/'));
       assert.ok(disallowList.includes('/auth/'));
+      for (const blocked of disallowList) {
+        assert.equal(typeof blocked === 'string' && /\.(css|js|png|jpe?g|webp|svg|ico)$/i.test(blocked), false);
+        assert.equal(blocked === '/_next/' || blocked === '/_next/static/', false);
+      }
+      const oai = rules.find((rule) => rule.userAgent === 'OAI-SearchBot');
+      assert.ok(oai);
+      assert.equal(oai.allow, '/');
     } finally {
       if (previous === undefined) delete process.env.NEXT_PUBLIC_SITE_URL;
       else process.env.NEXT_PUBLIC_SITE_URL = previous;
     }
+  });
+
+  it('defaults openGraph images with width and height via withCanonical', () => {
+    const meta = withCanonical('/about', {
+      title: 'About',
+      description:
+        "I'm Chiradeep Finn, Finn for short: a creative technologist from Karur. Who I am, what I build, and what drives the work across AI, web, music, and the arts.",
+    });
+    const images = (meta.openGraph as { images?: readonly { url: string; width: number; height: number }[] }).images;
+    assert.ok(images && images.length > 0);
+    assert.equal(images[0]?.width, 1200);
+    assert.equal(images[0]?.height, 630);
+  });
+
+  it('keeps the footer legal Sitemap link on the HTML sitemap route', async () => {
+    const { footerLegal } = await import('../lib/site');
+    const sitemap = footerLegal.find((link) => link.label === 'Sitemap');
+    assert.ok(sitemap);
+    assert.equal(sitemap.href, '/sitemap');
   });
 });

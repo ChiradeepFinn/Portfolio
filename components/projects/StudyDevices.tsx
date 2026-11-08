@@ -56,7 +56,7 @@ function SafariPair({
    * Below lg the open split is the default; lg+ uses rest → hover.
    */
   return (
-    <div className="relative w-[88%]" style={{ aspectRatio: '2.35 / 1' }}>
+    <div className="relative w-[106%]" style={{ aspectRatio: '2.35 / 1' }}>
       <div
         data-safari-frame="back"
         {...(!lift ? { 'data-safari-open': '' } : {})}
@@ -115,12 +115,12 @@ function AndroidFan({
    * lg+: sunk rest → lift + wider fan on group-hover.
    */
   return (
-    <div className="absolute" style={{ top: '2%', right: '4%', bottom: 0, left: '4%' }}>
+    <div className="absolute" style={{ top: '0%', right: '2%', bottom: '0%', left: '2%' }}>
       {/* Left */}
       <div
         className={cn(
           ease,
-          'absolute bottom-0 left-1/2 z-[1] w-[30%] origin-bottom',
+          'absolute bottom-0 left-1/2 z-[1] w-[27%] origin-bottom',
           '[filter:drop-shadow(0_18px_28px_rgba(0,0,0,0.4))]',
           lift
             ? cn(
@@ -139,7 +139,7 @@ function AndroidFan({
       <div
         className={cn(
           ease,
-          'absolute bottom-0 left-1/2 z-20 w-[34%] origin-bottom',
+          'absolute bottom-0 left-1/2 z-20 w-[30%] origin-bottom',
           '[filter:drop-shadow(0_22px_34px_rgba(0,0,0,0.46))]',
           lift
             ? cn(
@@ -158,7 +158,7 @@ function AndroidFan({
       <div
         className={cn(
           ease,
-          'absolute bottom-0 left-1/2 z-[2] w-[30%] origin-bottom',
+          'absolute bottom-0 left-1/2 z-[2] w-[27%] origin-bottom',
           '[filter:drop-shadow(0_18px_28px_rgba(0,0,0,0.4))]',
           lift
             ? cn(

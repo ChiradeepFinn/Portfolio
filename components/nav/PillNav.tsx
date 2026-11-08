@@ -48,7 +48,7 @@ export function PillNav({ isExploreOpen, onExploreToggle }: PillNavProps) {
   return (
     <nav
       aria-label="Primary"
-      className="nav-glass flex h-11 items-center rounded-full border border-border-strong px-1.5 backdrop-blur-[14px] [@media(prefers-reduced-transparency:reduce)]:border-border [@media(prefers-reduced-transparency:reduce)]:bg-chrome [@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none"
+      className="nav-glass flex h-11 items-center rounded-full border border-border px-1.5"
     >
       {navItems.map((item) => {
         const active = isActive(pathname, item.href);

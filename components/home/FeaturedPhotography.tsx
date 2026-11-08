@@ -25,7 +25,6 @@ export async function FeaturedPhotography() {
           </>
         }
         cta={{ label: 'Explore photography', href: '/archive/photography' }}
-        accentClassName="text-accent-rose"
       />
 
       <Reveal className="mt-14">

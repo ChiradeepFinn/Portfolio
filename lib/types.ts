@@ -51,6 +51,17 @@ export interface Book extends ContentBase {
   readonly excerpt: string;
   readonly year: string | null;
   readonly publisher: string | null;
+  /** ISBN-13 without hyphens when known. */
+  readonly isbn: string | null;
+  readonly imprint: string | null;
+  /** e.g. First edition, Feb 2026 */
+  readonly edition: string | null;
+  /** Copyright line, without inventing rights language. */
+  readonly copyright: string | null;
+  /** Place of publication when known. */
+  readonly place: string | null;
+  /** Offer a contact-form free-copy request for this title. */
+  readonly freeCopy: boolean;
 }
 
 export type ArtworkSize = 'tall' | 'wide' | 'square';

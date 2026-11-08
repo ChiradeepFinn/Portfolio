@@ -30,7 +30,7 @@ export function ResearchDocument({
           </Link>
           <ChevronRight size={13} strokeWidth={1.75} aria-hidden="true" />
           <span aria-current="page" className="text-muted">
-            {study.index}
+            {study.title}
           </span>
         </nav>
 
@@ -52,7 +52,7 @@ export function ResearchDocument({
 
         <div className="mt-12 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-14">
           <div>
-            <p className="eyebrow text-accent-blue">{study.overviewLabel}</p>
+            <p className="eyebrow text-muted-2">{study.overviewLabel}</p>
             <p className="body-copy mt-4 max-w-2xl">{study.overview}</p>
             {study.overviewNote ? <p className="mt-4 max-w-2xl text-sm text-muted-2">{study.overviewNote}</p> : null}
           </div>
@@ -263,7 +263,7 @@ function BlockView({ block }: { readonly block: ResearchBlock }) {
                 <a
                   href={item.href}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="link-underline text-sm text-foreground"
                 >
                   {item.value}
@@ -295,7 +295,7 @@ function BlockView({ block }: { readonly block: ResearchBlock }) {
     case 'pending':
       return (
         <div className="max-w-2xl border border-border px-6 py-7">
-          <p className="eyebrow">{block.kicker}</p>
+          <p className="eyebrow text-muted-2">{block.kicker}</p>
           <p className="mt-4 text-[1.02rem] leading-[1.75] text-muted">{block.text}</p>
         </div>
       );

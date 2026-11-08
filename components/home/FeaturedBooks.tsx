@@ -23,7 +23,6 @@ export async function FeaturedBooks() {
           </>
         }
         cta={{ label: 'Explore books', href: '/archive/books' }}
-        accentClassName="text-warm-2"
       />
 
       <div className="relative mt-14">

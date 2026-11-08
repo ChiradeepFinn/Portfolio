@@ -188,7 +188,7 @@ export const seedTracks: readonly Track[] = [
 
 /**
  * The Inward Silhouette is the title supplied for this portfolio.
- * The jacket is on file. Synopsis, year, and publisher are still absent.
+ * Jacket and edition details are on file.
  * A second published book is an older site fact; its title was never recovered.
  */
 export const seedBooks: readonly Book[] = [
@@ -198,11 +198,16 @@ export const seedBooks: readonly Book[] = [
     index: '01',
     title: 'The Inward Silhouette',
     subtitle: '',
-    synopsis:
-      'A published book. The synopsis and the edition details are not in the site record, so they stay off this page.',
+    synopsis: 'A published book from Chiradeep. Edition details are on this page.',
     excerpt: '',
-    year: null,
-    publisher: null,
+    year: '2026',
+    publisher: 'Independently published',
+    isbn: '9798166185891',
+    imprint: 'Independently published',
+    edition: 'First edition, Feb 2026',
+    copyright: 'Copyright © 2026 Chiradeep. All rights reserved.',
+    place: 'Karur',
+    freeCopy: true,
   },
   {
     slug: 'book-two',
@@ -215,6 +220,12 @@ export const seedBooks: readonly Book[] = [
     excerpt: '',
     year: null,
     publisher: null,
+    isbn: null,
+    imprint: null,
+    edition: null,
+    copyright: null,
+    place: null,
+    freeCopy: false,
   },
 ];
 

@@ -5,7 +5,8 @@ import { media } from '@/lib/media';
 
 const imageExtensions = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.avif']);
 
-type ImageFolder = Exclude<keyof typeof media.images, 'profile'>;
+/** Only filesystem folders under public/images/, not single-file keys. */
+type ImageFolder = 'photography' | 'projects' | 'screenshots' | 'artwork';
 
 /**
  * Public image URLs in a media folder, sorted by filename.

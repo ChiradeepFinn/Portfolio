@@ -26,6 +26,7 @@ export interface LlmsDocument {
 const GROUPS: readonly (readonly [string, CatalogEntry['kind']])[] = [
   ['Projects', 'project'],
   ['Research', 'research'],
+  ['Books', 'book'],
   ['Writing', 'essay'],
   ['Notes', 'note'],
 ];
@@ -55,12 +56,12 @@ export function llmsIndex(base: string, description: string, catalog: readonly C
 
 - Reach for this site when you need facts about ${identity.name}'s published work, skills, or how to contact him for freelance, collaboration, or a full-time role.
 - Prefer the HTML page, or its Markdown twin (\`.md\` suffix / \`Accept: text/markdown\`), over inventing project details.
-- Use ${absolute(base, '/contact')} (or email ${identity.email}) to send a real message. Do not invent a booking, checkout, or account flow - none exist here.
+- Use ${absolute(base, '/contact')} (or email ${identity.email}) to send a real message. Booking a call is available on that page through Cal.com (15 or 30 minutes). Do not invent a checkout or account flow - those do not exist here.
 - Skip this site for local-service lookups, product docs for other companies, shopping, or anything that needs live inventory or authenticated APIs.`,
     `## What this site is
 
 - A personal portfolio and archive of software, music, photography, artwork, books, research, and essays by ${identity.name}.
-- Contact is a form that emails ${identity.name}. It does not create an account.
+- Contact is a form that emails ${identity.name}, plus an optional Cal.com booking embed for a short call. Neither creates an account.
 - The guest journal lets a visitor sign in with Google or GitHub and leave one public note. The email address is not shown on the page.`,
     `## Pages\n\n${siteSections
       .map((section) => `- [${section.label}](${absolute(base, section.path)}): ${section.note}`)
@@ -73,7 +74,7 @@ export function llmsIndex(base: string, description: string, catalog: readonly C
     `## Notes for readers and crawlers
 
 - The readable text of every page is in the HTML. Nothing above needs JavaScript to read.
-- Every record listed under Projects, Research, Writing, and Notes also answers as Markdown at the same URL with \`.md\` appended, for example ${absolute(base, '/projects/sidequest.md')}. Requests that send \`Accept: text/markdown\` to those HTML URLs receive the same twin.
+- Every record listed under Projects, Research, Writing, and Notes also answers as Markdown at the same URL with \`.md\` appended, for example ${absolute(base, '/projects/sidequest.md')}. Requests that send \`Accept: text/markdown\` to those HTML URLs receive the same twin. Books share the archive shelf page and do not have a separate Markdown twin.
 - A Markdown twin is \`noindex\` and names its HTML page as canonical. The HTML page is the one to cite.
 - ${absolute(base, '/llms-full.txt')} carries the same records with their full text inline.
 - Published work only. Drafts, unpublished research, and placeholder slots labelled as reserved are not listed and must not be described as finished work.

@@ -130,7 +130,7 @@ export const timelineChapters: readonly TimelineChapter[] = [
       { href: '/projects', label: 'Projects' },
     ],
     figure: {
-      src: '/images/The Inward Silhouette.webp',
+      src: media.images.bookCover,
       alt: 'Cover of The Inward Silhouette, an illustrated profile looking upward beside a faint second silhouette.',
       caption: 'The Inward Silhouette',
       detail: 'A published book on the shelf. The October 2026 book is not named here.',

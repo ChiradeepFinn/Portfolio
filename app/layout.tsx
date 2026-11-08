@@ -54,10 +54,10 @@ export const metadata: Metadata = {
   // Official mark via app/icon.tsx (PNG for Google) + SVG for modern browsers.
   icons: {
     icon: [
-      { url: '/icon?v=official', type: 'image/png', sizes: '48x48' },
-      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/icon?v=c-mark-2026', type: 'image/png', sizes: '48x48' },
+      { url: '/icon.svg?v=c-mark-2026', type: 'image/svg+xml' },
     ],
-    apple: '/apple-icon?v=official',
+    apple: '/apple-icon?v=c-mark-2026',
   },
   // Selects the Is Agentic report lens; does not change the score.
   other: {
@@ -80,12 +80,17 @@ export default async function RootLayout({ children }: { readonly children: Reac
         <Script id="theme" strategy="beforeInteractive">
           {`(function(){function apply(){try{var root=document.documentElement;if(localStorage.getItem('theme')==='light')root.dataset.theme='light';else root.removeAttribute('data-theme');}catch(e){}}apply();window.addEventListener('pageshow',apply);})();`}
         </Script>
+        <a href="#main-content" className="skip-to-main">
+          Skip to main content
+        </a>
         <SmoothScroll />
         <WebMcpTools projects={webmcpProjects} />
         <div className="screen-fade-top" aria-hidden="true" />
         <NavShell searchIndex={searchIndex} />
         <div className="relative">
-          <main className="min-h-screen">{children}</main>
+          <main id="main-content" className="min-h-screen" tabIndex={-1}>
+            {children}
+          </main>
           <FrameBreak edge="flow" />
           <ClosingBand />
           <FrameBreak edge="flow" />

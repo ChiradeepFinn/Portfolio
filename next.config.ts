@@ -34,8 +34,10 @@ const contentSecurityPolicy = [
   "media-src 'self' blob:",
   "worker-src 'self' blob:",
   // 127.0.0.1:7618 = Cursor debug-mode ingest (dev only); never in production.
-  `connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.youtube.com https://*.googlevideo.com https://youtubei.googleapis.com${isProd ? '' : ' http://127.0.0.1:7618'}`,
-  "frame-src https://www.youtube.com https://www.youtube-nocookie.com",
+  // 127.0.0.1:7779 = Cursor debug-mode ingest (dev only); 7618 kept for legacy sessions.
+  `connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.youtube.com https://*.googlevideo.com https://youtubei.googleapis.com${isProd ? '' : ' http://127.0.0.1:7618 http://127.0.0.1:7779'}`,
+  // Cal.com booking embed on /contact; apex + wildcard (wildcard does not cover apex).
+  "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://cal.com https://*.cal.com",
   ...(isProd ? ['upgrade-insecure-requests'] : []),
 ].join('; ');
 
@@ -56,7 +58,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      { source: '/sitemap', destination: '/sitemap.xml', permanent: false },
+      // `/sitemap` is the human-readable HTML map; crawlers keep `/sitemap.xml`.
       { source: '/feed.xml', destination: '/rss.xml', permanent: false },
       { source: '/rss', destination: '/rss.xml', permanent: false },
     ];

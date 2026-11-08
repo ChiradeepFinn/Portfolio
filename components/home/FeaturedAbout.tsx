@@ -19,7 +19,7 @@ export function FeaturedAbout() {
         </Reveal>
 
         <Reveal delay={0.08} className="flex flex-col justify-center">
-          <p className="eyebrow text-accent-blue">The person behind it</p>
+          <p className="eyebrow text-muted-2">The person behind it</p>
           <h2 className="display mt-4 text-[clamp(1.9rem,4.4vw,3rem)] text-foreground">{identity.name}</h2>
           <p className="mt-2 text-sm text-muted-2">
             {identity.role} · prefer {identity.preferredName}

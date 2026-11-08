@@ -165,17 +165,34 @@ export async function getBooks(): Promise<readonly Book[]> {
   const rows = await fetchRows('books');
   if (!rows) return seedBooks;
 
-  return rows.map((row) => ({
-    slug: str(row.slug),
-    isPlaceholder: bool(row.is_placeholder),
-    index: str(row.index_label, '-'),
-    title: str(row.title),
-    subtitle: str(row.subtitle),
-    synopsis: str(row.synopsis),
-    excerpt: str(row.excerpt),
-    year: nullableStr(row.year),
-    publisher: nullableStr(row.publisher),
-  }));
+  return rows.map((row) => {
+    const slug = str(row.slug);
+    const seed = seedBooks.find((book) => book.slug === slug);
+    const fromDb = str(row.synopsis);
+    // Prefer seed synopsis when edition metadata now lives in seed and the DB
+    // still carries the older "not in the site record" placeholder line.
+    const synopsis =
+      seed?.isbn && seed.synopsis
+        ? seed.synopsis
+        : fromDb || seed?.synopsis || '';
+    return {
+      slug,
+      isPlaceholder: bool(row.is_placeholder),
+      index: str(row.index_label, '-'),
+      title: str(row.title),
+      subtitle: str(row.subtitle),
+      synopsis,
+      excerpt: str(row.excerpt) || seed?.excerpt || '',
+      year: nullableStr(row.year) ?? seed?.year ?? null,
+      publisher: nullableStr(row.publisher) ?? seed?.publisher ?? null,
+      isbn: nullableStr(row.isbn) ?? seed?.isbn ?? null,
+      imprint: nullableStr(row.imprint) ?? seed?.imprint ?? null,
+      edition: nullableStr(row.edition) ?? seed?.edition ?? null,
+      copyright: nullableStr(row.copyright) ?? seed?.copyright ?? null,
+      place: nullableStr(row.place) ?? seed?.place ?? null,
+      freeCopy: typeof row.free_copy === 'boolean' ? row.free_copy : (seed?.freeCopy ?? false),
+    };
+  });
 }
 
 export async function getArtworks(): Promise<readonly Artwork[]> {

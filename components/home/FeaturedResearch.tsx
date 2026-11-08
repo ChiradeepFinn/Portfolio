@@ -19,7 +19,7 @@ export async function FeaturedResearch() {
 
   return (
     <Section border="top" atmosphere="atmos-blueprint">
-      <p className="eyebrow text-accent-blue">Featured research</p>
+      <p className="eyebrow text-muted-2">Featured research</p>
 
       <div className="mt-6 grid gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
         <Reveal>

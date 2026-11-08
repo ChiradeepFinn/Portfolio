@@ -30,7 +30,7 @@ export default async function BooksPage() {
       <BooksIntro book={featured} />
 
       {further.length > 0 || untitled ? (
-        <Section id="shelf" border="top" className="pt-0" width="narrow" labelledBy="shelf-heading">
+        <Section id="shelf" border="top" width="narrow" labelledBy="shelf-heading">
           <h2 id="shelf-heading" className="display text-[clamp(1.6rem,3vw,2.2rem)] text-foreground">
             The rest of the shelf
           </h2>

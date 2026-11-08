@@ -14,7 +14,15 @@ import { CaseStudyHeader } from '@/components/projects/CaseStudyHeader';
 import { ProjectHero } from '@/components/projects/ProjectDetail';
 import { getPublicMdx } from '@/lib/mdx/registry';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { breadcrumbGraph, faqGraph, markdownAlternate, projectGraph, withCanonical } from '@/lib/seo';
+import {
+  breadcrumbGraph,
+  faqGraph,
+  fitDocumentTitle,
+  fitMetaDescription,
+  markdownAlternate,
+  projectGraph,
+  withCanonical,
+} from '@/lib/seo';
 
 interface PageProps {
   readonly params: Promise<{ readonly slug: string }>;
@@ -29,11 +37,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
   if (!project) return { title: 'Project not found', robots: { index: false, follow: false } };
+  const description = fitMetaDescription(project.summary);
+  const title = fitDocumentTitle(project.title);
   return withCanonical(`/projects/${project.slug}`, {
-    title: project.title,
-    description: project.summary,
+    title: { absolute: title },
+    description,
     alternates: { types: markdownAlternate(`/projects/${project.slug}`) },
-    openGraph: { title: project.title, description: project.summary, type: 'article' },
+    openGraph: { title, description, type: 'article' },
   });
 }
 

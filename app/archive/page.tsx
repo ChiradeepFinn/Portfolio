@@ -9,14 +9,26 @@ import { GradientWord } from '@/components/ui/GradientWord';
 
 export const metadata: Metadata = withCanonical('/archive', {
   title: 'Archive',
-  description: 'Photography, artwork, books, research, philosophy, and certifications.',
+  description:
+    'Entrance to photography, artwork, books, research, philosophy, and certifications — each room keeps its own collection and pace.',
 });
+
+type Destination = {
+  index: string;
+  label: string;
+  copy: string;
+  href: string;
+  icon: typeof Camera;
+  wash: string;
+  /** When true, row stays in the hall but is not a live door. */
+  comingSoon?: boolean;
+};
 
 /**
  * A gateway, not a dashboard. Numbered doors, so the page reads as the
  * entrance hall of an exhibition rather than a list of links.
  */
-const destinations = [
+const destinations: readonly Destination[] = [
   {
     index: '01',
     label: 'Photography',
@@ -53,7 +65,7 @@ const destinations = [
     index: '05',
     label: 'Philosophy',
     copy: 'Essays and questions. A piece appears when it has been written.',
-    href: '/about',
+    href: '/philosophy',
     icon: ScrollText,
     wash: 'from-[#1a1a22] via-[#101014] to-transparent',
   },
@@ -64,14 +76,53 @@ const destinations = [
     href: '/archive/certifications',
     icon: BadgeCheck,
     wash: 'from-[#151a2e] via-[#0d0f16] to-transparent',
+    comingSoon: true,
   },
-] as const;
+];
+
+function DestinationBody({
+  destination,
+  blurred,
+}: {
+  destination: Destination;
+  blurred?: boolean;
+}) {
+  return (
+    <>
+      {!blurred ? (
+        <span
+          aria-hidden="true"
+          className={`pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${destination.wash}`}
+        />
+      ) : null}
+      <span className={`meta relative w-8 shrink-0 ${blurred ? 'blur-sm' : ''}`}>
+        {destination.index}
+      </span>
+      <destination.icon
+        size={18}
+        aria-hidden="true"
+        className={`relative shrink-0 text-muted-2 ${
+          blurred
+            ? 'blur-sm opacity-60'
+            : 'transition-colors duration-300 group-hover:text-foreground'
+        }`}
+      />
+      <span className={`relative min-w-0 flex-1 ${blurred ? 'blur-sm opacity-60' : ''}`}>
+        <span className="display block text-[clamp(1.4rem,3vw,2.1rem)] text-foreground">
+          {destination.label}
+        </span>
+        <span className="mt-1.5 block text-sm text-muted">{destination.copy}</span>
+      </span>
+    </>
+  );
+}
 
 export default function ArchivePage() {
   return (
     <>
       <PageHeader
         eyebrow="The archive"
+        eyebrowPlacement="inline"
         title={
           <>
             Every room, <GradientWord>one practice.</GradientWord>
@@ -85,32 +136,29 @@ export default function ArchivePage() {
         <div className="grid gap-px overflow-hidden rounded-card border border-border bg-border">
           {destinations.map((destination, index) => (
             <Reveal key={destination.href} delay={index * 0.05}>
-              <Link
-                href={destination.href}
-                className={`group relative flex items-center gap-6 overflow-hidden bg-surface px-6 py-8 transition-colors duration-300 hover:bg-surface-2 sm:px-9 sm:py-10`}
-              >
-                <span
-                  aria-hidden="true"
-                  className={`pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${destination.wash}`}
-                />
-                <span className="meta relative w-8 shrink-0">{destination.index}</span>
-                <destination.icon
-                  size={18}
-                  aria-hidden="true"
-                  className="relative shrink-0 text-muted-2 transition-colors duration-300 group-hover:text-foreground"
-                />
-                <span className="relative min-w-0 flex-1">
-                  <span className="display block text-[clamp(1.4rem,3vw,2.1rem)] text-foreground">
-                    {destination.label}
+              {destination.comingSoon ? (
+                <div
+                  aria-disabled="true"
+                  className="relative flex cursor-default items-center gap-6 overflow-hidden bg-surface px-6 py-8 sm:px-9 sm:py-10"
+                >
+                  <DestinationBody destination={destination} blurred />
+                  <span className="meta relative shrink-0 uppercase tracking-[0.16em] text-muted">
+                    Coming soon
                   </span>
-                  <span className="mt-1.5 block text-sm text-muted">{destination.copy}</span>
-                </span>
-                <ArrowUpRight
-                  size={18}
-                  aria-hidden="true"
-                  className="relative shrink-0 text-muted-2 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground"
-                />
-              </Link>
+                </div>
+              ) : (
+                <Link
+                  href={destination.href}
+                  className="group relative flex items-center gap-6 overflow-hidden bg-surface px-6 py-8 transition-colors duration-300 hover:bg-surface-2 sm:px-9 sm:py-10"
+                >
+                  <DestinationBody destination={destination} />
+                  <ArrowUpRight
+                    size={18}
+                    aria-hidden="true"
+                    className="relative shrink-0 text-muted-2 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground"
+                  />
+                </Link>
+              )}
             </Reveal>
           ))}
         </div>

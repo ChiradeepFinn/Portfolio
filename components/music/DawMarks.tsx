@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 const tools = [
   { name: 'BandLab', mark: BandLabMark },
   { name: 'FL Studio', mark: FlStudioMark },
-  { name: 'GarageBand', mark: GarageBandMark },
+  { name: 'Cakewalk', mark: CakewalkMark },
 ] as const;
 
 export function DawMarks({
@@ -83,7 +83,7 @@ function FlStudioMark({ className }: { readonly className?: string }) {
   );
 }
 
-function GarageBandMark({ className }: { readonly className?: string }) {
+function CakewalkMark({ className }: { readonly className?: string }) {
   return (
     <svg
       viewBox="0 0 32 32"
@@ -93,10 +93,13 @@ function GarageBandMark({ className }: { readonly className?: string }) {
       focusable="false"
       className={cn('block', className)}
     >
-      {/* Guitar body + neck — GarageBand without the app chrome */}
+      {/* A C, in the same ink weight as the other marks. The name underneath is the label. */}
       <path
-        fill="currentColor"
-        d="M23.1 5.4c.8-.8 2.1-.8 2.9 0 .8.8.8 2.1 0 2.9l-1.4 1.4-2.9-2.9zm-2.2 2.2 2.9 2.9-1.6 1.6c.5 1.2.6 2.6.1 3.9-.7 2.1-2.5 3.7-4.7 4.2l-.2 3.1c0 .5-.4.9-.9.9h-2.4c-.5 0-.9-.4-.9-.9l-.1-3c-2.9-.9-4.9-3.6-4.9-6.8 0-3.9 3.2-7 7.1-7 1.6 0 3.1.5 4.3 1.4zm-5.4 3.6c-2 0-3.6 1.6-3.6 3.6s1.6 3.6 3.6 3.6 3.6-1.6 3.6-3.6-1.6-3.6-3.6-3.6zm0 2c.9 0 1.6.7 1.6 1.6s-.7 1.6-1.6 1.6-1.6-.7-1.6-1.6.7-1.6 1.6-1.6z"
+        d="M21.2 11.4a6.6 6.6 0 1 0 .15 9.4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
       />
     </svg>
   );

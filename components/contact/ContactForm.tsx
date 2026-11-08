@@ -1,15 +1,17 @@
 'use client';
 
-import { useCallback, useState, type FormEvent, type ReactNode } from 'react';
+import { useCallback, useMemo, useState, type FormEvent, type ReactNode } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowUpRight, Loader2 } from 'lucide-react';
+import { contactPrefillFromSearch } from '@/lib/contact/prefill';
 import { cn } from '@/lib/utils';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
-/** Ruled field — hairline under the value, no filled SaaS box. */
+/** Ruled field: hairline under the value, no filled SaaS box. */
 const fieldClass =
-  'w-full border-0 border-b border-border bg-transparent px-0 py-3 text-[0.95rem] leading-snug text-foreground outline-none transition-[border-color] duration-200 placeholder:text-muted-2 focus:border-foreground focus-visible:outline-none disabled:opacity-60';
+  'w-full border-0 border-b border-border bg-transparent px-0 py-1.5 text-[0.95rem] leading-snug text-foreground outline-none transition-[border-color] duration-200 placeholder:text-muted-2 focus:border-foreground focus-visible:outline-none disabled:opacity-60';
 
 const labelClass = 'meta uppercase';
 
@@ -96,6 +98,8 @@ function Field({
 }
 
 export function ContactForm() {
+  const searchParams = useSearchParams();
+  const prefill = useMemo(() => contactPrefillFromSearch(searchParams), [searchParams]);
   const [status, setStatus] = useState<Status>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const reduce = useReducedMotion();
@@ -155,13 +159,19 @@ export function ContactForm() {
           onSubmit={handleSubmit}
           initial={false}
           exit={reduce ? { opacity: 0 } : { opacity: 0, y: -8 }}
-          className="relative grid gap-8 sm:gap-9"
+          className="relative grid w-full max-w-full gap-4 sm:gap-[1.125rem]"
           aria-busy={busy}
           // WebMCP Declarative API (Chrome origin trial / flag). No-op in browsers without it.
           toolname="submit_contact"
           tooldescription="Send Chiradeep a contact message about freelance work, collaborations, or a full-time role. Fills the on-page form; the visitor still confirms send."
         >
-          <div className="grid gap-8 sm:grid-cols-2 sm:gap-x-10 sm:gap-y-8">
+          {prefill ? (
+            <p className="text-sm leading-relaxed text-muted" role="status">
+              Drafted a free-copy request for you. Review it, then send when you are ready.
+            </p>
+          ) : null}
+
+          <div className="grid gap-4">
             <Field id="name" label="Name">
               <input
                 id="name"
@@ -198,6 +208,8 @@ export function ContactForm() {
               required
               maxLength={160}
               disabled={busy}
+              defaultValue={prefill?.subject ?? ''}
+              key={prefill ? `subject-${prefill.subject}` : 'subject'}
               className={fieldClass}
               toolparamdescription="Short subject line for the message"
             />
@@ -207,12 +219,14 @@ export function ContactForm() {
             <textarea
               id="message"
               name="message"
-              rows={7}
+              rows={4}
               required
               minLength={10}
               maxLength={5000}
               disabled={busy}
-              className={cn(fieldClass, 'min-h-[10.5rem] resize-y pb-4')}
+              defaultValue={prefill?.message ?? ''}
+              key={prefill ? `message-${prefill.message}` : 'message'}
+              className={cn(fieldClass, 'min-h-[5.25rem] resize-y pb-2')}
               toolparamdescription="The message body. Include context for the ask."
             />
           </Field>

@@ -51,7 +51,7 @@ export function GuestLogPrompt() {
         </button>
         <p className="guest-log__copy">Leave a short compliment in the guest journal.</p>
         <Link href="/journal" className="guest-log__link" onClick={close}>
-          click here to log yours😄
+          Open the guest journal
         </Link>
       </div>
     </aside>

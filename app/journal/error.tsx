@@ -3,7 +3,7 @@
 export default function JournalError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <div className="mx-auto max-w-xl px-6 pt-36 pb-20 sm:pt-44">
-      <p className="eyebrow text-accent-blue">Guest journal</p>
+      <p className="eyebrow text-muted-2">Guest journal</p>
       <p role="alert" className="mt-6 text-sm text-foreground">
         The journal could not be opened.
       </p>

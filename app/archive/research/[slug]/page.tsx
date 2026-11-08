@@ -7,7 +7,14 @@ import { ResearchDocument } from '@/components/research/ResearchDocument';
 import { loadCollection, publicArticles } from '@/lib/mdx/files';
 import { getPublicMdx } from '@/lib/mdx/registry';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { articleGraph, breadcrumbGraph, markdownAlternate, withCanonical } from '@/lib/seo';
+import {
+  articleGraph,
+  breadcrumbGraph,
+  fitDocumentTitle,
+  fitMetaDescription,
+  markdownAlternate,
+  withCanonical,
+} from '@/lib/seo';
 
 interface PageProps {
   readonly params: Promise<{ readonly slug: string }>;
@@ -24,13 +31,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const study = getResearchStudy(slug);
   const note = study ? undefined : getPublicMdx('research', slug);
   if (!study && note) {
+    const description = fitMetaDescription(note.meta.summary);
+    const title = fitDocumentTitle(note.meta.title);
     return withCanonical(note.meta.href, {
-      title: note.meta.title,
-      description: note.meta.summary,
+      title: { absolute: title },
+      description,
       alternates: { types: markdownAlternate(note.meta.href) },
       openGraph: {
-        title: note.meta.title,
-        description: note.meta.summary,
+        title,
+        description,
         type: 'article',
       },
     });
@@ -38,14 +47,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!study) return { title: 'Research not found', robots: { index: false, follow: false } };
 
   const path = `/archive/research/${study.slug}`;
+  const description = fitMetaDescription(study.summary);
+  const title = fitDocumentTitle(study.title);
 
   return withCanonical(path, {
-    title: study.title,
-    description: study.summary,
+    title: { absolute: title },
+    description,
     alternates: { types: markdownAlternate(path) },
     openGraph: {
-      title: study.title,
-      description: study.summary,
+      title,
+      description,
       type: 'article',
     },
   });

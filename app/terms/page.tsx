@@ -9,7 +9,7 @@ import { identity } from '@/lib/site';
 export const metadata: Metadata = withCanonical('/terms', {
   title: 'Terms of Use',
   description:
-    'Who runs this portfolio, what the work on it is, and how it may be read, quoted, and contacted.',
+    'Who runs this portfolio, what the work on it is and is not, and how it may be read, quoted, linked, and contacted without confusion.',
 });
 
 const EFFECTIVE = '13 October 2026';
@@ -204,7 +204,8 @@ export default function TermsPage() {
             The form is a way to write to me. It takes a name, an email address, a subject, and a message, and only when
             you choose to submit it. Nothing is sent as you type. Sending a message is not an order, a booking, or an
             agreement that I will do work. I read what arrives and I try to reply. I do not promise a reply, a time, or
-            that I am available.
+            that I am available. The same page can open a Cal.com calendar for a short call; booking there schedules a
+            conversation and is not a commitment that I will take on a project.
           </P>
           <P>
             What happens to the message is set out in the{' '}
@@ -215,6 +216,7 @@ export default function TermsPage() {
             After that, the server tries to keep a copy in Supabase; that write is best-effort and is not required for
             the form to report success. The database is not open to the public or to browsers. If email is not
             configured, or the provider rejects the message, the form says so and the message is not treated as sent.
+            If you book a call, Cal.com handles that booking flow.
           </P>
           <P>
             Repeated or automated submissions can be refused or ignored. Identical submissions close together may be
@@ -237,8 +239,8 @@ export default function TermsPage() {
       body: (
         <>
           <P>
-            The site links to external profiles and project addresses, including GitHub, LinkedIn, Instagram, Snapchat,
-            Discord, BandLab, and the live pages of the case studies. Once you follow a link, that site’s own terms and
+            The site links to external profiles and project addresses, including GitHub, LinkedIn, Instagram, YouTube,
+            Facebook, Snapchat, Discord, BandLab, and the live pages of the case studies. Once you follow a link, that site’s own terms and
             privacy policy apply. I do not control what they collect, and I am not responsible for it.
           </P>
           <P>A message you submit is handled only by the services named in the privacy policy:</P>
@@ -247,6 +249,7 @@ export default function TermsPage() {
               'Supabase, which may store a contact message after delivery, and a guest note and sign-in if you use the journal;',
               'Google or GitHub, if you choose one of them to sign in on the journal;',
               'Resend, which delivers a contact message as email;',
+              'Cal.com, which hosts the booking calendar if you choose a call on the contact page;',
               'my email provider, which receives it;',
               'Vercel, which hosts the site and may record access logs and anonymous performance metrics (Speed Insights).',
             ]}
@@ -256,8 +259,9 @@ export default function TermsPage() {
             agent. I do not collect, export, or analyse those logs for my own marketing. Vercel Speed Insights measures
             how pages perform; it is not advertising and it is not a mailing list. The privacy policy describes it.
             The site sets a cookie only after you sign in on the guest journal, so that page can keep your session. It
-            is not an advertising cookie. A light or dark theme choice stays in your browser’s local storage and does
-            not leave your device. No advertising or retargeting tags are installed.
+            is not an advertising cookie. The Cal.com embed may set its own cookies when the booking calendar loads. A
+            light or dark theme choice stays in your browser’s local storage and does not leave your device. No
+            advertising or retargeting tags are installed.
           </P>
         </>
       ),

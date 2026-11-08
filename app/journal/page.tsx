@@ -10,7 +10,8 @@ import { listGuestNotes, readJournalSession, readOwnNote, readSessionPortrait } 
 
 export const metadata: Metadata = withCanonical('/journal', {
   title: 'Guest journal',
-  description: 'One public note per Google or GitHub account. The email address stays off the page.',
+  description:
+    'One public guest note per Google or GitHub account. The chosen display name is visible; the email address stays off the page.',
 });
 
 export const dynamic = 'force-dynamic';

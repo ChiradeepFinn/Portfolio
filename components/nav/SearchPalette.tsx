@@ -8,6 +8,7 @@ import {
   BookOpen,
   Camera,
   Circle,
+  Facebook,
   FileText,
   FlaskConical,
   Folder,
@@ -33,6 +34,7 @@ import {
   Sun,
   User,
   X,
+  Youtube,
   type LucideIcon,
 } from 'lucide-react';
 import type { SearchItem } from '@/lib/search';
@@ -72,6 +74,8 @@ const icons: Record<string, LucideIcon> = {
   Github,
   Linkedin,
   Instagram,
+  Youtube,
+  Facebook,
   Ghost,
   Gamepad2,
   Mail,

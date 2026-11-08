@@ -13,7 +13,7 @@ const captions: Record<ResearchFigure, string> = {
   valence:
     'The valence-arousal plane, with an audio trace drawn underneath. Not a plot of songs or of model output.',
   ideation:
-    'Unaided and assisted ideation, held against the same three measures. Not a score chart.',
+    'Human-only and AI-assisted conditions, held against writer–evaluator alignment. A structure diagram, not a score chart.',
 };
 
 export function Schematic({
@@ -60,18 +60,18 @@ function ValenceFigure() {
 
 function IdeationFigure() {
   const rows = [
-    { label: 'Originality', y: 92 },
-    { label: 'Ownership', y: 136 },
-    { label: 'Agency', y: 180 },
+    { label: 'Novelty alignment', y: 88 },
+    { label: 'Usefulness alignment', y: 132 },
+    { label: 'Ownership (exploratory)', y: 176 },
   ] as const;
 
   return (
     <svg viewBox="0 0 320 210" className="h-auto w-full font-sans text-foreground" aria-hidden="true">
       <text x="8" y="22" fill="currentColor" fontSize="12">
-        Unaided
+        Human only
       </text>
       <text x="312" y="22" textAnchor="end" fill="currentColor" fontSize="12">
-        Assisted
+        AI access
       </text>
       <line x1="8" y1="34" x2="78" y2="34" stroke="currentColor" strokeOpacity="0.35" />
       <line x1="242" y1="34" x2="312" y2="34" stroke="var(--color-warm-2)" strokeOpacity="0.85" />
@@ -90,7 +90,7 @@ function IdeationFigure() {
             strokeOpacity="0.8"
           />
           <line x1="78" y1={row.y} x2="242" y2={row.y} stroke="currentColor" strokeOpacity="0.18" />
-          <text x="160" y={row.y - 8} textAnchor="middle" fill="currentColor" fillOpacity="0.72" fontSize="12">
+          <text x="160" y={row.y - 8} textAnchor="middle" fill="currentColor" fillOpacity="0.72" fontSize="11">
             {row.label}
           </text>
         </g>

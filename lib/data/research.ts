@@ -455,34 +455,34 @@ export const researchStudies: readonly ResearchStudy[] = [
   {
     slug: 'ai-assisted-creativity',
     index: '01',
-    displayTitle: 'AI-assisted ideation, originality, and ownership',
+    displayTitle: 'Writer–evaluator alignment under AI-assisted ideation',
     title: assistedIdeationTitle,
     status: 'Done',
     featured: false,
     domains: [
-      'Human-AI interaction',
+      'Secondary-data analysis',
       'Computational creativity',
       'Generative AI',
-      'Creative cognition and perceived ownership',
+      'Creative metacognition',
     ],
     question:
-      'How does AI-assisted ideation change the originality of human creative work, and the sense of owning it?',
+      "A secondary-data analysis of how writers' self-assessments align with independent evaluations of story novelty and usefulness, with and without access to generative AI ideas.",
     progress:
-      'Empirical study and evaluation framework completed. Originality, self-reported ownership, and perceived agency were measured across unaided and AI-assisted conditions.',
+      'Exploratory secondary-data analysis completed; independent implementation validation remains outstanding.',
     summary:
-      'A completed comparison of unaided and AI-assisted ideation. Originality, perceived ownership, and perceived agency were measured as separate things. Scored tables are not printed on this page.',
-    overviewLabel: 'Study overview',
+      "This project examines whether writers' judgments of their own stories align with independent evaluators' ratings, and whether that relationship differs across human-only and AI-assisted ideation conditions. Using a public experimental dataset, I analyzed story-level ratings, compared correlations across conditions, and examined calibration and exploratory ownership measures. The analysis identifies a condition-dependent pattern for novelty alignment, but not usefulness. It is exploratory, was not preregistered, and requires independent statistical validation.",
+    overviewLabel: 'Summary',
     overview:
-      'This study is finished. I compared work made by unaided ideation with work made when a generative model could offer ideas. The tasks shared their instructions, their time limits, and their output requirements. Originality of the artifact, the participant’s sense of ownership, and their sense of agency were measured apart from each other, and the amount of model use was logged rather than assumed. What follows is the design, the measures, and the structure of the findings.',
+      "This project examines whether writers' judgments of their own stories align with independent evaluators' ratings, and whether that relationship differs across human-only and AI-assisted ideation conditions. Using a public experimental dataset, I analyzed story-level ratings, compared correlations across conditions, and examined calibration and exploratory ownership measures. The analysis identifies a condition-dependent pattern for novelty alignment, but not usefulness. It is exploratory, was not preregistered, and requires independent statistical validation.",
     overviewNote:
-      'Completed investigation. Done means the study was carried out. It does not name a venue, a DOI, or an affiliation.',
+      '“Completed” refers to the current analysis of the public dataset. It does not mean a published paper, an independently replicated study, or validation against Stata or R.',
     figure: 'ideation',
     previewFacts: [
-      { label: 'Stage', value: 'Done' },
-      { label: 'Measures', value: 'Originality, ownership, and agency, kept apart.' },
+      { label: 'Stage', value: 'Exploratory analysis completed; validation outstanding.' },
+      { label: 'Design', value: 'Secondary analysis of Doshi & Hauser (2024) public data.' },
       {
-        label: 'Record',
-        value: 'Completed study. No venue, DOI, or affiliation is on file.',
+        label: 'Focus',
+        value: 'Writer–evaluator novelty alignment across ideation conditions.',
       },
     ],
     sections: [
@@ -493,14 +493,20 @@ export const researchStudies: readonly ResearchStudy[] = [
           {
             type: 'prose',
             paragraphs: [
-              'A generative model can offer ideas during creative work. I compared unaided ideation with AI-assisted ideation, and kept five things apart: the originality of the artifact, the originality of a person’s contribution, perceived ownership, perceived agency, and the amount and kind of assistance.',
+              'Creative output and creative self-assessment are not the same thing. A story can receive a particular external novelty rating while the writer’s own judgment of that story may or may not align with it.',
+              'This project asks whether access to generative AI ideas changes that relationship. The question is not simply whether AI makes stories more original. It is whether writer-assessed novelty and independent evaluator ratings move together differently when writers work from human-only ideation versus AI-assisted ideation.',
             ],
+          },
+          {
+            type: 'callout',
+            kicker: 'Central question',
+            text: "Does access to generative AI ideas change the relationship between writers' self-assessed story novelty and independent evaluators' ratings?",
           },
         ],
       },
       {
         id: 'questions',
-        label: 'Questions',
+        label: 'Research questions',
         blocks: [
           {
             type: 'questions',
@@ -509,66 +515,123 @@ export const researchStudies: readonly ResearchStudy[] = [
             items: [
               {
                 id: 'RQ1',
-                text: 'How does access to AI-assisted ideation affect the measured originality of human creative outputs compared with unaided ideation?',
+                text: "Novelty alignment — How closely do writers' self-assessments of story novelty align with independent evaluators' mean ratings?",
               },
               {
                 id: 'RQ2',
-                text: 'How does AI assistance relate to participants’ perceived ownership of, and agency over, their creative work?',
+                text: 'Condition differences — Does that alignment differ between the human-only condition and conditions offering one or five AI-generated ideas?',
               },
               {
                 id: 'RQ3',
-                text: 'How do the degree of AI involvement and the nature of the creative task relate to originality and perceived ownership?',
+                text: 'Usefulness and calibration — Is a similar pattern observed for usefulness, and do differences in average self-minus-evaluator ratings indicate changes in calibration?',
               },
             ],
           },
-        ],
-      },
-      {
-        id: 'design',
-        label: 'Study design',
-        blocks: [
           {
-            type: 'prose',
-            paragraphs: [
-              'Participants completed the same creative tasks under unaided ideation, with no model, or AI-assisted ideation, where a generative model could contribute ideas. Instructions, time limits, and output requirements were shared. The assisted condition logged prompt count, prompting depth, idea adoption, and edit distance. After the task, participants reported ownership, agency, and creative control. Originality was scored independently and double-blind. Semantic and structural similarity were recorded beside that score, not in place of it.',
-            ],
+            type: 'callout',
+            kicker: 'Exploratory · RQ4',
+            text: "Ownership — How do writers' ownership-related judgments relate to evaluators' post-disclosure assessments? This question is exploratory and distinct from the primary novelty analysis.",
           },
         ],
       },
       {
-        id: 'measurement',
-        label: 'Measurement',
+        id: 'data',
+        label: 'Data and study design',
         blocks: [
           {
             type: 'prose',
             paragraphs: [
-              'Each construct had its own instrument. A similarity number is not an originality rating, and a self-report of ownership is not either of those. The sources below are the instruments written for this study. No external scale is cited here, because none is named in the study record.',
+              'This is a secondary-data analysis of the public dataset accompanying Doshi and Hauser (2024). The original authors conducted the experiment, recruited the participants, and collected the responses. I did not recruit participants, collect original stories, administer questionnaires, run double-blind scoring, or log prompting sessions. My contribution is the question, analytical framing, data processing, statistical analysis, interpretation, and reproducibility work, subject to the code’s current validation limitations.',
+              'The analysis uses the original authors’ processed public dataset after applying their documented exclusions. The writers, stories, and evaluations below are observations from that original study, not a new sample recruited for this project.',
             ],
           },
           {
             type: 'definitions',
             items: [
               {
-                term: 'Human-rated originality',
-                detail:
-                  'The study rubric, applied independently and double-blind, on novelty, complexity, and structural coherence. Source: the evaluation rubric.',
+                term: 'Analytic sample',
+                detail: '293 writers and stories after the original authors’ documented exclusions.',
               },
               {
-                term: 'Similarity distance',
-                detail:
-                  'Semantic and structural distance, kept as a supplementary indicator. It does not replace the human rating. Source: the same scoring pass as the rubric.',
+                term: 'Human only',
+                detail: '95 stories.',
               },
               {
-                term: 'Ownership, agency, and control',
-                detail:
-                  'Post-task self-report of perceived ownership, creative agency, and personal locus of control. Creative satisfaction was collected with that set and was not folded into the originality score. Source: the study questionnaires.',
+                term: 'One AI idea',
+                detail: '100 stories.',
               },
               {
-                term: 'Interaction log',
+                term: 'Five AI ideas',
+                detail: '98 stories.',
+              },
+              {
+                term: 'Evaluations',
                 detail:
-                  'Prompt count, idea-adoption rate, edit distance, and prompting depth. These describe the assistance. They are not a quality score. Source: the session log.',
+                  '3,519 evaluations from 600 independent evaluators. Each story received 9–14 evaluations, averaging approximately 12.',
+              },
+              {
+                term: 'AI idea use',
+                detail: 'Of 198 writers with AI access, 175 actually used an AI idea.',
               },
             ],
+          },
+          {
+            type: 'prose',
+            paragraphs: [
+              'The analysis unit is the story. Writer self-ratings were compared with the mean of independent evaluators’ ratings for the same story.',
+            ],
+          },
+          {
+            type: 'definitions',
+            items: [
+              {
+                term: 'Novelty index',
+                detail:
+                  'Mean of novel, original, and rare ratings on the original study’s 1–9 scale.',
+              },
+              {
+                term: 'Usefulness index',
+                detail:
+                  'Mean of appropriate, feasible, and publishable ratings on the same 1–9 scale.',
+              },
+            ],
+          },
+          {
+            type: 'prose',
+            paragraphs: [
+              'In the original procedure, evaluator novelty and usefulness ratings were collected before AI-use disclosure. That timing does not extend to the ownership-related ratings analyzed exploratorily below, which used post-disclosure assessments.',
+            ],
+          },
+        ],
+      },
+      {
+        id: 'method',
+        label: 'Analytical method',
+        blocks: [
+          {
+            type: 'prose',
+            paragraphs: [
+              'The analysis was exploratory and not preregistered. The methods below describe what was implemented; they are not presented as a confirmatory protocol.',
+            ],
+          },
+          {
+            type: 'list',
+            items: [
+              'Pearson correlations between writer self-ratings and evaluator mean ratings.',
+              'Spearman correlations as a sensitivity check.',
+              'Story-level bootstrap confidence intervals.',
+              'Permutation tests comparing correlations between conditions.',
+              'Holm adjustment for the four primary contrasts.',
+              'Mean self-minus-evaluator gaps as a calibration measure.',
+              'An evaluation-level model with crossed random intercepts for story and evaluator.',
+              'Sensitivity analyses involving topic means, evaluator subsets, and other documented checks.',
+              'Exploratory ownership-related analyses using post-disclosure ratings.',
+            ],
+          },
+          {
+            type: 'callout',
+            kicker: 'Statistical transparency',
+            text: 'The current implementation uses custom NumPy/SciPy code for some regressions and the crossed-effects model because Statsmodels was unavailable in the original environment. The estimates have not yet been independently cross-checked against Stata or R.',
           },
         ],
       },
@@ -579,33 +642,210 @@ export const researchStudies: readonly ResearchStudy[] = [
           {
             type: 'prose',
             paragraphs: [
-              'The study was carried out. Artifacts from both conditions were scored on the same double-blind rubric, and ownership, agency, control, and satisfaction were reported against how heavily the model was used. Assistance was split by prompt count, prompting depth, idea adoption, and edit distance, not treated as on or off.',
-              'The scored results are not in the portfolio record. This page does not state a sample size, a mean, a direction, or an interval.',
+              'Primary results are reported below with the values from the current analysis. Ownership results are labeled exploratory.',
+            ],
+          },
+          {
+            type: 'table',
+            caption:
+              'Writer–evaluator novelty alignment by condition. Pearson correlations between writer novelty self-ratings and evaluator mean novelty ratings.',
+            columns: ['Condition', 'Stories', 'Pearson correlation'],
+            rows: [
+              ['Human only', '95', '−0.27'],
+              ['One AI idea', '100', '0.08'],
+              ['Five AI ideas', '98', '0.32'],
+              ['Any AI access', '198', '0.18'],
+            ],
+          },
+          {
+            type: 'prose',
+            paragraphs: [
+              'The human-only correlation was −0.27 (95% bootstrap CI −0.44 to −0.08). With any AI access, it was 0.18 (95% CI 0.03 to 0.33).',
+              'The difference in correlations between any AI access and human-only was 0.45 (95% CI 0.21 to 0.68; permutation p = .0011; Holm-adjusted p = .0044).',
+              'The exploratory five-AI-ideas versus human-only contrast was 0.59 (95% CI 0.32 to 0.85; Holm-adjusted p = .0012). The one-AI-idea contrast was 0.35 (95% CI 0.06 to 0.63; Holm-adjusted p = .084).',
+            ],
+          },
+          {
+            type: 'table',
+            caption:
+              'Writer–evaluator usefulness alignment by condition. Pearson correlations between writer usefulness self-ratings and evaluator mean usefulness ratings.',
+            columns: ['Condition', 'Stories', 'Pearson correlation'],
+            rows: [
+              ['Human only', '95', '0.02'],
+              ['One AI idea', '100', '0.10'],
+              ['Five AI ideas', '98', '0.14'],
+              ['Any AI access', '198', '0.12'],
+            ],
+          },
+          {
+            type: 'prose',
+            paragraphs: [
+              'The difference between any AI access and human-only for usefulness alignment was 0.10 (95% CI −0.17 to 0.36; Holm-adjusted p = .93). This is not treated as a statistically established condition difference.',
+            ],
+          },
+          {
+            type: 'definitions',
+            items: [
+              {
+                term: 'Novelty calibration gaps',
+                detail:
+                  'Mean self-minus-evaluator novelty gaps were +0.65 in human only (95% CI 0.13 to 1.17), +0.42 with one AI idea (95% CI −0.02 to 0.85), and +0.13 with five AI ideas (95% CI −0.26 to 0.51).',
+              },
+              {
+                term: 'Gap contrast',
+                detail:
+                  'The difference in the mean novelty gap between any AI access and human-only was −0.37 (95% CI −0.97 to 0.22; Holm-adjusted p = .65). Mean-gap differences were not statistically distinguishable.',
+              },
+            ],
+          },
+          {
+            type: 'prose',
+            paragraphs: [
+              'Usefulness alignment and calibration did not show comparable evidence of condition differences.',
+            ],
+          },
+          {
+            type: 'callout',
+            kicker: 'Exploratory ownership results',
+            text: 'These associations do not establish an effect on perceived agency. Agency was not the outcome analyzed in this secondary analysis.',
+          },
+          {
+            type: 'prose',
+            paragraphs: [
+              'Writers’ ratings of ownership over their own ideas correlated with evaluators’ authorship assessments at r = 0.07 in the human-only condition and r = 0.24 with any AI access. Among AI-used stories, writer and evaluator profit-share judgments correlated at r = 0.20.',
+              'Mean ownership-rating gaps were +1.19 for one AI idea used and +1.45 for five AI ideas used, compared with −0.54 in the human-only condition. Evaluators knew about AI use for these post-disclosure measures, so these results are not directly comparable to the pre-disclosure novelty ratings.',
             ],
           },
         ],
       },
       {
-        id: 'ethics',
-        label: 'Ethics and limits',
+        id: 'interpretation',
+        label: 'Interpretation',
         blocks: [
           {
             type: 'prose',
             paragraphs: [
-              'Participants gave consent. Identifying records were anonymized before analysis, and only the data the study needed was kept. The result belongs to these tasks and these participants. It does not travel, on its own, to every artistic field.',
+              'In this dataset, writer-assessed novelty and evaluator-rated novelty were negatively associated in the human-only condition and positively associated in the five-AI-ideas condition. The difference in novelty alignment between any AI access and human-only passed the specified Holm-adjusted primary comparison. The corresponding usefulness comparison did not show evidence of a condition difference.',
+              'The analysis does not establish that AI improves creativity, makes writers more accurate in general, or causes changes in individual metacognition. Correlations describe between-story alignment; they do not show how an individual writer’s judgment changes over time.',
+              'Potential explanations, such as AI ideas providing a shared reference point, are hypotheses for future investigation, not established mechanisms.',
+            ],
+          },
+        ],
+      },
+      {
+        id: 'limitations',
+        label: 'Limitations and ethics',
+        blocks: [
+          {
+            type: 'list',
+            items: [
+              'This is a secondary analysis of an existing public dataset.',
+              'The analysis was exploratory and not preregistered.',
+              'The novelty result is hypothesis-generating and needs replication.',
+              'Only the four primary contrasts received the specified Holm correction; other analyses are exploratory.',
+              'Writer self-ratings are indices without an independently estimated reliability measure.',
+              'Evaluator mean ratings have moderate reliability: approximately 0.69 for novelty and 0.74 for usefulness at about 12 ratings per story.',
+              'The analysis is based on short stories, an online general-population sample, and the original study’s model and procedures.',
+              'The custom statistical implementation has not been independently validated against Stata or R.',
+              'The original authors’ Stata analysis scripts were inspected but not executed for independent replication.',
+            ],
+          },
+          {
+            type: 'prose',
+            paragraphs: [
+              'Ethics, consent, anonymization, and participant handling for the underlying experiment belong to the original study. This project analyzes the released public data and does not claim those procedures as work performed here.',
+            ],
+          },
+        ],
+      },
+      {
+        id: 'original-paper',
+        label: 'Relationship to the original paper',
+        blocks: [
+          {
+            type: 'prose',
+            paragraphs: [
+              'The original paper investigated outcomes such as story creativity, collective diversity, and ownership-related judgments. This project asks a different question: whether writer self-assessments align with independent evaluator ratings, and whether that relationship differs by condition.',
+              'The secondary analysis does not replace or contradict the original study’s reported findings. This page does not claim that the analysis is the first published reanalysis; a wider literature search has not been completed.',
             ],
           },
         ],
       },
       {
         id: 'materials',
-        label: 'Repository and materials',
+        label: 'Reproducibility and materials',
         blocks: [
           {
             type: 'prose',
             paragraphs: [
-              'The repository, evaluation rubric, questionnaires, and analysis scripts are not published. This page does not link a file that is not there.',
+              'The original data belong to the original study. This project analyzes those public data and does not claim ownership of the dataset. A link appears here only when the destination exists.',
             ],
+          },
+          {
+            type: 'records',
+            items: [
+              {
+                label: 'Doshi & Hauser (2024), Science Advances',
+                value: 'doi.org/10.1126/sciadv.adn5290',
+                href: 'https://doi.org/10.1126/sciadv.adn5290',
+              },
+              {
+                label: 'Original dataset and code, Dryad',
+                value: 'doi.org/10.5061/dryad.qfttdz0pm',
+                href: 'https://doi.org/10.5061/dryad.qfttdz0pm',
+              },
+              {
+                label: 'Analysis script (analysis.py)',
+                value: 'Not published on this site',
+              },
+              {
+                label: 'Generated figures and tables',
+                value: 'Not published on this site',
+              },
+              {
+                label: 'Dependencies',
+                value: 'NumPy, pandas, SciPy, Matplotlib',
+              },
+              {
+                label: 'Documented run command',
+                value: 'python analysis.py <GenAI_creativity_scripts folder> <output folder>',
+              },
+            ],
+          },
+          {
+            type: 'callout',
+            kicker: 'Command note',
+            text: 'The run command above is the documented invocation for the analysis workflow. The script is not included in this portfolio repository, so the command has not been re-executed from this site’s source tree.',
+          },
+        ],
+      },
+      {
+        id: 'next',
+        label: 'Next steps',
+        blocks: [
+          {
+            type: 'ordered',
+            items: [
+              {
+                title: 'Independent statistical validation',
+                detail:
+                  'Validate the key correlations and mixed model in R, preferably with an appropriate crossed-random-effects implementation.',
+              },
+              {
+                title: 'Literature search',
+                detail:
+                  'Search the wider literature for prior analyses of writer–evaluator alignment in this dataset.',
+              },
+              {
+                title: 'Confirmatory replication design',
+                detail:
+                  'Design and preregister a confirmatory replication on a new sample before collecting any new data.',
+              },
+            ],
+          },
+          {
+            type: 'prose',
+            paragraphs: ['None of these steps is complete.'],
           },
         ],
       },

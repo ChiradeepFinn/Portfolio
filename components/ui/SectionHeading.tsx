@@ -22,7 +22,7 @@ export function SectionHeading({
   title,
   lede,
   cta,
-  accentClassName = 'text-accent-blue',
+  accentClassName = 'text-muted-2',
   className,
 }: SectionHeadingProps) {
   return (

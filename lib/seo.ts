@@ -5,9 +5,63 @@ import { identity, personAlternateNames, socialProfiles } from '@/lib/site';
 import type { Book, Project } from '@/lib/types';
 
 export const siteDescription =
-  "I'm Chiradeep Finn — Finn for short — a creative technologist working across AI, web, music, and visual storytelling.";
+  "I'm Chiradeep Finn, Finn for short: a creative technologist working across AI, web, music, and visual storytelling based in Karur.";
 
-/** Absolute homepage document title — primary identity + role. */
+/** SEO meta description window used by page metadata and tests. */
+export const META_DESCRIPTION_MIN = 120;
+export const META_DESCRIPTION_MAX = 160;
+
+/** SERP title budget before Google truncates with an ellipsis. */
+export const PAGE_TITLE_MAX = 60;
+
+const pageTitleBrandSuffix = () => ` - ${identity.name}`;
+
+/**
+ * Fit a description into the snippet window without inventing claims.
+ * Long copy is trimmed on a word boundary; short copy is left for the caller
+ * to expand with real page context.
+ */
+export function fitMetaDescription(text: string): string {
+  const cleaned = text.replace(/\s+/g, ' ').trim();
+  if (cleaned.length <= META_DESCRIPTION_MAX) return cleaned;
+
+  const sliced = cleaned.slice(0, META_DESCRIPTION_MAX);
+  const lastSpace = sliced.lastIndexOf(' ');
+  const minKeep = META_DESCRIPTION_MIN - 10;
+  const base = (lastSpace >= minKeep ? sliced.slice(0, lastSpace) : sliced).replace(/[.,;:–—-]+$/u, '').trimEnd();
+  return `${base}…`;
+}
+
+/**
+ * Fit a document title under the SERP window, keeping the headline start and
+ * appending the person brand when space remains. Does not invent keywords.
+ * Use as `title: { absolute: fitDocumentTitle(headline) }` so the layout
+ * template does not append the brand a second time.
+ */
+export function fitDocumentTitle(headline: string): string {
+  const cleaned = headline.replace(/\s+/g, ' ').trim();
+  const suffix = pageTitleBrandSuffix();
+  const maxHeadline = PAGE_TITLE_MAX - suffix.length;
+  if (cleaned.length <= maxHeadline) return `${cleaned}${suffix}`;
+
+  const sliced = cleaned.slice(0, maxHeadline);
+  const lastSpace = sliced.lastIndexOf(' ');
+  const minKeep = Math.min(24, maxHeadline - 8);
+  const base = (lastSpace >= minKeep ? sliced.slice(0, lastSpace) : sliced)
+    .replace(/[.,;:–—-]+$/u, '')
+    .trimEnd();
+  return `${base}…${suffix}`;
+}
+
+function metadataTitleText(title: Metadata['title']): string | undefined {
+  if (typeof title === 'string') return title;
+  if (title && typeof title === 'object' && 'absolute' in title && typeof title.absolute === 'string') {
+    return title.absolute;
+  }
+  return undefined;
+}
+
+/** Absolute homepage document title: primary identity + role. */
 export const HOME_PAGE_TITLE = 'Chiradeep Finn - Creative Technologist, AI & Web';
 
 /** Stable node ids for the Person / WebSite graph Google expects on the home page. */
@@ -32,9 +86,18 @@ export function markdownAlternate(path: string) {
 }
 
 export function withCanonical(path: string, meta: Metadata): Metadata {
-  const openGraph = meta.openGraph && typeof meta.openGraph === 'object' ? meta.openGraph : {};
-  const twitter = meta.twitter && typeof meta.twitter === 'object' ? meta.twitter : {};
+  const openGraph = meta.openGraph && typeof meta.openGraph === 'object' ? { ...meta.openGraph } : {};
+  const twitter = meta.twitter && typeof meta.twitter === 'object' ? { ...meta.twitter } : {};
   const alternates = meta.alternates ?? {};
+  const titleText = metadataTitleText(meta.title);
+  const description = typeof meta.description === 'string' ? meta.description : undefined;
+
+  // Share cards inherit title/description when a page omitted them. No invented
+  // Twitter `site` handle — socialProfiles has no X/Twitter account.
+  if (titleText && openGraph.title === undefined) openGraph.title = titleText;
+  if (description && openGraph.description === undefined) openGraph.description = description;
+  if (titleText && twitter.title === undefined) twitter.title = titleText;
+  if (description && twitter.description === undefined) twitter.description = description;
 
   return {
     ...meta,
@@ -79,7 +142,7 @@ export function personNode() {
     '@id': personId(),
     name: identity.name,
     alternateName: [...personAlternateNames],
-    givenName: identity.shortName,
+    givenName: identity.firstName,
     familyName: 'Finn',
     jobTitle: identity.role,
     description: siteDescription,
@@ -120,8 +183,8 @@ export function homeGraph() {
         '@type': 'WebSite',
         '@id': websiteId(),
         name: identity.name,
-        // Domain last so Google can fall back to chiradeep.me if the brand name is contested.
-        alternateName: [identity.brand, 'Chiradeep Portfolio', 'chiradeep.me'],
+        // Site mark (CF°) — not identity.brand (removed). Domain last for Google fallback.
+        alternateName: ['CF°', 'Chiradeep Portfolio', 'chiradeep.me'],
         url: absoluteUrl('/'),
         description: siteDescription,
         inLanguage: 'en-IN',
@@ -240,7 +303,16 @@ export function bookGraph(books: readonly Book[]) {
         author: { '@id': personId() },
         url: absoluteUrl('/archive/books'),
         ...(book.year ? { datePublished: book.year } : {}),
-        ...(book.publisher ? { publisher: { '@type': 'Organization', name: book.publisher } } : {}),
+        ...(book.isbn ? { isbn: book.isbn } : {}),
+        ...(book.publisher
+          ? {
+              publisher: {
+                '@type': 'Organization',
+                name: book.publisher,
+                ...(book.place ? { address: { '@type': 'PostalAddress', addressLocality: book.place } } : {}),
+              },
+            }
+          : {}),
       })),
   };
 }

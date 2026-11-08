@@ -12,6 +12,7 @@
  *     images/projects/…
  *     images/screenshots/…
  *     images/artwork/…
+ *     images/artists/…
  */
 
 export const media = {
@@ -25,10 +26,28 @@ export const media = {
   },
   images: {
     profile: '/images/profile.webp',
+    /** Cover for The Inward Silhouette (books shelf + timeline). */
+    bookCover: '/images/the-inward-silhouette.webp',
+    photographyPic: '/images/photography_pic.png',
+    aboutPic: '/images/about_pic.webp',
     photography: '/images/photography',
     projects: '/images/projects',
     screenshots: '/images/screenshots',
     artwork: '/images/artwork',
+    rooms: {
+      projects: '/images/rooms/project.jpg',
+      music: '/images/rooms/music-production.jpg',
+      books: '/images/rooms/books.jpg',
+      research: '/images/rooms/research.jpg',
+      photography: '/images/rooms/photography.jpg',
+      artwork: '/images/rooms/art.jpg',
+      philosophy: '/images/rooms/philosophy.jpg',
+    },
+    aboutPortraits: {
+      transit: '/images/about_pics/transit.jpg',
+      studio: '/images/about_pics/studio.jpg',
+      wall: '/images/about_pics/wall.jpg',
+    },
   },
   videos: {
     root: '/videos',
@@ -48,7 +67,7 @@ export function brandLogo(pathname: string) {
 
 /** Build a path under a media folder, e.g. `mediaPath('projects', 'know-who.jpg')`. */
 export function mediaPath(
-  folder: keyof typeof media.images | 'videos',
+  folder: 'photography' | 'projects' | 'screenshots' | 'artwork' | 'videos',
   filename: string,
 ): string {
   if (folder === 'videos') {

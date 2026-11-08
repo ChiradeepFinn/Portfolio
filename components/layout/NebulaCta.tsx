@@ -254,7 +254,7 @@ export function NebulaCta() {
         <div className="nebula-edge" />
       </div>
 
-      <p className="eyebrow absolute top-5 right-[max(2.5rem,calc((100%-82rem)/2+1.25rem))] z-10 font-normal tracking-[0.32em] whitespace-nowrap text-[0.65rem] md:right-[max(3.75rem,calc((100%-82rem)/2+2.5rem))]">
+      <p className="eyebrow absolute top-5 right-[max(2.5rem,calc((100%-82rem)/2+1.25rem))] z-10 font-normal tracking-[0.32em] whitespace-nowrap text-[0.65rem] text-muted-2 md:right-[max(3.75rem,calc((100%-82rem)/2+2.5rem))]">
         Have an idea<span className="tracking-normal">...</span>
       </p>
 

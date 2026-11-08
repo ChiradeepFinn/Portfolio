@@ -8,7 +8,7 @@ import { IntroFrame, WorldHeadline, WorldIndex } from './WorldMarks';
 export function PhilosophyIntro() {
   return (
     <IntroFrame width="narrow" className="pb-8 sm:pb-10">
-      <WorldIndex index={philosophyWorld.index} label={philosophyWorld.label} className="text-muted" />
+      <WorldIndex index={philosophyWorld.index} label={philosophyWorld.label} className="text-muted-2" />
       <WorldHeadline
         headline={philosophyWorld.headline}
         className="mt-6 text-[clamp(2.2rem,5vw,3.7rem)]"

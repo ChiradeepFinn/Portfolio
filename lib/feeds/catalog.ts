@@ -7,12 +7,12 @@
  * anything behind sign-in are not here.
  */
 
-import { getProjects, getResearchStudies } from '../content';
+import { getBooks, getProjects, getResearchStudies } from '../content';
 import { loadCollection, publicArticles, type ArticleMeta } from '../mdx/files';
 import type { CollectionId } from '../mdx/schema';
-import type { Project } from '../types';
+import type { Book, Project } from '../types';
 
-export type CatalogKind = 'project' | 'research' | 'essay' | 'note';
+export type CatalogKind = 'project' | 'research' | 'essay' | 'note' | 'book';
 
 export interface CatalogEntry {
   readonly kind: CatalogKind;
@@ -31,6 +31,10 @@ export function publishedProjects(projects: readonly Project[]): readonly Projec
   return projects.filter((project) => !project.isPlaceholder && project.slug.length > 0);
 }
 
+export function publishedBooks(books: readonly Book[]): readonly Book[] {
+  return books.filter((book) => !book.isPlaceholder && book.slug.length > 0 && book.title.trim().length > 0);
+}
+
 /** Published and in-progress MDX. `publicArticles` already drops drafts. */
 export function publishedArticles(): readonly ArticleMeta[] {
   return NOTE_COLLECTIONS.flatMap((collection) => publicArticles(loadCollection(collection)));
@@ -45,7 +49,9 @@ function articleKind(collection: CollectionId): CatalogKind {
  * the site lists them. Two builds of the same content produce the same file.
  */
 export async function publishedCatalog(): Promise<readonly CatalogEntry[]> {
-  const projects = publishedProjects(await getProjects());
+  const [allProjects, allBooks] = await Promise.all([getProjects(), getBooks()]);
+  const projects = publishedProjects(allProjects);
+  const books = publishedBooks(allBooks);
 
   const entries: CatalogEntry[] = [
     ...publishedArticles().map((article) => ({
@@ -55,6 +61,13 @@ export async function publishedCatalog(): Promise<readonly CatalogEntry[]> {
       summary: article.summary,
       publishedAt: article.publishedAt,
       tags: article.tags,
+    })),
+    ...books.map((book) => ({
+      kind: 'book' as const,
+      title: book.title,
+      path: '/archive/books',
+      summary: book.synopsis || book.subtitle || 'Published book.',
+      tags: book.publisher ? [book.publisher] : undefined,
     })),
     ...getResearchStudies().map((study) => ({
       kind: 'research' as const,

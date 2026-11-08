@@ -5,7 +5,6 @@ export const siteStudy = {
   id: 'portfolio',
   title: 'Portfolio',
   hook: 'My World',
-  /** Under the card, under 30 words. */
-  blurb:
-    'This site. Studies, a few notes, and a contact form that actually sends - nothing dressed up to look finished.',
+  /** Under the card - same chip row as the other studies. */
+  stack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Supabase', 'Resend'] as const,
 } as const;

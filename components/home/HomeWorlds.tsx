@@ -120,8 +120,8 @@ function MusicPreview({ track }: { readonly track: Track | null }) {
           <div>
             <DawMarks />
             <p className="mt-4 text-sm leading-relaxed text-muted lg:mt-5">
-              BandLab on the couch, FL Studio when I sit down properly, GarageBand if the melody
-              won&apos;t wait. Whatever is already open usually wins.
+              BandLab on the couch, FL Studio when I sit down properly, Cakewalk for the desk
+              session. Whatever is already open usually wins.
             </p>
           </div>
 

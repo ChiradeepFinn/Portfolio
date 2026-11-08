@@ -1,5 +1,6 @@
 import { siteStudy } from '@/lib/data/site-stack';
 import { getStudyScreensBySlug } from '@/lib/data/study-screens';
+import { StackIcon } from '@/components/projects/ProjectDetail';
 import { StudyDevices } from '@/components/projects/StudyDevices';
 import { studyPlateFrameClass, studyPlateInnerClass } from '@/components/projects/study-plate';
 import { Reveal } from '@/components/ui/Reveal';
@@ -29,7 +30,16 @@ export function PortfolioStudy() {
       </div>
 
       <Reveal delay={0.08}>
-        <p className="mt-5 max-w-[34rem] text-[0.98rem] leading-[1.65] text-muted">{siteStudy.blurb}</p>
+        <ul className="mt-5 flex max-w-[36rem] flex-wrap gap-2">
+          {siteStudy.stack.map((item) => (
+            <li key={item}>
+              <span className="inline-flex items-center gap-1.5 rounded-md border border-border-strong bg-chrome px-2.5 py-[0.4rem] text-[0.68rem] font-medium tracking-[0.11em] text-foreground uppercase">
+                <StackIcon label={item} />
+                {item}
+              </span>
+            </li>
+          ))}
+        </ul>
       </Reveal>
     </article>
   );

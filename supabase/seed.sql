@@ -119,10 +119,10 @@ values
    'A study in progress on whether music emotion recognition treats instrumental audio and vocal audio differently. The DEAM files are downloaded. They are not validated for training, and no models have been run.',
    'Music information retrieval', 'In progress', true, false, 0),
   ('ai-assisted-creativity',
-   'How does AI-assisted ideation change the originality of human creative work, and the sense of owning it?',
+   'A secondary-data analysis of how writers'' self-assessments align with independent evaluations of story novelty and usefulness, with and without access to generative AI ideas.',
    'Beyond the Prompt: Measuring the Effects of AI-Assisted Ideation on Human Creative Originality and Ownership',
-   'A completed comparison of unaided and AI-assisted ideation. Originality, perceived ownership, and perceived agency were measured as separate things. Scored tables are not printed on this page.',
-   'Human-AI interaction', 'Done', false, false, 1);
+   'This project examines whether writers'' judgments of their own stories align with independent evaluators'' ratings, and whether that relationship differs across human-only and AI-assisted ideation conditions. Using a public experimental dataset, I analyzed story-level ratings, compared correlations across conditions, and examined calibration and exploratory ownership measures. The analysis identifies a condition-dependent pattern for novelty alignment, but not usefulness. It is exploratory, was not preregistered, and requires independent statistical validation.',
+   'Secondary-data analysis', 'Done', false, false, 1);
 
 insert into public.writing_entries (slug, title, category, excerpt, featured, position)
 values

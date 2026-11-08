@@ -42,7 +42,6 @@ const staticPages = [
   { group: 'Artwork', label: 'Art gallery', href: '/archive/artwork', description: 'Canvas, texture, colour' },
   { group: 'Books', label: 'Books', href: '/archive/books', description: 'Published writing, including The Inward Silhouette' },
   { group: 'Research', label: 'Research', href: '/archive/research', description: 'Two investigations into models, music, and making' },
-  { group: 'Archive', label: 'Certifications', href: '/archive/certifications', description: 'The proof shelf' },
   { group: 'Philosophy', label: 'Philosophy', href: '/philosophy', description: 'Essays and reflections, filed when written' },
   { group: 'Elsewhere', label: 'Guest journal', href: '/journal', description: 'One public note in the margin' },
   { group: 'Elsewhere', label: 'Now', href: '/now', description: 'What I am doing at the moment' },

@@ -1,10 +1,15 @@
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 import { ImageResponse } from 'next/og';
 
 export const alt = 'Chiradeep, creative technologist';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-export default function OpenGraphImage() {
+export default async function OpenGraphImage() {
+  const mark = await readFile(path.join(process.cwd(), 'public/brand/official-mark.png'));
+  const markSrc = `data:image/png;base64,${mark.toString('base64')}`;
+
   return new ImageResponse(
     (
       <div
@@ -24,9 +29,19 @@ export default function OpenGraphImage() {
           <div style={{ fontSize: 84, lineHeight: 1, letterSpacing: '-0.04em' }}>Chiradeep</div>
           <div style={{ marginTop: 22, fontSize: 32, color: '#c8c8d0' }}>Creative technologist</div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 22, color: '#8d8d97' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 22, color: '#8d8d97' }}>
           <span>Karur, Tamil Nadu</span>
-          <span>CF°</span>
+          {/* Official abstract C mark */}
+          <img
+            src={markSrc}
+            width={56}
+            height={56}
+            alt=""
+            style={{
+              borderRadius: 8,
+              background: '#ffffff',
+            }}
+          />
         </div>
       </div>
     ),

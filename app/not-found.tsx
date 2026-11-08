@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <Section className="pt-44 text-center">
-      <p className="eyebrow text-accent-blue">404</p>
+      <p className="eyebrow text-muted-2">404</p>
       <h1 className="display mt-5 text-[clamp(2rem,5vw,3.4rem)] text-foreground">
         This one doesn&apos;t exist <GradientWord>yet.</GradientWord>
       </h1>
