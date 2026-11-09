@@ -13,6 +13,7 @@ import { WebMcpTools } from '@/components/providers/WebMcpTools';
 import { publishedCatalog } from '@/lib/feeds/catalog';
 import { buildSearchIndex } from '@/lib/search';
 import { HOME_PAGE_TITLE, feedAlternateTypes, siteDescription } from '@/lib/seo';
+import { configuredOrigin } from '@/lib/http/origin';
 import { identity } from '@/lib/site';
 
 const displayFont = Fraunces({
@@ -74,8 +75,13 @@ export default async function RootLayout({ children }: { readonly children: Reac
     .filter((entry) => entry.kind === 'project')
     .map((entry) => ({ title: entry.title, summary: entry.summary, path: entry.path }));
 
+  const ardHref = `${configuredOrigin() ?? 'https://chiradeep.me'}/.well-known/ard.json`;
+
   return (
     <html lang="en" className={`${displayFont.variable} ${sansFont.variable}`} suppressHydrationWarning>
+      <head>
+        <link rel="ard" href={ardHref} type="application/ard+json" />
+      </head>
       <body>
         <Script id="theme" strategy="beforeInteractive">
           {`(function(){function apply(){try{var root=document.documentElement;if(localStorage.getItem('theme')==='light')root.dataset.theme='light';else root.removeAttribute('data-theme');}catch(e){}}apply();window.addEventListener('pageshow',apply);})();`}

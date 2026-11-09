@@ -5,7 +5,9 @@ import { absolute, canonicalPathFor } from '../lib/feeds/paths';
 import { markdownTwinDestination } from '../lib/http/markdown-twins';
 import { escapeXml, rfc822 } from '../lib/feeds/xml';
 import { rssDocument } from '../lib/feeds/rss';
+import { buildArdManifest, portfolioAgentSkillMarkdown, siteAgentCard } from '../lib/feeds/ard';
 import { llmsFull, llmsIndex } from '../lib/feeds/llms';
+import { robotsTxtBody } from '../lib/feeds/robots-txt';
 import { caseStudyMarkdown, faqMarkdown, frontmatterBlock } from '../lib/feeds/markdown';
 import type { CatalogEntry } from '../lib/feeds/catalog';
 import type { CaseStudyContent } from '../lib/data/case-studies';
@@ -212,6 +214,13 @@ describe('llms files', () => {
     assert.match(index, /https:\/\/chiradeep\.me\/llms-full\.txt/);
   });
 
+  it('points agents at the ARD manifest and skill', () => {
+    assert.match(index, /## Agentic discovery \(ARD\)/);
+    assert.match(index, /https:\/\/chiradeep\.me\/\.well-known\/ard\.json/);
+    assert.match(index, /https:\/\/chiradeep\.me\/agent-skills\/portfolio\.md/);
+    assert.match(index, /https:\/\/chiradeep\.me\/\.well-known\/agent-card\.json/);
+  });
+
   it('inlines bodies in the full file and keeps the contents list', () => {
     const full = llmsFull(base, catalog, [
       { title: 'Sidequest', url: `${base}/projects/sidequest`, markdown: '# Sidequest\n\nBody.' },
@@ -223,6 +232,40 @@ describe('llms files', () => {
 
   it('is deterministic', () => {
     assert.equal(index, llmsIndex(base, 'Portfolio and archive.', catalog));
+  });
+});
+
+describe('ARD manifest', () => {
+  const manifest = buildArdManifest(base);
+
+  it('has entries with required fields, urn:air ids, and url xor data', () => {
+    assert.ok(Array.isArray(manifest.entries));
+    assert.ok(manifest.entries.length >= 1);
+    for (const entry of manifest.entries) {
+      assert.match(entry.identifier, /^urn:air:chiradeep\.me:[a-z0-9-]+:[a-z0-9-]+$/);
+      assert.ok(entry.displayName.length > 0);
+      assert.match(entry.type, /^application\/[a-z0-9.+-]+$/);
+      const hasUrl = typeof entry.url === 'string';
+      const hasData = entry.data !== undefined;
+      assert.equal(hasUrl !== hasData, true);
+      assert.ok(entry.representativeQueries.length >= 2);
+      assert.ok(entry.representativeQueries.length <= 5);
+    }
+  });
+
+  it('points skill and agent-card urls at hosted artifacts', () => {
+    const skill = manifest.entries.find((entry) => entry.type === 'application/agent-skills+md');
+    const card = manifest.entries.find((entry) => entry.type === 'application/agent-card+json');
+    assert.ok(skill?.url?.endsWith('/agent-skills/portfolio.md'));
+    assert.ok(card?.url?.endsWith('/.well-known/agent-card.json'));
+    assert.match(portfolioAgentSkillMarkdown(base), /Chiradeep Finn/);
+    assert.equal(typeof siteAgentCard(base).name, 'string');
+  });
+
+  it('advertises Agentmap in robots.txt', () => {
+    const body = robotsTxtBody(base);
+    assert.match(body, /Agentmap: https:\/\/chiradeep\.me\/\.well-known\/ard\.json/);
+    assert.match(body, /Sitemap: https:\/\/chiradeep\.me\/sitemap\.xml/);
   });
 });
 

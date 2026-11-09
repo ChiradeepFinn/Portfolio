@@ -71,6 +71,12 @@ export function llmsIndex(base: string, description: string, catalog: readonly C
 
 - Email: ${identity.email}
 - Location: ${identity.location}`,
+    `## Agentic discovery (ARD)
+
+- Manifest: ${absolute(base, '/.well-known/ard.json')} (also advertised as \`Agentmap:\` in robots.txt and \`<link rel="ard">\`).
+- Portfolio skill: ${absolute(base, '/agent-skills/portfolio.md')} — when to use this site, identity, Markdown twins, and contact rules.
+- Site agent card: ${absolute(base, '/.well-known/agent-card.json')} — published-work discovery and contact surface.
+- Browser WebMCP tools (\`list_projects\`, \`list_site_sections\`, \`get_contact_details\`, plus Declarative WebMCP on the contact form) register only when \`document.modelContext\` exists. They are not a remote MCP server.`,
     `## Notes for readers and crawlers
 
 - The readable text of every page is in the HTML. Nothing above needs JavaScript to read.

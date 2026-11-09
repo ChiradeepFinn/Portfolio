@@ -1,4 +1,3 @@
-import type { MetadataRoute } from 'next';
 import { configuredOrigin } from '@/lib/http/origin';
 
 /**
@@ -9,6 +8,8 @@ import { configuredOrigin } from '@/lib/http/origin';
  * The Markdown twins are not disallowed here. They answer `X-Robots-Tag:
  * noindex` with a canonical `Link` to the HTML page, which keeps them out of an
  * index while still letting an agent fetch one.
+ *
+ * `Agentmap:` advertises the ARD v0.91 manifest (§5.1).
  */
 const AI_AGENTS = [
   'GPTBot',
@@ -27,13 +28,46 @@ const AI_AGENTS = [
   'cohere-ai',
 ] as const;
 
-/** Routes that are not meant for search indexes (APIs, auth handshakes). */
 const DISALLOW = ['/api/', '/auth/'] as const;
 
-export default function robots(): MetadataRoute.Robots {
-  const site = configuredOrigin() ?? 'http://localhost:3000';
+function ruleBlock(userAgent: string): string {
+  return [
+    `User-agent: ${userAgent}`,
+    'Allow: /',
+    ...DISALLOW.map((path) => `Disallow: ${path}`),
+    '',
+  ].join('\n');
+}
 
+export function robotsTxtBody(site = configuredOrigin() ?? 'http://localhost:3000'): string {
+  const ard = `${site}/.well-known/ard.json`;
+
+  const blocks = [
+    ruleBlock('*'),
+    [
+      'User-agent: Googlebot',
+      'Allow: /',
+      ...DISALLOW.map((path) => `Disallow: ${path}`),
+      '',
+    ].join('\n'),
+    ['User-agent: Googlebot-Image', 'Allow: /', ''].join('\n'),
+    ruleBlock('Bingbot'),
+    ...AI_AGENTS.map((agent) => ruleBlock(agent)),
+    `Sitemap: ${site}/sitemap.xml`,
+    `Host: ${site}`,
+    `Agentmap: ${ard}`,
+    '',
+  ];
+
+  return blocks.join('\n');
+}
+
+/** Shape used by SEO tests that previously read MetadataRoute.Robots. */
+export function robotsDocument(site = configuredOrigin() ?? 'http://localhost:3000') {
   return {
+    sitemap: `${site}/sitemap.xml`,
+    host: site,
+    agentmap: `${site}/.well-known/ard.json`,
     rules: [
       { userAgent: '*', allow: '/', disallow: [...DISALLOW] },
       { userAgent: 'Googlebot', allow: '/', disallow: [...DISALLOW] },
@@ -41,7 +75,5 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: 'Bingbot', allow: '/', disallow: [...DISALLOW] },
       ...AI_AGENTS.map((userAgent) => ({ userAgent, allow: '/', disallow: [...DISALLOW] })),
     ],
-    sitemap: `${site}/sitemap.xml`,
-    host: site,
   };
 }

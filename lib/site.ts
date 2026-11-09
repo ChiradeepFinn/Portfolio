@@ -141,10 +141,16 @@ export const footerLegal: readonly FooterLink[] = [
   { label: 'Sitemap', href: '/sitemap', icon: 'Network' },
   { label: 'RSS', href: '/rss.xml', icon: 'Rss' },
   { label: 'llms.txt', href: '/llms.txt', icon: 'Bot' },
+  { label: 'ARD', href: '/.well-known/ard.json', icon: 'Bot' },
 ];
 
 /**
  * Generated files, not pages. A client navigation would ask Next for a page
  * payload, so the footer links to them with a plain anchor.
  */
-export const documentHrefs: readonly string[] = ['/rss.xml', '/llms.txt', '/llms-full.txt'];
+export const documentHrefs: readonly string[] = [
+  '/rss.xml',
+  '/llms.txt',
+  '/llms-full.txt',
+  '/.well-known/ard.json',
+];

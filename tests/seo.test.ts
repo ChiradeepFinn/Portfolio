@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import robots from '../app/robots';
+import { robotsDocument } from '../lib/feeds/robots-txt';
 import { getProjects } from '../lib/content';
 import { publishedProjects } from '../lib/feeds/catalog';
 import { absolute } from '../lib/feeds/paths';
@@ -449,8 +449,9 @@ describe('seo structured data', () => {
     const previous = process.env.NEXT_PUBLIC_SITE_URL;
     process.env.NEXT_PUBLIC_SITE_URL = 'https://chiradeep.me';
     try {
-      const doc = robots();
+      const doc = robotsDocument();
       assert.equal(doc.sitemap, 'https://chiradeep.me/sitemap.xml');
+      assert.equal(doc.agentmap, 'https://chiradeep.me/.well-known/ard.json');
       const rules = Array.isArray(doc.rules) ? doc.rules : [doc.rules];
       const starRule = rules.find((rule) => rule.userAgent === '*');
       assert.ok(starRule);

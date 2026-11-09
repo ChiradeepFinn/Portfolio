@@ -124,6 +124,9 @@ One published record has one source. `lib/feeds/` derives every other representa
 | `/llms.txt` | One line per published record, with the canonical URL. |
 | `/llms-full.txt` | The same records with their Markdown inline. |
 | `<page>.md` | The Markdown twin of one page. |
+| `/.well-known/ard.json` | ARD v0.91 manifest (`application/ard+json`). Also linked via `Agentmap:` in `robots.txt`, `<link rel="ard">`, and a `Link` response header. |
+| `/agent-skills/portfolio.md` | Portfolio agent skill (how to read the site). |
+| `/.well-known/agent-card.json` | Generic site agent card for ARD. |
 
 `lib/feeds/catalog.ts` is the single eligibility list: published projects, the research studies, and MDX that is not a draft. Reserved placeholder slots, drafts, and guest journal notes are never in it. Ordering is newest dated record first, then undated records in site order, so an unchanged site produces an unchanged file.
 

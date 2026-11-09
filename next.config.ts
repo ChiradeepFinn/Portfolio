@@ -81,6 +81,9 @@ const nextConfig: NextConfig = {
     };
   },
   async headers() {
+    const site = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://chiradeep.me';
+    const ardLink = `<${site}/.well-known/ard.json>; rel="ard"; type="application/ard+json"`;
+
     return [
       {
         source: '/:path*',
@@ -91,6 +94,7 @@ const nextConfig: NextConfig = {
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
           { key: 'Content-Security-Policy', value: contentSecurityPolicy },
           { key: 'Cross-Origin-Opener-Policy', value: 'same-origin-allow-popups' },
+          { key: 'Link', value: ardLink },
           ...(isProd
             ? [{ key: 'Strict-Transport-Security', value: 'max-age=15552000' }]
             : []),
