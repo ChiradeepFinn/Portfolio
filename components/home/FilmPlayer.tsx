@@ -88,6 +88,8 @@ export const FilmPlayer = forwardRef<FilmPlayerHandle, FilmPlayerProps>(function
   const [failed, setFailed] = useState(false);
   const [chrome, setChrome] = useState(true);
   const [preview, setPreview] = useState<number | null>(null);
+  /** YouTube API stays cold until the visitor asks to play. */
+  const [activated, setActivated] = useState(false);
 
   useEffect(() => {
     onPlaybackChangeRef.current = onPlaybackChange;
@@ -126,6 +128,11 @@ export const FilmPlayer = forwardRef<FilmPlayerHandle, FilmPlayerProps>(function
 
   const play = useCallback(() => {
     if (failed || !youtube) return;
+    if (!activated) {
+      pendingPlay.current = true;
+      setActivated(true);
+      return;
+    }
     const player = youtubePlayerRef.current;
     if (!player) {
       pendingPlay.current = true;
@@ -133,7 +140,7 @@ export const FilmPlayer = forwardRef<FilmPlayerHandle, FilmPlayerProps>(function
     }
     pendingPlay.current = false;
     player.playVideo();
-  }, [failed, youtube]);
+  }, [activated, failed, youtube]);
 
   const toggle = useCallback(
     (options?: { reveal?: boolean }) => {
@@ -203,6 +210,8 @@ export const FilmPlayer = forwardRef<FilmPlayerHandle, FilmPlayerProps>(function
   useEffect(() => clearHide, [clearHide]);
 
   useEffect(() => {
+    if (!activated) return;
+
     if (!youtube) {
       setFailed(true);
       return;
@@ -388,7 +397,7 @@ export const FilmPlayer = forwardRef<FilmPlayerHandle, FilmPlayerProps>(function
       host.replaceChildren();
       publish(false);
     };
-  }, [armHide, clearHide, publish, youtube]);
+  }, [activated, armHide, clearHide, publish, youtube]);
 
   function seek(next: number) {
     const player = youtubePlayerRef.current;
@@ -531,6 +540,18 @@ export const FilmPlayer = forwardRef<FilmPlayerHandle, FilmPlayerProps>(function
           )}
         />
 
+        {!ready && youtube && !failed ? (
+          <img
+            src={`https://i.ytimg.com/vi/${youtube}/hqdefault.jpg`}
+            alt=""
+            width={480}
+            height={360}
+            decoding="async"
+            loading="lazy"
+            className="pointer-events-none absolute inset-0 z-[1] h-full w-full object-cover"
+          />
+        ) : null}
+
         <button
           type="button"
           className="absolute inset-0 z-[1] cursor-pointer touch-manipulation border-0 bg-transparent p-0"
@@ -539,14 +560,14 @@ export const FilmPlayer = forwardRef<FilmPlayerHandle, FilmPlayerProps>(function
         />
 
         {!playing && !failed ? (
-          <span className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center">
+          <span className="pointer-events-none absolute inset-0 z-[2] flex items-center justify-center">
             <span className="flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-white">
               <Play size={16} aria-hidden="true" className="ml-0.5 fill-current" />
             </span>
           </span>
         ) : null}
 
-        {buffering && !failed ? (
+        {(buffering || (activated && !ready)) && !failed ? (
           <span className="pointer-events-none absolute top-3 left-3 z-[3] text-[0.62rem] tracking-[0.16em] text-white/70 uppercase">
             Loading
           </span>

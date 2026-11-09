@@ -1,14 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { X } from 'lucide-react';
-import { BrandMark } from './BrandMark';
+import { media } from '@/lib/media';
 import './GuestLogPrompt.css';
 
 const STORAGE_KEY = 'guest-log-prompt';
-const DELAY_MS = 2_000;
+/** Wait until the main paint path is clear so this card does not steal LCP. */
+const DELAY_MS = 6_000;
 
 export function GuestLogPrompt() {
   const pathname = usePathname();
@@ -21,8 +23,38 @@ export function GuestLogPrompt() {
       return;
     }
 
-    const id = window.setTimeout(() => setVisible(true), DELAY_MS);
-    return () => window.clearTimeout(id);
+    let idleId: number | undefined;
+    let timeoutId: number | undefined;
+    let cancelled = false;
+
+    const show = () => {
+      if (!cancelled) setVisible(true);
+    };
+
+    const schedule = () => {
+      timeoutId = window.setTimeout(() => {
+        if (typeof window.requestIdleCallback === 'function') {
+          idleId = window.requestIdleCallback(show, { timeout: 1500 });
+        } else {
+          show();
+        }
+      }, DELAY_MS);
+    };
+
+    if (document.readyState === 'complete') {
+      schedule();
+    } else {
+      window.addEventListener('load', schedule, { once: true });
+    }
+
+    return () => {
+      cancelled = true;
+      window.removeEventListener('load', schedule);
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+      if (idleId !== undefined && typeof window.cancelIdleCallback === 'function') {
+        window.cancelIdleCallback(idleId);
+      }
+    };
   }, []);
 
   if (!visible || pathname === '/journal') return null;
@@ -38,7 +70,8 @@ export function GuestLogPrompt() {
 
   return (
     <aside className="guest-log" role="status" aria-label="Guest journal">
-      <BrandMark
+      <Image
+        src={media.brand.logo}
         alt="Chiradeep Finn"
         width={136}
         height={136}

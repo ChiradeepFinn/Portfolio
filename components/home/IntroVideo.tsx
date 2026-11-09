@@ -8,7 +8,16 @@ import { media } from '@/lib/media';
 import dynamic from 'next/dynamic';
 import type { FilmPlayerHandle } from './FilmPlayer';
 
-const FilmPlayer = dynamic(() => import('./FilmPlayer').then((mod) => mod.FilmPlayer));
+const FilmPlayer = dynamic(() => import('./FilmPlayer').then((mod) => mod.FilmPlayer), {
+  ssr: false,
+  loading: () => (
+    <div
+      className="relative overflow-hidden rounded-card border border-white/10 bg-[#07080d]"
+      style={{ aspectRatio: '16 / 9' }}
+      aria-hidden
+    />
+  ),
+});
 
 /**
  * The introduction. A short text column beside the film, with the label
