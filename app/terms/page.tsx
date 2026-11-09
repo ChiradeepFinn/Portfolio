@@ -13,7 +13,7 @@ export const metadata: Metadata = withCanonical('/terms', {
 });
 
 const EFFECTIVE = '13 October 2026';
-const UPDATED = '25 October 2026';
+const UPDATED = '9 November 2026';
 
 interface Clause {
   readonly id: string;
@@ -176,16 +176,20 @@ export default function TermsPage() {
       label: 'Acceptable use',
       body: (
         <>
-          <P>You may browse the site, follow its links, and send a genuine message. You may not:</P>
+          <P>
+            You may browse the site, follow its links, send a genuine message, and — for assistants and crawlers that
+            respect ordinary limits — read the public machine-readable files described below. You may not:
+          </P>
           <List
             items={[
               'attack, probe, or disrupt the site, its host, or the services that carry a message;',
               'try to reach the database, the server, my inbox, or anyone else’s message;',
-              'flood the contact form, or try to get around the limit on repeated submissions;',
+              'flood the contact form, the journal, booking, or agent-oriented endpoints, or try to get around rate limits;',
               'send malware, or use the form to deceive someone;',
               'scrape or automate requests in a way that degrades the site;',
               'impersonate me, or remove a notice that says who made a work;',
-              'use the site to harass a person.',
+              'use the site to harass a person;',
+              'treat public agent files (llms.txt, ARD, Markdown twins) as a licence to republish the portfolio as your own.',
             ]}
           />
           <P>
@@ -202,10 +206,11 @@ export default function TermsPage() {
         <>
           <P>
             The form is a way to write to me. It takes a name, an email address, a subject, and a message, and only when
-            you choose to submit it. Nothing is sent as you type. Sending a message is not an order, a booking, or an
-            agreement that I will do work. I read what arrives and I try to reply. I do not promise a reply, a time, or
-            that I am available. The same page can open a Cal.com calendar for a short call; booking there schedules a
-            conversation and is not a commitment that I will take on a project.
+            you choose to submit it. Nothing is sent as you type. In browsers that support Declarative WebMCP, an
+            assistant may fill those fields; send still requires confirmation on the page. Sending a message is not an
+            order, a booking, or an agreement that I will do work. I read what arrives and I try to reply. I do not
+            promise a reply, a time, or that I am available. The same page can open a Cal.com calendar for a short call;
+            booking there schedules a conversation and is not a commitment that I will take on a project.
           </P>
           <P>
             What happens to the message is set out in the{' '}
@@ -214,7 +219,8 @@ export default function TermsPage() {
             </Link>
             . In short: Resend delivers it to my inbox as an email. A successful send means Resend accepted that email.
             After that, the server tries to keep a copy in Supabase; that write is best-effort and is not required for
-            the form to report success. The database is not open to the public or to browsers. If email is not
+            the form to report success. If a Discord webhook is configured, a private channel may get name, email, and
+            subject only — not the message body. The database is not open to the public or to browsers. If email is not
             configured, or the provider rejects the message, the form says so and the message is not treated as sent.
             If you book a call, Cal.com handles that booking flow.
           </P>
@@ -229,6 +235,25 @@ export default function TermsPage() {
           <P>
             A message is used to answer you. It is not added to a marketing list. The privacy policy explains how long
             it is kept and how to ask for it to be deleted.
+          </P>
+        </>
+      ),
+    },
+    {
+      id: 'machine-readable',
+      label: 'Machine-readable files and agents',
+      body: (
+        <>
+          <P>
+            The site publishes public files meant for people and for software agents: for example /llms.txt,
+            /llms-full.txt, Markdown twins (a page URL with .md), RSS, the sitemap, /.well-known/ard.json, the portfolio
+            agent skill, and the site agent card. Those files describe published work and how to contact me. They are
+            not a separate licence to copy the portfolio, train a model on it, or claim the work as yours.
+          </P>
+          <P>
+            Browser WebMCP tools may appear in supporting browsers. They expose read-only site facts and can help fill
+            the contact form; they are not a remote MCP server on this domain. Agents must still respect rate limits,
+            the acceptable-use rules above, and the privacy policy.
           </P>
         </>
       ),
@@ -250,18 +275,21 @@ export default function TermsPage() {
               'Google or GitHub, if you choose one of them to sign in on the journal;',
               'Resend, which delivers a contact message as email;',
               'Cal.com, which hosts the booking calendar if you choose a call on the contact page;',
-              'my email provider, which receives it;',
-              'Vercel, which hosts the site and may record access logs and anonymous performance metrics (Speed Insights).',
+              'Discord, if a webhook is configured, for a private name / email / subject ping after a successful contact submit;',
+              'YouTube, if you play the introduction film on the homepage;',
+              'my email provider, which receives the contact email;',
+              'Vercel, which hosts the site and may record access logs plus anonymous Analytics and Speed Insights metrics.',
             ]}
           />
           <P>
             The host records ordinary access logs: the request time, the page requested, an IP address, and a user
-            agent. I do not collect, export, or analyse those logs for my own marketing. Vercel Speed Insights measures
-            how pages perform; it is not advertising and it is not a mailing list. The privacy policy describes it.
-            The site sets a cookie only after you sign in on the guest journal, so that page can keep your session. It
-            is not an advertising cookie. The Cal.com embed may set its own cookies when the booking calendar loads. A
-            light or dark theme choice stays in your browser’s local storage and does not leave your device. No
-            advertising or retargeting tags are installed.
+            agent. I do not collect, export, or analyse those logs for my own marketing. Vercel Analytics and Speed
+            Insights measure visits and how pages perform; they are not advertising and they are not a mailing list.
+            The privacy policy describes them. The site sets a cookie only after you sign in on the guest journal, so
+            that page can keep your session. It is not an advertising cookie. Cal.com and YouTube may set their own
+            cookies when booking or playback loads. A light or dark theme choice, and a closed state for the guest-log
+            prompt, stay in your browser storage and do not leave your device. No advertising or retargeting tags are
+            installed.
           </P>
         </>
       ),
@@ -354,7 +382,7 @@ export default function TermsPage() {
         eyebrow="Terms"
         title="Terms of use."
         description="How this site may be read, and what the work on it is and is not."
-        stamp={{ tag: 'Updated', text: '25 Oct 2026' }}
+        stamp={{ tag: 'Updated', text: '9 Nov 2026' }}
       />
 
       <Section className="pt-0">

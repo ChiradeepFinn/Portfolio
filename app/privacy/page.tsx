@@ -12,7 +12,7 @@ export const metadata: Metadata = withCanonical('/privacy', {
     'What this site collects, why it is kept, who handles it, how long it stays, and how to ask for removal — written in plain language.',
 });
 
-const EFFECTIVE = '25 October 2026';
+const EFFECTIVE = '9 November 2026';
 
 interface Clause {
   readonly label: string;
@@ -47,26 +47,34 @@ export default function PrivacyPage() {
         <>
           <P>
             The site asks for personal details through the contact form, through the Cal.com booking embed if you choose
-            a call, and through the guest journal if you sign in and leave a note. Hosting still records access logs,
-            described below.
+            a call, and through the guest journal if you sign in and leave a note. Hosting, analytics, and a few
+            optional third parties are described below.
           </P>
           <Table
             rows={[
               {
                 term: 'The contact form',
-                text: 'Your name, email address, subject, and message. Only if you submit the form. Nothing is sent as you type. Delivery is through Resend; a database copy in Supabase is attempted afterwards and is best-effort.',
+                text: 'Your name, email address, subject, and message. Only if you submit the form. Nothing is sent as you type. Delivery is through Resend; a database copy in Supabase is attempted afterwards and is best-effort. In browsers that support Declarative WebMCP, an assistant may fill the same fields; you still confirm send, and the data handled is the same as a manual submit.',
+              },
+              {
+                term: 'Optional Discord ping',
+                text: 'If a Discord webhook is configured, a successful contact submit can notify a private channel with your name, email, and subject only. The message body is not sent to Discord; it stays in the email inbox.',
               },
               {
                 term: 'Booking a call',
                 text: 'If you use the calendar on the contact page, Cal.com hosts that booking flow. Details you enter there (name, email, time, notes) go to Cal.com so the meeting can be scheduled. Opening the embed loads Cal.com in place.',
               },
               {
-                term: 'Performance metrics',
-                text: 'Vercel Speed Insights records anonymous measures of how a page loads and responds (for example Core Web Vitals). It is not used to build a marketing profile or a mailing list.',
+                term: 'Analytics and performance',
+                text: 'After the page is idle, Vercel Analytics and Vercel Speed Insights load. They record anonymous visit and performance measures (for example page views and Core Web Vitals). They are not used to build a marketing profile or a mailing list.',
               },
               {
                 term: 'Your theme choice',
                 text: 'Light or dark, kept in your browser’s local storage under one key. It never leaves your device and I cannot read it.',
+              },
+              {
+                term: 'Guest-log prompt',
+                text: 'A small on-site note inviting the guest journal may store a “closed” flag in your browser’s session storage so it does not keep reopening in that tab session. It never leaves your device.',
               },
               {
                 term: 'Abuse limit',
@@ -85,8 +93,16 @@ export default function PrivacyPage() {
                 text: 'A separate short-lived hash, kept in memory on the server, so sign-in and publishing cannot be flooded. It is not written on the note, and it is not shared across every server process.',
               },
               {
+                term: 'Introduction film',
+                text: 'The homepage can play an introduction through YouTube. The player loads only after you choose Play. Until then, a static thumbnail may be requested from YouTube’s image host. Playing the film loads YouTube (privacy-enhanced / nocookie host where used) under YouTube’s own terms.',
+              },
+              {
                 term: 'Server logs',
-                text: 'The hosting provider records the request time, the page requested, your IP address, and your user agent in order to serve the site and defend it from abuse. I do not collect, export, or analyse these logs.',
+                text: 'The hosting provider records the request time, the page requested, your IP address, and your user agent in order to serve the site and defend it from abuse. I do not collect, export, or analyse these logs for marketing.',
+              },
+              {
+                term: 'Public machine-readable files',
+                text: 'Files such as /llms.txt, Markdown twins, the sitemap, RSS, and /.well-known/ard.json describe published work and how agents may read the site. They do not include your contact message, journal email, or booking details.',
               },
             ]}
           />
@@ -100,11 +116,12 @@ export default function PrivacyPage() {
           <List
             items={[
               'No advertising, retargeting, session-replay, or marketing pixels. None are installed.',
-              'No product-analytics suite that builds a browse history about you. Vercel Speed Insights is limited to performance metrics, described above.',
+              'No product-analytics suite that builds a marketing profile about you. Vercel Analytics and Speed Insights are limited to anonymous visit and performance metrics, described above.',
               'No newsletter list. An account exists only if you choose Google or GitHub on the guest journal.',
-              'No advertising cookies. The only cookie this site sets itself is the journal session described above, and only after you sign in. The Cal.com booking embed may set its own cookies when that calendar loads.',
+              'No advertising cookies. The only cookie this site sets itself is the journal session described above, and only after you sign in. Cal.com and YouTube may set their own cookies when you open booking or play the introduction film.',
               'No fingerprinting, no cross-site tracking, and no attempt to work out who you are from how you browse.',
               'The typefaces are files served with this site. Opening a page does not call a third-party font service.',
+              'No remote MCP server that accepts tools from the public internet. Browser WebMCP tools, when a supporting browser exposes them, run in that browser and only mirror what the pages already show or the contact form already accepts.',
               'No profiling for advertising, and no automated decision about you of any kind.',
               'No location, microphone, camera, or contact-list access.',
             ]}
@@ -123,7 +140,8 @@ export default function PrivacyPage() {
           <P>
             Contact-form data is used for one purpose: to read your message and reply to it. It is not used for
             marketing, it is not added to any list, and I will not write to you about anything you did not ask about.
-            A Cal.com booking is used only to schedule the call you asked for.
+            An optional Discord ping is only a private alert that a message arrived. A Cal.com booking is used only to
+            schedule the call you asked for.
           </P>
           <P>
             The guest journal is there so a visitor can leave one public note. The sign-in exists so the page can keep
@@ -131,10 +149,10 @@ export default function PrivacyPage() {
             or a mailing list.
           </P>
           <P>
-            The basis is your consent, which you give by choosing to submit the form or by choosing to sign in and
-            publish a note. You can withdraw it at any time (see your rights, below). Server logs and Speed Insights are
-            kept by Vercel on the basis of a legitimate interest in running and measuring the site safely and
-            reliably.
+            The basis is your consent, which you give by choosing to submit the form, book a call, or sign in and
+            publish a note. You can withdraw it at any time (see your rights, below). Server logs, Vercel Analytics, and
+            Speed Insights are kept by Vercel on the basis of a legitimate interest in running and measuring the site
+            safely and reliably.
           </P>
         </>
       ),
@@ -170,12 +188,20 @@ export default function PrivacyPage() {
                 text: 'Hosts the booking calendar on the contact page. If you book a call, Cal.com processes the details you enter there under its own terms and privacy policy.',
               },
               {
+                term: 'Discord',
+                text: 'If a webhook is configured, receives a private notification with name, email, and subject after a successful contact submit. The message body is not included.',
+              },
+              {
+                term: 'YouTube',
+                text: 'Serves the introduction film and its thumbnail only after you interact with Play (or after a thumbnail request for the poster). Governed by Google / YouTube policies.',
+              },
+              {
                 term: 'My email provider',
                 text: 'Receives the message in my mailbox, where I read and reply to it.',
               },
               {
                 term: 'Vercel',
-                text: 'Hosts the site, keeps ordinary access logs, and runs Speed Insights for anonymous performance metrics.',
+                text: 'Hosts the site, keeps ordinary access logs, and runs Analytics and Speed Insights for anonymous visit and performance metrics.',
               },
             ]}
           />
@@ -200,7 +226,8 @@ export default function PrivacyPage() {
               'A note I hold back stays attached to the account so that account cannot publish another, until you ask me to delete the sign-in.',
               'Removing a note does not delete the sign-in. The sign-in stays until you email me and ask for it to be deleted.',
               'If you ask for deletion sooner, I delete it sooner (see below).',
-              'Server logs and Speed Insights data follow Vercel’s own retention schedule, which I do not control.',
+              'Server logs, Vercel Analytics, and Speed Insights data follow Vercel’s own retention schedules, which I do not control.',
+              'Public machine-readable files are regenerated from published site content; they are not a store of visitor messages.',
             ]}
           />
         </>
@@ -268,8 +295,9 @@ export default function PrivacyPage() {
       body: (
         <P>
           The site links to external profiles and project addresses, including GitHub, LinkedIn, Instagram, YouTube,
-          Facebook, Snapchat, Discord, BandLab, and the live pages of the case studies. Once you follow a link, that site’s own policy
-          applies, not this one. I am not responsible for what they collect.
+          Facebook, Snapchat, Discord, BandLab, and the live pages of the case studies. Booking uses Cal.com; the
+          introduction film uses YouTube when you press Play. Once you follow a link or load those embeds, that site’s
+          own policy applies, not this one. I am not responsible for what they collect.
         </P>
       ),
     },
@@ -290,15 +318,16 @@ export default function PrivacyPage() {
         eyebrow="Privacy"
         title="Privacy policy."
         description="This site collects very little, and this page says exactly what."
-        stamp={{ tag: 'Updated', text: '25 Oct 2026' }}
+        stamp={{ tag: 'Updated', text: '9 Nov 2026' }}
       />
 
       <Section className="pt-0">
         <div className="border-b border-border pb-10">
           <p className="max-w-2xl font-display text-[clamp(1.3rem,2.2vw,1.65rem)] leading-[1.4] text-foreground italic">
-            If you do not use the contact form or the guest journal, this site does not ask you for a name or an email.
-            The host still keeps ordinary access logs, and Vercel Speed Insights records anonymous performance metrics,
-            both described below. A contact message is used to answer you and for nothing else.
+            If you do not use the contact form, book a call, or sign in to the guest journal, this site does not ask you
+            for a name or an email. The host still keeps ordinary access logs, and Vercel Analytics plus Speed Insights
+            record anonymous visit and performance metrics, all described below. A contact message is used to answer you
+            and for nothing else.
           </p>
         </div>
 
