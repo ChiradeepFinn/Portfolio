@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { preconnect, prefetchDNS, preload } from 'react-dom';
 import { calBookingOptions, calEmbedSrc, type CalDuration } from '@/lib/cal';
 import { cn } from '@/lib/utils';
 
 const options = calBookingOptions();
 
-/** Warm Cal origins + both event documents as early as this client island runs. */
+/** Warm Cal only once the booking plate is about to be used — not on every route. */
 function warmCalDocuments() {
   preconnect('https://cal.com');
   preconnect('https://app.cal.com');
@@ -29,25 +29,42 @@ function resourceAlreadyLoaded(src: string): boolean {
 export function BookingEmbed() {
   const [duration, setDuration] = useState<CalDuration>('30');
   const [ready, setReady] = useState<Partial<Record<CalDuration, boolean>>>({});
+  const [armed, setArmed] = useState(false);
+  const rootRef = useRef<HTMLElement>(null);
   const baseId = useId();
 
-  warmCalDocuments();
+  useEffect(() => {
+    const node = rootRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        warmCalDocuments();
+        setArmed(true);
+        observer.disconnect();
+      },
+      { rootMargin: '200px 0px', threshold: 0.01 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   const markReady = (value: CalDuration) => {
     setReady((prev) => (prev[value] ? prev : { ...prev, [value]: true }));
   };
 
-  // Catch iframe loads that finished before hydration attached onLoad.
   useEffect(() => {
+    if (!armed) return;
     for (const option of options) {
       if (resourceAlreadyLoaded(calEmbedSrc(option.calLink))) {
         markReady(option.duration);
       }
     }
-  }, []);
+  }, [armed]);
 
   return (
-    <section aria-labelledby={`${baseId}-heading`}>
+    <section ref={rootRef} aria-labelledby={`${baseId}-heading`}>
       <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="eyebrow text-muted-2">Book a call</p>
@@ -105,46 +122,47 @@ export function BookingEmbed() {
         </div>
       </div>
 
-      {/* Reference-style booker plate: bordered, rounded, wide enough for details | calendar | slots */}
       <div
         className={cn(
           'relative mt-8 overflow-hidden rounded-[var(--radius-card)] border border-border',
           'bg-[color-mix(in_oklab,var(--color-background)_88%,var(--color-foreground)_12%)]',
         )}
       >
-        {!ready[duration] && (
+        {!armed || !ready[duration] ? (
           <p className="absolute inset-x-0 top-10 z-20 text-center text-sm text-muted-2" aria-live="polite">
             Loading calendar…
           </p>
-        )}
+        ) : null}
         <div className="relative min-h-[36rem] sm:min-h-[40rem] lg:min-h-[42rem]">
-          {options.map((option) => {
-            const active = option.duration === duration;
-            return (
-              <div
-                key={option.calLink}
-                role="tabpanel"
-                id={`${baseId}-panel-${option.duration}`}
-                aria-labelledby={`${baseId}-tab-${option.duration}`}
-                aria-hidden={!active}
-                className={cn(
-                  active ? 'relative z-10' : 'pointer-events-none absolute inset-0 z-0',
-                )}
-              >
-                <iframe
-                  title={`Book a ${option.label} call`}
-                  src={calEmbedSrc(option.calLink)}
-                  tabIndex={active ? undefined : -1}
-                  onLoad={() => markReady(option.duration)}
-                  className={cn(
-                    'h-[36rem] w-full border-0 bg-transparent transition-opacity duration-300 sm:h-[40rem] lg:h-[42rem]',
-                    active && ready[option.duration] ? 'opacity-100' : 'opacity-0',
-                  )}
-                  allow="payment *"
-                />
-              </div>
-            );
-          })}
+          {armed
+            ? options.map((option) => {
+                const active = option.duration === duration;
+                return (
+                  <div
+                    key={option.calLink}
+                    role="tabpanel"
+                    id={`${baseId}-panel-${option.duration}`}
+                    aria-labelledby={`${baseId}-tab-${option.duration}`}
+                    aria-hidden={!active}
+                    className={cn(
+                      active ? 'relative z-10' : 'pointer-events-none absolute inset-0 z-0',
+                    )}
+                  >
+                    <iframe
+                      title={`Book a ${option.label} call`}
+                      src={calEmbedSrc(option.calLink)}
+                      tabIndex={active ? undefined : -1}
+                      onLoad={() => markReady(option.duration)}
+                      className={cn(
+                        'h-[36rem] w-full border-0 bg-transparent transition-opacity duration-300 sm:h-[40rem] lg:h-[42rem]',
+                        active && ready[option.duration] ? 'opacity-100' : 'opacity-0',
+                      )}
+                      allow="payment *"
+                    />
+                  </div>
+                );
+              })
+            : null}
         </div>
       </div>
     </section>

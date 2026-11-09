@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { preconnect, prefetchDNS, preload } from 'react-dom';
 import { contactPageGraph, withCanonical } from '@/lib/seo';
 import { JsonLd } from '@/components/seo/JsonLd';
 import {
@@ -17,7 +16,6 @@ import {
   Youtube,
   type LucideIcon,
 } from 'lucide-react';
-import { calBookingOptions, calEmbedSrc } from '@/lib/cal';
 import { identity, socialProfiles } from '@/lib/site';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Section } from '@/components/layout/Section';
@@ -69,19 +67,7 @@ const faqs = [
   },
 ] as const;
 
-function warmCalBookingHints() {
-  preconnect('https://cal.com');
-  preconnect('https://app.cal.com');
-  prefetchDNS('https://cal.com');
-  prefetchDNS('https://app.cal.com');
-  for (const option of calBookingOptions()) {
-    preload(calEmbedSrc(option.calLink), { as: 'document' });
-  }
-}
-
 export default function ContactPage() {
-  warmCalBookingHints();
-
   return (
     <>
       <JsonLd data={contactPageGraph(faqs)} />

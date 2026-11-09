@@ -542,10 +542,10 @@ export const FilmPlayer = forwardRef<FilmPlayerHandle, FilmPlayerProps>(function
 
         {!ready && youtube && !failed ? (
           <img
-            src={`https://i.ytimg.com/vi/${youtube}/hqdefault.jpg`}
+            src={`https://i.ytimg.com/vi/${youtube}/mqdefault.jpg`}
             alt=""
-            width={480}
-            height={360}
+            width={320}
+            height={180}
             decoding="async"
             loading="lazy"
             className="pointer-events-none absolute inset-0 z-[1] h-full w-full object-cover"

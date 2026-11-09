@@ -105,7 +105,8 @@ export function siteAgentCard(base: string): Record<string, unknown> {
   };
 }
 
-export function buildArdManifest(base: string, updatedAt = '2026-11-09'): ArdManifest {
+/** ARD entry `updatedAt` must be a full date-time (not a bare date). */
+export function buildArdManifest(base: string, updatedAt = '2026-11-09T00:00:00.000Z'): ArdManifest {
   const publisher = publisherHost(base);
 
   return {

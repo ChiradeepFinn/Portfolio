@@ -69,7 +69,7 @@ export function GuestLogPrompt() {
   };
 
   return (
-    <aside className="guest-log" role="status" aria-label="Guest journal">
+    <aside className="guest-log" aria-label="Guest journal">
       <Image
         src={media.brand.logo}
         alt="Chiradeep Finn"

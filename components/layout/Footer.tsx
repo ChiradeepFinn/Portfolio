@@ -128,6 +128,7 @@ export function Footer() {
                 fill
                 sizes="64px"
                 loading="lazy"
+                animated
                 className="origin-center scale-[1.08] object-cover"
               />
             </span>

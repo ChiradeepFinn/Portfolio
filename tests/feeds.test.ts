@@ -250,6 +250,7 @@ describe('ARD manifest', () => {
       assert.equal(hasUrl !== hasData, true);
       assert.ok(entry.representativeQueries.length >= 2);
       assert.ok(entry.representativeQueries.length <= 5);
+      assert.match(entry.updatedAt ?? '', /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/);
     }
   });
 
