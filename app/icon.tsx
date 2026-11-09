@@ -3,7 +3,7 @@ import path from 'node:path';
 import { ImageResponse } from 'next/og';
 
 /** PNG favicon for Google Search (SVG alone is not a supported Google favicon format). */
-export const size = { width: 48, height: 48 };
+export const size = { width: 96, height: 96 };
 export const contentType = 'image/png';
 
 export default async function Icon() {
@@ -23,7 +23,7 @@ export default async function Icon() {
         }}
       >
         {/* Official Chiradeep mark - abstract C */}
-        <img src={src} width={40} height={40} alt="" />
+        <img src={src} width={80} height={80} alt="" />
       </div>
     ),
     size,

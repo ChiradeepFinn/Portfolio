@@ -52,13 +52,17 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
   },
-  // Official mark via app/icon.tsx (PNG for Google) + SVG for modern browsers.
+  // Official abstract-C mark. Root favicon.ico is required — browsers/Google still request it.
   icons: {
     icon: [
-      { url: '/icon?v=c-mark-2026', type: 'image/png', sizes: '48x48' },
-      { url: '/icon.svg?v=c-mark-2026', type: 'image/svg+xml' },
+      { url: '/favicon.ico?v=c-mark-20261109', sizes: 'any' },
+      { url: '/favicon-48.png?v=c-mark-20261109', type: 'image/png', sizes: '48x48' },
+      { url: '/favicon-192.png?v=c-mark-20261109', type: 'image/png', sizes: '192x192' },
+      { url: '/icon?v=c-mark-20261109', type: 'image/png', sizes: '96x96' },
+      { url: '/icon.svg?v=c-mark-20261109', type: 'image/svg+xml' },
     ],
-    apple: '/apple-icon?v=c-mark-2026',
+    apple: [{ url: '/apple-icon?v=c-mark-20261109', sizes: '180x180', type: 'image/png' }],
+    shortcut: '/favicon.ico?v=c-mark-20261109',
   },
   // Selects the Is Agentic report lens; does not change the score.
   other: {
